@@ -22,15 +22,15 @@ namespace ServiceAutomation.Canvas.WebApi
         {
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
-                //.ConfigureKestrel(a =>
-                //{
-                //    a.AddServerHeader = false;
-                //});
-            //var port = Environment.GetEnvironmentVariable("PORT");
-            //if (!String.IsNullOrWhiteSpace(port))
-            //{
-            //    builder.UseUrls("http://*:" + port);
-            //}
+                .ConfigureKestrel(a =>
+                {
+                    a.AddServerHeader = false;
+                });
+            var port = Environment.GetEnvironmentVariable("PORT");
+            if (!String.IsNullOrWhiteSpace(port))
+            {
+                builder.UseUrls("http://*:" + port);
+            }
             return builder;
         }
     }
