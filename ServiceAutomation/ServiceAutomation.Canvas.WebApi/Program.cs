@@ -21,7 +21,7 @@ namespace ServiceAutomation.Canvas.WebApi
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var builder = WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
                 .ConfigureKestrel(a =>
                 {
                     a.AddServerHeader = false;
