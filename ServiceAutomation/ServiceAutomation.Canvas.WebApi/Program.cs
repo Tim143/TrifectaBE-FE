@@ -21,11 +21,11 @@ namespace ServiceAutomation.Canvas.WebApi
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var builder = WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .ConfigureKestrel(a =>
-                {
-                    a.AddServerHeader = false;
-                });
+                .UseStartup<Startup>();
+                //.ConfigureKestrel(a =>
+                //{
+                //    a.AddServerHeader = false;
+                //});
             var port = Environment.GetEnvironmentVariable("PORT");
             if (!String.IsNullOrWhiteSpace(port))
             {
