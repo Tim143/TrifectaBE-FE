@@ -26,11 +26,11 @@ namespace ServiceAutomation.Canvas.WebApi
                 //{
                 //    a.AddServerHeader = false;
                 //});
-            var port = Environment.GetEnvironmentVariable("PORT");
-            if (!String.IsNullOrWhiteSpace(port))
-            {
-                builder.UseUrls("http://*:" + port);
-            }
+            //var port = Environment.GetEnvironmentVariable("PORT");
+            //if (!String.IsNullOrWhiteSpace(port))
+            //{
+            //    builder.UseUrls("http://*:" + port);
+            //}
             return builder;
         }
     }
