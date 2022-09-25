@@ -25,7 +25,7 @@ namespace ServiceAutomation.Canvas.WebApi
                 .ConfigureKestrel(a =>
                 {
                     a.AddServerHeader = false;
-                });
+                }).UseUrls("https://localhost:7001", "http://localhost:7000");
             var port = Environment.GetEnvironmentVariable("PORT");
             if (!String.IsNullOrWhiteSpace(port))
             {
