@@ -16,14 +16,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         }
 
         public string GenerateIviteCode()
-        {
-            var identityGuid = Guid.NewGuid();
-            return $"https://trifecta.com/partnerlink/{GenerateIdentityCode(identityGuid)}";
+        {            
+            return GenerateIdentityCode();
+            //return $"https://trifecta.com/partnerlink/{GenerateIdentityCode(identityGuid)}";
         }
 
-        private string GenerateIdentityCode(Guid guid)
+        private string GenerateIdentityCode()
         {
-           return guid.ToString().Substring(0, 8);
+            var identityGuid = Guid.NewGuid();
+            return identityGuid.ToString().Substring(0, 8);
         }
 
         public async Task<string> GetUserRefferal(Guid userId)

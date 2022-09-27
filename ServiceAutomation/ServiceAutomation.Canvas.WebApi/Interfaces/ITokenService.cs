@@ -1,8 +1,5 @@
-﻿using ServiceAutomation.Canvas.WebApi.Models;
-using ServiceAutomation.Common.Models;
+﻿using ServiceAutomation.Common.Models;
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces

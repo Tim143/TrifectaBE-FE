@@ -1,0 +1,16 @@
+services:
+  serviceautomation.canvas.webapi:
+    build:
+      context: D:\MyProjects\OutOfWork\core-service\ServiceAutomation
+      dockerfile: ServiceAutomation.Canvas.WebApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: serviceautomationcanvaswebapi
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\Tsimafei.Yakubouski\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Tsimafei.Yakubouski\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'

@@ -15,9 +15,9 @@ namespace ServiceAutomation.DataAccess.DataSeeding
 
         public static PackageEntity[] PackageSeeds = new PackageEntity[]
         {
-            new PackageEntity {Id = PackagesIdsByType[PackageType.Start], Type = PackageType.Start, Name = "Start", Price = 199 },
-            new PackageEntity {Id = PackagesIdsByType[PackageType.Classic], Type = PackageType.Classic, Name = "Classic", Price = 999 },
-            new PackageEntity {Id = PackagesIdsByType[PackageType.Premium], Type = PackageType.Premium, Name = "Premium", Price = 1999 }
+            new PackageEntity {Id = PackagesIdsByType[PackageType.Start], Type = PackageType.Start, Name = "Start", Price = 199, DisplayOrder = 1 },
+            new PackageEntity {Id = PackagesIdsByType[PackageType.Classic], Type = PackageType.Classic, Name = "Classic", Price = 999, DisplayOrder = 2 },
+            new PackageEntity {Id = PackagesIdsByType[PackageType.Premium], Type = PackageType.Premium, Name = "Premium", Price = 1999, DisplayOrder = 3 }
         };
 
         public static PackageBonusAssociationEntity[] PackageBonusAssociationSeeds = new PackageBonusAssociationEntity[]

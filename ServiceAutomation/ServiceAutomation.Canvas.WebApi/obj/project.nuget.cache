@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "1ZZFAcpZe6EBbUcHV6yKAVLsoovYeT7ztgi0iPrSiFkdUz7WnRGTPYpVFIiOakzzWgnqt0dIDdDoUYc2vXMJJw==",
+  "dgSpecHash": "4stOhQkOBJv/PLtGmSb5de2wIlCPbX7pZj4buZksHUOL8TNXnB5DnL48/EFW+kS1Tqb2a2k/Z+c25Cs1smRV5A==",
   "success": true,
   "projectFilePath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
+    "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.12\\microsoft.aspnetcore.authentication.jwtbearer.5.0.12.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
@@ -53,6 +54,8 @@
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\npgsql\\5.0.10\\npgsql.5.0.10.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\5.0.10\\npgsql.entityframeworkcore.postgresql.5.0.10.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql.design\\1.1.0\\npgsql.entityframeworkcore.postgresql.design.1.1.0.nupkg.sha512",
+    "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\oneof\\3.0.223\\oneof.3.0.223.nupkg.sha512",
+    "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\oneof.fsharp\\3.0.223\\oneof.fsharp.3.0.223.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

@@ -2,7 +2,7 @@
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public abstract partial class Entity
+    public abstract class Entity
     {
         public virtual Guid Id { get; protected internal set; }
     }

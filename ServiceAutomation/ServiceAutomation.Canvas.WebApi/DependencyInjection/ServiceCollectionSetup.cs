@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LevelHostedService;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceAutomaion.Services.Interfaces;
 using ServiceAutomaion.Services.Services;
 using ServiceAutomation.Canvas.AutoMapping;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Services;
-using ServiceAutomation.DataAccess;
 using ServiceAutomation.DataAccess.Extensions;
 
 
@@ -43,10 +43,18 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IInfoService, InfoService>();
             services.AddScoped<IWithdrawService, WithdrawService>();
-            services.AddScoped<IReferralGroupService, ReferralGroupService>();
+            services.AddScoped<ITenantGroupService, TenantGroupService>();
             services.AddScoped<IUserReferralService, UserReferralService>();
             services.AddScoped<IVideoTemplateService, VideoTemplateService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<IPackagesService, PackagesService>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IDocumentVerificationService, DocumentVerificationService>();
+            services.AddScoped<IPersonalDataService, PersonalDataService>();
+
+            services.AddHostedService<LevelHostedServices>();            
+            services.AddScoped<ITurnoverService, TurnoverService>();
+            services.AddScoped<ILevelsService, LevelsService>();
         }
     }
 

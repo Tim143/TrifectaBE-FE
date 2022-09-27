@@ -89,7 +89,7 @@ namespace ServiceAutomation.Canvas.WebApi
             {
                 options.AddPolicy(name: "MyPolicy", builder =>
                 {
-                    builder.WithOrigins().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:3000/", "https://trifecto-front.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
                 });
             });
         }
@@ -97,7 +97,7 @@ namespace ServiceAutomation.Canvas.WebApi
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
-            if (env.IsDevelopment())
+            if (env.IsProduction() || env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
@@ -105,6 +105,8 @@ namespace ServiceAutomation.Canvas.WebApi
             }
 
             app.UseCors("MyPolicy");
+
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 
@@ -118,20 +120,20 @@ namespace ServiceAutomation.Canvas.WebApi
                 endpoints.MapControllers();
             });
 
-            //try
-            //{
-            //    using var scope = serviceProvider.CreateScope();
-            //    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            //    if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
-            //    {
-            //        context.Database.MigrateAsync().Wait();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.LogError(ex, $"Exception occurred on database migration");
-            //    throw;
-            //}
+            try
+            {
+                using var scope = serviceProvider.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+                {
+                    context.Database.MigrateAsync().Wait();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Exception occurred on database migration");
+                throw;
+            }
         }
     }
 }

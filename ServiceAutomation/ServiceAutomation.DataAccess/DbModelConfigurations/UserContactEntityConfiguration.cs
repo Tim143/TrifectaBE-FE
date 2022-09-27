@@ -4,9 +4,9 @@ using ServiceAutomation.DataAccess.Models.EntityModels;
 
 namespace ServiceAutomation.DataAccess.DbModelConfigurations
 {
-    internal class UserContactEntityConfiguration: EntityConfiguration<UserContactEntity>
+    internal class UserContactEntityConfiguration: EntityConfiguration<UserProfileInfoEntity>
     {
-        public override void Configure(EntityTypeBuilder<UserContactEntity> builder)
+        public override void Configure(EntityTypeBuilder<UserProfileInfoEntity> builder)
         {
             base.Configure(builder);
 
@@ -14,7 +14,7 @@ namespace ServiceAutomation.DataAccess.DbModelConfigurations
 
             builder.HasOne(x => x.User)
                 .WithOne(x => x.UserContact)
-                .HasForeignKey<UserContactEntity>(x => x.UserId)
+                .HasForeignKey<UserProfileInfoEntity>(x => x.UserId)
                 .IsRequired();
         }
 

@@ -12,8 +12,8 @@ namespace ServiceAutomation.DataAccess.DbModelConfigurations
 
             builder.ToTable(CredentialEntityDBConstants.TableName);
             builder.HasOne(x => x.User)
-                .WithMany(x => x.Credentionals)
-                .HasForeignKey(x => x.UserId)
+                .WithOne(x => x.Credential)
+                .HasForeignKey<CredentialEntity>(x => x.UserId)
                 .IsRequired();
         }
     }

@@ -4,6 +4,65 @@
     "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj": {}
   },
   "projects": {
+    "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
+        "projectName": "LevelHostedService",
+        "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
+        "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
+        "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\Program Files (x86)\\DevExpress 17.2": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -29,6 +88,9 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
+              "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
+                "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj"
+              },
               "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
                 "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj"
               },
@@ -99,6 +161,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL.Design": {
               "target": "Package",
               "version": "[1.1.0, )"
+            },
+            "OneOf.FSharp": {
+              "target": "Package",
+              "version": "[3.0.223, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

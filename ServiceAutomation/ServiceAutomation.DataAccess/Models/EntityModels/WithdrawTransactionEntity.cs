@@ -1,5 +1,6 @@
-﻿using System;
-using System.Transactions;
+﻿using ServiceAutomation.DataAccess.Schemas.Enums;
+using System;
+//using System.Transactions;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {

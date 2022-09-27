@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.DataAccess.DbModelConfigurations;
 using ServiceAutomation.DataAccess.Models.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.DbContexts
 {
@@ -16,11 +11,21 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<ThumbnailTemplateEntity> Thumbnails { get; set; }
         public virtual DbSet<CredentialEntity> Credentials { get; set; }
         public virtual DbSet<WithdrawTransactionEntity> WithdrawTransactions { get; set; }
-        public virtual DbSet<UserContactEntity> UserContacts { get; set; }
+        public virtual DbSet<UserProfileInfoEntity> UserContacts { get; set; }
         public virtual DbSet<TenantGroupEntity> TenantGroups { get; set; }
         public virtual DbSet<VideoLessonTemplateEntity> VideoLessons { get; set; }
         public virtual DbSet<ProfilePhotoEntity> ProfilePhotos { get; set; }
         public virtual DbSet<PackageEntity> Packages { get; set; }
+        public virtual DbSet<PurchaseEntity> UsersPurchases { get; set; }
+        public virtual DbSet<BasicLevelEntity> BasicLevels { get; set; }
+        public virtual DbSet<UserPhoneNumberEntity> UserPhones { get; set; }
+        public virtual DbSet<MonthlyLevelEntity> MonthlyLevels { get; set; }
+        public virtual DbSet<UserAccountOrganizationEntity> UserAccountOrganizations { get; set; }
+        public virtual DbSet<LegalUserOrganizationDataEntity> LegalUserOrganizationsData { get; set; }
+        public virtual DbSet<IndividualUserOrganizationDataEntity> IndividualUserOrganizationsData { get; set; }
+        public virtual DbSet<AccrualsEntity> Accruals { get; set; }
+        public virtual DbSet<PartnerPurchaseEntity> PartnerPurchase { get; set; }
+        public virtual DbSet<UserLevelsInfoEntity> UserLevelsInfos { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -38,6 +43,12 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new PackageEntityConfiguration());
             modelBuilder.ApplyConfiguration(new BonusEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PackageBonusAssociationEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new PurchaseEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BasicLevelEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new MonthlyLevelEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new PartnerPurchaseEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserLevelsInfoEntityConfiguration());
         }
     }
 }

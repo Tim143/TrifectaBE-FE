@@ -13,10 +13,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     public class HomeController : ApiBaseController
     {
         private readonly IUserReferralService userReferralService;
+        private readonly IPersonalDataService personalDataService;
 
-        public HomeController(IUserReferralService userReferralService)
+        public HomeController(IUserReferralService userReferralService, IPersonalDataService personalDataService)
         {
             this.userReferralService = userReferralService;
+            this.personalDataService = personalDataService;
         }
 
         [Authorize]
@@ -26,11 +28,11 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return await userReferralService.GetUserRefferal(userId);
         }
 
-        [AllowAnonymous]
-        [HttpGet(Constants.Requests.Home.GetAction)]
-        public async Task<string> GetAction()
+        //[Authorize]
+        [HttpGet(Constants.Requests.Home.GetPersonalPageInfo)]
+        public async Task<IActionResult> GetPersonalPageInfo(Guid userId)
         {
-            return "Chickha";
+            return Ok(await personalDataService.GetHomeUserData(userId));
         }
     }
 }

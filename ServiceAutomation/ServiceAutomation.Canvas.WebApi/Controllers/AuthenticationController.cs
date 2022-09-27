@@ -39,11 +39,11 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost(Requests.User.Logout)]
-        public async Task<IActionResult> Logout()
+        [HttpPost(Requests.User.GetUserId)]
+        public async Task<IActionResult> GetUserId()
         {
             var userId = GetCurrentUserId();
-            return Ok();
+            return Ok(userId);
         }
 
         [AllowAnonymous]

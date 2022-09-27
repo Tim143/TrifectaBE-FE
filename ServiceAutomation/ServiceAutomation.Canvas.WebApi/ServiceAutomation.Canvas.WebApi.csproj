@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -36,12 +36,14 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="OneOf.FSharp" Version="3.0.223" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LevelHostedService\LevelHostedService.csproj" />
     <ProjectReference Include="..\ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj" />
     <ProjectReference Include="..\ServiceAutomation.Migrations\ServiceAutomation.DataAccess.Migrations.csproj" />
   </ItemGroup>
@@ -52,5 +54,9 @@
     <None Remove="Models\RequestsModels\" />
     <None Remove="Models\ResponseModels\" />
     <None Remove="Installers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\ProfilePhotos\" />
   </ItemGroup>
 </Project>

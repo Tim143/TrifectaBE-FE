@@ -14,7 +14,8 @@ namespace ServiceAutomation.DataAccess.DbModelConfigurations
             builder.HasOne(x => x.Parent)
                 .WithMany(x => x.ChildGroups)
                 .HasForeignKey(x => x.ParentId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .IsRequired(false);
 
             builder.HasOne(x => x.OwnerUser)
                 .WithOne(x => x.Group)

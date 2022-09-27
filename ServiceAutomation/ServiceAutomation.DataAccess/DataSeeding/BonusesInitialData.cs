@@ -20,13 +20,13 @@ namespace ServiceAutomation.DataAccess.DataSeeding
 
         public static BonusEntity[] BonusSeeds = new BonusEntity[]
         {
-            new BonusEntity {Id = BonusesIdsByType[BonusType.TeamBonus], Name="Team Bonus", Type = BonusType.TeamBonus },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.DynamicBonus], Name="Dynamic Bonus", Type = BonusType.DynamicBonus },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.TravelBonus], Name="Travel Bonus", Type = BonusType.TravelBonus },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.LevelBonus], Name="Level Bonus", Type = BonusType.LevelBonus },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.AutoBonus], Name="Auto Bonus", Type = BonusType.AutoBonus },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.BunBonus], Name="Bun Bonus", Type = BonusType.BunBonus },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.BonusOverall], Name="Bonus Overall", Type = BonusType.BonusOverall }
+            new BonusEntity {Id = BonusesIdsByType[BonusType.TeamBonus], Name="Team Bonus", Type = BonusType.TeamBonus, DisplayOrder = 1 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.DynamicBonus], Name="Dynamic Bonus", Type = BonusType.DynamicBonus, DisplayOrder = 3 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.TravelBonus], Name="Travel Bonus", Type = BonusType.TravelBonus, DisplayOrder = 5 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.LevelBonus], Name="Level Bonus", Type = BonusType.LevelBonus, DisplayOrder = 2 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.AutoBonus], Name="Auto Bonus", Type = BonusType.AutoBonus, DisplayOrder = 4 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.BunBonus], Name="Bun Bonus", Type = BonusType.BunBonus, DisplayOrder = 6 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.BonusOverall], Name="Bonus Overall", Type = BonusType.BonusOverall, DisplayOrder = 7 }
         };
     }
 }

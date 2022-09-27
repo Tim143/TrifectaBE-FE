@@ -63,6 +63,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             return new AuthenticationResult()
             {
+                UserId = user.Id,
                 Success = true,
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
@@ -87,6 +88,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             return new AuthenticationResult
             {
+                UserId = responseUser.Id,
                 Success = true,
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
@@ -175,7 +177,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AuthOptions.ISSUER,
                 AuthOptions.AUDIENCE,
                 claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(2880),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -211,7 +213,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var token = new JwtSecurityToken(
                 AuthOptions.ISSUER,
                 AuthOptions.AUDIENCE,
-                expires: DateTime.Now.AddMinutes(100),
+                expires: DateTime.Now.AddMinutes(43200),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

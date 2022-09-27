@@ -9,6 +9,8 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
 
         public string Name { get; set; }
 
+        public int DisplayOrder { get; set; }
+
         public IList<PackageBonusAssociationEntity> PackageBonuses { get; set; }
     }
 }
