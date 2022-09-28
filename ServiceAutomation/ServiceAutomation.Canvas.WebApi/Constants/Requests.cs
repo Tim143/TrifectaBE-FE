@@ -68,5 +68,10 @@
             public const string SendDataForVerification = "SendDataForVerification";
             public const string GetVerifiedData = "GetVerifiedData";
         }
+
+        public static class Progress
+        {
+            public const string GetUserProgress = "GetUserProgress";
+        }
     }
 }

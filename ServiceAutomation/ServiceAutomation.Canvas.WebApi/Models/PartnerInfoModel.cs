@@ -5,6 +5,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models
     public class PartnerInfoModel
     {
         public Guid UserId { get; set; }
+        public int Wave { get; set; }
         public string FirstName { get; init; }
 
         public string LastName { get; init; }

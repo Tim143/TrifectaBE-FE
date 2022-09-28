@@ -54,6 +54,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return _mapper.Map<LevelModel>(monthlyLevel);
         }
 
+        public async Task<LevelModel> GetNextMonthlyLevelAsync(int level)
+        {
+            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => ((int)l.Level) == level + 1)
+                                                             .SingleOrDefaultAsync();
+
+            return _mapper.Map<LevelModel>(monthlyLevel);
+        }
+
         public async Task<LevelInfoModel> GetBasicLevelInfoByUserIdAsync(Guid userId)
         {
             var basicLevel = await _dbContext.Users.AsNoTracking()

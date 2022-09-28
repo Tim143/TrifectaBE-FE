@@ -51,7 +51,7 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<IPurchaseService, PurchaseService>();
             services.AddScoped<IDocumentVerificationService, DocumentVerificationService>();
             services.AddScoped<IPersonalDataService, PersonalDataService>();
-
+            services.AddScoped<IUserProgressService, UserProgressService>();
             services.AddHostedService<LevelHostedServices>();            
             services.AddScoped<ITurnoverService, TurnoverService>();
             services.AddScoped<ILevelsService, LevelsService>();

@@ -28,11 +28,17 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return await userReferralService.GetUserRefferal(userId);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Constants.Requests.Home.GetPersonalPageInfo)]
         public async Task<IActionResult> GetPersonalPageInfo(Guid userId)
         {
             return Ok(await personalDataService.GetHomeUserData(userId));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRoute()
+        {
+            return Ok();
         }
     }
 }

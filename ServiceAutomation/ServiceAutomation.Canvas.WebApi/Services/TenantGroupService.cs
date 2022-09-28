@@ -56,8 +56,22 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                      .Select(u => u.Group)
                                                      .Select(GetReferralGroupWithPartners)
                                                      .FirstOrDefaultAsync();
-            return referralGroup;
+            int counter = 0;
+            //referralGroup.GroupOwner.Wave = counter++;
 
+            //var tmp = referralGroup.PartnersGroups;
+            //while(tmp != null)
+            //{
+            //    foreach(var prt in tmp)
+            //    {
+            //        prt.GroupOwner.Wave = counter;
+            //    }
+
+            //    counter++;
+            //}
+
+
+            return referralGroup;
         }
 
         public async Task<ReferralGroupModel> GetReferralGroupAsync(Guid groupId)
@@ -85,7 +99,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             HasPartners = g.ChildGroups.Count != 0,
             GroupOwner = new PartnerInfoModel
             {
-                //UserId = g.Id,
+                UserId = g.OwnerUserId,
                 FirstName = g.OwnerUser.FirstName,
                 LastName = g.OwnerUser.LastName,
                 Email = g.OwnerUser.Email,
@@ -99,6 +113,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 HasPartners = g.ChildGroups.Count != 0,
                 GroupOwner = new PartnerInfoModel
                 {
+                    UserId = cg.OwnerUserId,
                     FirstName = cg.OwnerUser.FirstName,
                     LastName = cg.OwnerUser.LastName,
                     Email = cg.OwnerUser.Email,
@@ -123,5 +138,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             },
             HasPartners = g.ChildGroups.Count != 0
         };
+
+        private int Counter = 0;
     }
 }
