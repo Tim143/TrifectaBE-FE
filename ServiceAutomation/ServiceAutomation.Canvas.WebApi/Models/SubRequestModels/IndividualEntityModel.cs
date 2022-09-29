@@ -15,7 +15,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
         public string AccountantName { get; set; }
         public string CertificateNumber { get; set; }
         public string RegistrationAuthority { get; set; }
-        public DateTime CertificateDateIssue { get; set; }
+        public string CertificateDateIssue { get; set; }
         public string BankRegion { get; set; }
         public string BankLocality { get; set; }
         public string BankStreet { get; set; }
@@ -28,7 +28,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
         public string Index { get; set; }
         public string Street { get; set; }
         public string HouseNumber { get; set; }
-        public Location Location { get; set; }
+        public string Location { get; set; }
         public string RoomNumber { get; set; }
         public TypeOfEmployment TypeOfEmployment = TypeOfEmployment.IndividualEntity;
     }

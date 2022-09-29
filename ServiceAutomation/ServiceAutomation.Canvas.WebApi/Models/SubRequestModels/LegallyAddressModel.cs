@@ -9,7 +9,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
         public string Index { get; set; }
         public string Street { get; set; }
         public string HouseNumber { get; set; }
-        public Location Location { get; set; }
+        public string Location { get; set; }
         public string RoomNumber { get; set; }
     }
 }

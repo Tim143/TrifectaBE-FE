@@ -157,8 +157,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("BeneficiaryBankName")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CertificateDateIssue")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<string>("CertificateDateIssue")
+                        .HasColumnType("text");
 
                     b.Property<string>("CertificateNumber")
                         .HasColumnType("text");
@@ -187,8 +187,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("Locality")
                         .HasColumnType("text");
 
-                    b.Property<int>("Location")
-                        .HasColumnType("integer");
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
 
                     b.Property<string>("Region")
                         .HasColumnType("text");
