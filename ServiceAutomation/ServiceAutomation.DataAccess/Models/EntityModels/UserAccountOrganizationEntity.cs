@@ -11,5 +11,6 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
     {
         public Guid UserId { get; set; }
         public TypeOfEmployment TypeOfEmployment { get; set; }
+        public virtual UserEntity User { get; set; }
     }
 }

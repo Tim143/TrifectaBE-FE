@@ -10,6 +10,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     public interface IDocumentVerificationService
     {
         Task<ResultModel> SendUserVerificationData(DocumentVerificationRequestModel requestModel);
-        Task<OneOf<IndividualEntityDataResponseModel, LegalEntityDataResponseModel, ResultModel>> GetUserVerifiedData(Guid userId);
+        Task<OneOf<IndividualEntityDataResponseModel, IndividualEntrepreneurEntityDataResponseModel, LegalEntityDataResponseModel, ResultModel>> GetUserVerifiedData(Guid userId);
     }
 }

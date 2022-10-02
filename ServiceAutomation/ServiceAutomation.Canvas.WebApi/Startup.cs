@@ -89,7 +89,7 @@ namespace ServiceAutomation.Canvas.WebApi
             {
                 options.AddPolicy(name: "MyPolicy", builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://trifecta.by:4000", "https://trifecto-front.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:3000/", "https://trifecto-front.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
                 });
             });
         }

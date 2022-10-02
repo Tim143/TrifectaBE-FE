@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {}
+    "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {}
   },
   "projects": {
-    "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
+    "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
+        "projectUniqueName": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
         "projectName": "LevelHostedService",
-        "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
+        "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
         "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
-        "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\obj\\",
+        "outputPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",

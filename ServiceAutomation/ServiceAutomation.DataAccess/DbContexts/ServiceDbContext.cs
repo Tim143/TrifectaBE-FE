@@ -18,14 +18,17 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<PackageEntity> Packages { get; set; }
         public virtual DbSet<PurchaseEntity> UsersPurchases { get; set; }
         public virtual DbSet<BasicLevelEntity> BasicLevels { get; set; }
-        public virtual DbSet<UserPhoneNumberEntity> UserPhones { get; set; }
         public virtual DbSet<MonthlyLevelEntity> MonthlyLevels { get; set; }
         public virtual DbSet<UserAccountOrganizationEntity> UserAccountOrganizations { get; set; }
         public virtual DbSet<LegalUserOrganizationDataEntity> LegalUserOrganizationsData { get; set; }
         public virtual DbSet<IndividualUserOrganizationDataEntity> IndividualUserOrganizationsData { get; set; }
+        public virtual DbSet<IndividualEntrepreneurUserOrganizationDataEntity> IndividualEntrepreneurUserOrganizationsData { get; set; }
         public virtual DbSet<AccrualsEntity> Accruals { get; set; }
         public virtual DbSet<PartnerPurchaseEntity> PartnerPurchase { get; set; }
         public virtual DbSet<UserLevelsInfoEntity> UserLevelsInfos { get; set; }
+        public virtual DbSet<UserContactVerificationEntity> UserContactVerifications { get; set; }
+        public virtual DbSet<MonthlyLevelStatisticEntity> MonthlyLevelStatistics { get; set; }
+        public virtual DbSet<BasicLevelStatisticEntity> BasicLevelStatistics { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -49,6 +52,8 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new PartnerPurchaseEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserLevelsInfoEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new MonthlyLevelStatisticEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BasicLevelStatisticEntityConfiguration());
         }
     }
 }

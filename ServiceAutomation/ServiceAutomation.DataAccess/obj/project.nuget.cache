@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "An+C1gGPL5dCf3s5Ss2GiCESXM3fgADgGJ4y6xC34V2a7b12Hk0/mj3Pj8UrnEMsokUk0QgNIvgcU6wlKseEVA==",
+  "dgSpecHash": "tcPFe/BTFZu7JTKVUPeNcLLE48QdbHHdPfyjYKYuR0DeSRzDfbv38U5stNs3wBBfjXfXDZeuE3Sk0XfWZkINZQ==",
   "success": true,
-  "projectFilePath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
+  "projectFilePath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

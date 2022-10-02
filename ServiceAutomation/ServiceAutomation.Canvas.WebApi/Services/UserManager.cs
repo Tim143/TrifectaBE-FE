@@ -40,7 +40,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                Patronymic = user.Patronymic,
                 Email = user.Email.ToLower(),
+                PhoneNumber = user.PhoneNumber,
                 Country = user.Country,
                 InviteReferral = user.InviteCode,
                 PersonalReferral = userReferralService.GenerateIviteCode(),

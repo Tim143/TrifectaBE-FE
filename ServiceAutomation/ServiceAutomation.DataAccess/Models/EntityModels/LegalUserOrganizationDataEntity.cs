@@ -22,5 +22,6 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string Street { get; set; }
         public string HouseNumber { get; set; }
         public string Flat { get; set; }
+        public bool IsVerivied { get; set; }
     }
 }

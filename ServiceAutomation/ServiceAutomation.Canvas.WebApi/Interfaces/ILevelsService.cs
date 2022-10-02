@@ -15,8 +15,9 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 
         Task<NextBasicLevelRequirementsModel> GetNextBasicLevelRequirementsAsync(Level currentUserBasicLevel);
 
-        Task СalculatePartnersBasicLevelsAsync(Guid userId);
-
         Task<LevelModel> GetNextMonthlyLevelAsync(int level);
+
+        Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover);
+
     }
 }

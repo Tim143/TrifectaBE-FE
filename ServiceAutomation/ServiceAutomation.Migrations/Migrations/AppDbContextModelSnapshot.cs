@@ -86,6 +86,34 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.ToTable("BasicLevels");
                 });
 
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelStatisticEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
+
+                    b.Property<Guid>("LevelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ReachingLevelDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal?>("Turnover")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LevelId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BasicLevelStatistics");
+                });
+
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BonusEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -128,6 +156,95 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .IsUnique();
 
                     b.ToTable("Credentials");
+                });
+
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.IndividualEntrepreneurUserOrganizationDataEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AccountantName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BankHouseNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BankLocality")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BankRegion")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BankStreet")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BaseOrganization")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BeneficiaryBankName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CertificateDateIssue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CertificateNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CheckingAccount")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeadFullName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeadPosition")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HouseNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Index")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVerivied")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LegalEntityAbbreviatedName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LegalEntityFullName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Locality")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RegistrationAuthority")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoomNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SWIFT")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UNP")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IndividualEntrepreneurUserOrganizationsData");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.IndividualUserOrganizationDataEntity", b =>
@@ -177,6 +294,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
                     b.Property<string>("Index")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsVerivied")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LegalEntityAbbreviatedName")
                         .HasColumnType("text");
@@ -249,6 +369,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("Index")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsVerivied")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Locality")
                         .HasColumnType("text");
 
@@ -289,6 +412,34 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MonthlyLevels");
+                });
+
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelStatisticEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
+
+                    b.Property<Guid>("LevelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ReachingLevelDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal?>("Turnover")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LevelId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MonthlyLevelStatistics");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.PackageBonusAssociationEntity", b =>
@@ -479,7 +630,38 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("UserAccountOrganizations");
+                });
+
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserContactVerificationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("NewData")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OldData")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("VerificationType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserContactVerifications");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", b =>
@@ -516,22 +698,18 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("bytea");
 
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("text");
+
                     b.Property<string>("PersonalReferral")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserAccountOrganizationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UserPhoneNumberId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BasicLevelId");
-
-                    b.HasIndex("UserAccountOrganizationId");
-
-                    b.HasIndex("UserPhoneNumberId");
 
                     b.ToTable("Users");
                 });
@@ -547,20 +725,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasIndex("BasicLevelId");
 
                     b.ToTable("UserLevelsInfos");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserPhoneNumberEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserPhones");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserProfileInfoEntity", b =>
@@ -656,6 +820,25 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("PartnersLevel");
                 });
 
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelStatisticEntity", b =>
+                {
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelEntity", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Level");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
@@ -663,6 +846,25 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .HasForeignKey("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelStatisticEntity", b =>
+                {
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelEntity", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Level");
 
                     b.Navigation("User");
                 });
@@ -733,25 +935,35 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserAccountOrganizationEntity", b =>
+                {
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
+                        .WithOne("UserAccountOrganization")
+                        .HasForeignKey("ServiceAutomation.DataAccess.Models.EntityModels.UserAccountOrganizationEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserContactVerificationEntity", b =>
+                {
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelEntity", "BasicLevel")
                         .WithMany()
                         .HasForeignKey("BasicLevelId");
 
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserAccountOrganizationEntity", "UserAccountOrganization")
-                        .WithMany()
-                        .HasForeignKey("UserAccountOrganizationId");
-
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserPhoneNumberEntity", "UserPhoneNumber")
-                        .WithMany()
-                        .HasForeignKey("UserPhoneNumberId");
-
                     b.Navigation("BasicLevel");
-
-                    b.Navigation("UserAccountOrganization");
-
-                    b.Navigation("UserPhoneNumber");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserLevelsInfoEntity", b =>
@@ -815,6 +1027,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("Group");
 
                     b.Navigation("ProfilePhoto");
+
+                    b.Navigation("UserAccountOrganization");
 
                     b.Navigation("UserAccruals");
 

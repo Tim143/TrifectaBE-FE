@@ -90,7 +90,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     return await SendIndividualEntityData(individualEntityModel);
                 case TypeOfEmployment.IndividualEntrepreneur:
 
-                    var individualEntityModel2 = new IndividualEntityModel()
+                    var individualEntrepreneurEntityModel = new IndividualEntrepreneurEntityModel()
                     {
                         UserId = requestModel.UserId,
                         LegalEntityFullName = requestModel.DocumentVerificationModels.LegalDataModel.LegalEntityFullName,
@@ -119,7 +119,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         RoomNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.RoomNumber
                     };
 
-                    return await SendIndividualEntityData(individualEntityModel2);
+                    return await SendIndividualEntrepreneurEntityData(individualEntrepreneurEntityModel);
                 default:
                     return new ResultModel()
                     {
@@ -343,7 +343,124 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
         }
 
-        public async Task<OneOf<IndividualEntityDataResponseModel, LegalEntityDataResponseModel, ResultModel>> GetUserVerifiedData(Guid userId)
+        private async Task<ResultModel> SendIndividualEntrepreneurEntityData(IndividualEntrepreneurEntityModel dataModel)
+        {
+            var userorganization = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == dataModel.UserId && x.TypeOfEmployment == dataModel.TypeOfEmployment);
+
+            if (userorganization == null)
+            {
+                userorganization = new UserAccountOrganizationEntity()
+                {
+                    UserId = dataModel.UserId,
+                    TypeOfEmployment = dataModel.TypeOfEmployment
+                };
+
+                var individualUserModel = new IndividualEntrepreneurUserOrganizationDataEntity()
+                {
+                    UserId = dataModel.UserId,
+                    LegalEntityFullName = dataModel.LegalEntityFullName,
+                    HeadFullName = dataModel.HeadFullName,
+                    LegalEntityAbbreviatedName = dataModel.LegalEntityAbbreviatedName,
+                    HeadPosition = dataModel.HeadPosition,
+                    UNP = dataModel.UNP,
+                    BaseOrganization = dataModel.BaseOrganization,
+                    AccountantName = dataModel.AccountantName,
+                    CertificateNumber = dataModel.CertificateNumber,
+                    RegistrationAuthority = dataModel.RegistrationAuthority,
+                    CertificateDateIssue = dataModel.CertificateDateIssue,
+                    BankRegion = dataModel.BankRegion,
+                    BankLocality = dataModel.BankLocality,
+                    BankStreet = dataModel.BankStreet,
+                    BankHouseNumber = dataModel.BankHouseNumber,
+                    BeneficiaryBankName = dataModel.BeneficiaryBankName,
+                    CheckingAccount = dataModel.CheckingAccount,
+                    SWIFT = dataModel.SWIFT,
+                    Region = dataModel.Region,
+                    Locality = dataModel.Locality,
+                    Index = dataModel.Index,
+                    Street = dataModel.Street,
+                    HouseNumber = dataModel.HouseNumber,
+                    Location = dataModel.Location,
+                    RoomNumber = dataModel.RoomNumber
+                };
+
+                try
+                {
+                    await dbContext.UserAccountOrganizations.AddAsync(userorganization);
+                    await dbContext.IndividualEntrepreneurUserOrganizationsData.AddAsync(individualUserModel);
+                    await dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    return new ResultModel()
+                    {
+                        Success = false,
+                        Errors = new List<string>()
+                        {
+                            ex.Message
+                        }
+                    };
+                }
+
+                return new ResultModel()
+                {
+                    Success = true
+                };
+            }
+            else
+            {
+                var individualUserModel = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == dataModel.UserId);
+
+                individualUserModel.UserId = dataModel.UserId;
+                individualUserModel.LegalEntityFullName = dataModel.LegalEntityFullName;
+                individualUserModel.HeadFullName = dataModel.HeadFullName;
+                individualUserModel.LegalEntityAbbreviatedName = dataModel.LegalEntityAbbreviatedName;
+                individualUserModel.HeadPosition = dataModel.HeadPosition;
+                individualUserModel.UNP = dataModel.UNP;
+                individualUserModel.BaseOrganization = dataModel.BaseOrganization;
+                individualUserModel.AccountantName = dataModel.AccountantName;
+                individualUserModel.CertificateNumber = dataModel.CertificateNumber;
+                individualUserModel.RegistrationAuthority = dataModel.RegistrationAuthority;
+                individualUserModel.CertificateDateIssue = dataModel.CertificateDateIssue;
+                individualUserModel.BankRegion = dataModel.BankRegion;
+                individualUserModel.BankLocality = dataModel.BankLocality;
+                individualUserModel.BankStreet = dataModel.BankStreet;
+                individualUserModel.BankHouseNumber = dataModel.BankHouseNumber;
+                individualUserModel.BeneficiaryBankName = dataModel.BeneficiaryBankName;
+                individualUserModel.CheckingAccount = dataModel.CheckingAccount;
+                individualUserModel.SWIFT = dataModel.SWIFT;
+                individualUserModel.Region = dataModel.Region;
+                individualUserModel.Locality = dataModel.Locality;
+                individualUserModel.Index = dataModel.Index;
+                individualUserModel.Street = dataModel.Street;
+                individualUserModel.HouseNumber = dataModel.HouseNumber;
+                individualUserModel.Location = dataModel.Location;
+                individualUserModel.RoomNumber = dataModel.RoomNumber;
+
+                try
+                {
+                    await dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    return new ResultModel()
+                    {
+                        Success = false,
+                        Errors = new List<string>()
+                        {
+                            ex.Message
+                        }
+                    };
+                }
+
+                return new ResultModel()
+                {
+                    Success = true
+                };
+            }
+        }
+
+        public async Task<OneOf<IndividualEntityDataResponseModel, IndividualEntrepreneurEntityDataResponseModel, LegalEntityDataResponseModel, ResultModel>> GetUserVerifiedData(Guid userId)
         {
             var userOrganizationData = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == userId);
 
@@ -364,27 +481,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             switch (userOrganizationType)
             {
                 case TypeOfEmployment.LegalEntity:
-                    var data1 = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
-                    return mapper.Map<LegalEntityDataResponseModel>(data1);
+                    var legalEntity = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
+                    return mapper.Map<LegalEntityDataResponseModel>(legalEntity);
                 case TypeOfEmployment.IndividualEntity:
-                    var data2 = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
-                    return mapper.Map<IndividualEntityDataResponseModel>(data2);
+                    var individualEntity = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
+                    return mapper.Map<IndividualEntityDataResponseModel>(individualEntity);
                 case TypeOfEmployment.IndividualEntrepreneur:
-                    var data3 = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
-                    return mapper.Map<IndividualEntityDataResponseModel>(data3);
+                    var individualEntrepreneurEntity = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
+                    return mapper.Map<IndividualEntrepreneurEntityDataResponseModel>(individualEntrepreneurEntity);
                 default:
                     throw new ArgumentException("Invalid argument");
             }
         }
-
-        //private async Task DeleteIfExist(Guid userId)
-        //{
-        //    var usersOrganixationsType = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.Id == userId);
-
-        //    if(usersOrganixationsType != null)
-        //    {
-                 
-        //    }
-        //}
     }
 }

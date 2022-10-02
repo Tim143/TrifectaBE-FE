@@ -34,5 +34,6 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string HouseNumber { get; set; }
         public string Location { get; set; }
         public string RoomNumber { get; set; }
+        public bool IsVerivied { get; set; }
     }
 }

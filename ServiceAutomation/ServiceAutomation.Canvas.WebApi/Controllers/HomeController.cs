@@ -14,11 +14,13 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     {
         private readonly IUserReferralService userReferralService;
         private readonly IPersonalDataService personalDataService;
+        private readonly IBonusCalculatorService bonusCalculatorService;
 
-        public HomeController(IUserReferralService userReferralService, IPersonalDataService personalDataService)
+        public HomeController(IUserReferralService userReferralService, IPersonalDataService personalDataService, IBonusCalculatorService bonusCalculatorService)
         {
             this.userReferralService = userReferralService;
             this.personalDataService = personalDataService;
+            this.bonusCalculatorService = bonusCalculatorService;
         }
 
         [Authorize]
@@ -36,9 +38,9 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetRoute()
+        public async Task<IActionResult> GetBonus(Guid userId)
         {
-            return Ok();
+            return Ok(await bonusCalculatorService.CalculateBonusesAsync(userId));
         }
     }
 }

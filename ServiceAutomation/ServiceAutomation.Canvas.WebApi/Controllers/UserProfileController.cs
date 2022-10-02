@@ -105,13 +105,5 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
             return Ok();
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> GetAction()
-        //{
-        //    var res1 = webHostEnvironment.WebRootPath;
-        //    var res2 = webHostEnvironment.ContentRootPath;
-        //    return Ok(res1 + res2);
-        //}
     }
 }
