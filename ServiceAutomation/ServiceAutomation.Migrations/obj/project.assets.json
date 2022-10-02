@@ -7802,11 +7802,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
+      "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
       "projectName": "ServiceAutomation.DataAccess.Migrations",
-      "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
+      "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
       "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
-      "outputPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\obj\\",
+      "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7824,8 +7824,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
-              "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj"
+            "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
+              "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj"
             }
           }
         }

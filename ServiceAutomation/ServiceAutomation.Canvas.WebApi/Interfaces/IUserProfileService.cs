@@ -14,5 +14,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<ResultModel> ChangePassword(Guid userId, string oldPassword, string newPassword);
         Task<ResultModel> ChangeEmailAdress(Guid userId, string newEmail);
         Task<ResultModel> UploadPhoneNumber(Guid userId, string newPhoneNumber);
+        string Foo();
     }
 }

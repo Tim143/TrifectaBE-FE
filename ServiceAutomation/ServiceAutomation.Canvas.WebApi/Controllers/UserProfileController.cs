@@ -105,5 +105,11 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpGet("Getpath")]
+        public async Task<IActionResult> GetPath()
+        {
+            return Ok(userProfileService.Foo());
+        }
     }
 }

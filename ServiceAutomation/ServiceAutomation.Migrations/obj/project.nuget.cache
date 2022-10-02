@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8jPrayw7s/410Vtw5h1sy70pamAvsklL0B6jOo5k6Nd8UPwC/J6MkPVVUayyhBDXB7BtJFyw1xk3gBTUbMoIoQ==",
+  "dgSpecHash": "ZTF7iiPuTwH/1hyKx335JYaxw9LlHxztSQ7VQJhlse3KCUuZQg3oT/blK1YCZu32nV7WKOztAW1NKupHCfs5hA==",
   "success": true,
-  "projectFilePath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
+  "projectFilePath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

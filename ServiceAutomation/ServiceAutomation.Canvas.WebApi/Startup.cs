@@ -89,7 +89,7 @@ namespace ServiceAutomation.Canvas.WebApi
             {
                 options.AddPolicy(name: "MyPolicy", builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://localhost:3000/", "https://trifecto-front.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:4000", "https://trifecto-front.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
                 });
             });
         }
@@ -97,7 +97,7 @@ namespace ServiceAutomation.Canvas.WebApi
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
-            if (env.IsProduction() || env.IsDevelopment())
+            if (env.IsProduction() || env.IsDevelopment() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();

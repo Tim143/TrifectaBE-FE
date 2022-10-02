@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj": {}
+    "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj": {}
   },
   "projects": {
-    "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
+    "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
+        "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
         "projectName": "LevelHostedService",
-        "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
+        "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj",
         "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\obj\\",
+        "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -63,14 +63,14 @@
         }
       }
     },
-    "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj": {
+    "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
+        "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
         "projectName": "ServiceAutomation.Canvas.WebApi",
-        "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
+        "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
         "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\obj\\",
+        "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -88,14 +88,14 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
-                "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj"
+              "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj": {
+                "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\LevelHostedService\\LevelHostedService.csproj"
               },
-              "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
-                "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj"
+              "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
+                "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj"
               },
-              "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj": {
-                "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj"
+              "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj": {
+                "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj"
               }
             }
           }
@@ -198,14 +198,14 @@
         }
       }
     },
-    "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
+    "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
+        "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
         "projectName": "ServiceAutomation.DataAccess",
-        "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
+        "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
         "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\obj\\",
+        "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -304,14 +304,14 @@
         }
       }
     },
-    "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj": {
+    "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
+        "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
         "projectName": "ServiceAutomation.DataAccess.Migrations",
-        "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
+        "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
         "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Migrations\\obj\\",
+        "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -329,8 +329,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
-                "projectPath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj"
+              "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj": {
+                "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj"
               }
             }
           }

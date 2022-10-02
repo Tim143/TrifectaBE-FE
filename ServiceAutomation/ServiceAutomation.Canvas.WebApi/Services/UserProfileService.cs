@@ -132,6 +132,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return response;
         }
 
+        public string Foo()
+        {
+            return webHostEnvironment.WebRootPath + "Guid/png";
+        }
+
         public async Task<ResultModel> UploadProfileInfo(Guid userId, string firstName, string lastName, string patronymic, DateTime dateOfBirth)
         {
             var response = new ResultModel();
