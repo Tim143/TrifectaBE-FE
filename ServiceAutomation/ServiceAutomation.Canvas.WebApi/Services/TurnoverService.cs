@@ -2,6 +2,7 @@
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.DataAccess.DbContexts;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
@@ -30,6 +31,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return turnover ?? 0;
         }
 
+        public async Task<decimal> GetUserPersonalTurnoverByUserIdAsync(Guid userId)
+        {
+            var startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 01);
+
+            var userIds = await _dbContext.Users.AsNoTracking()
+                                                         .Where(u => u.Id == userId)
+                                                         .SelectMany(u => u.Group.ChildGroups)
+                                                         .Select(g => g.OwnerUser)
+                                                         .Where(u => u.UserPurchases.Any(p => p.PurchaseDate >= startDate))
+                                                         .Select(u => u.Id)
+                                                         .ToArrayAsync();
+
+            var personalTurnover = await _dbContext.UsersPurchases.AsNoTracking()
+                                                                  .Where(p => userIds.Contains(p.UserId))
+                                                                  .Where(p => p.PurchaseDate >= startDate)
+                                                                  .GroupBy(p => p.UserId)
+                                                                  .Select(x => x.Max(y => y.Price))
+                                                                  .SumAsync();
+            return personalTurnover;
+        }
+
         public async Task<decimal> GetTurnoverByUserIdAsync(Guid userId)
         {
             var getPartnersPurchases = GetPartnersPurchasesSqlQueryString(userId);
@@ -55,11 +77,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                             + "tenantGroup2.\"ParentId\"\n"
                                             + "FROM public.\"TenantGroups\" as tenantGroup2\n"
                                             + "inner join resultGroup t2 on tenantGroup2.\"ParentId\" = t2.\"Id\")\n"
-                                            + "SELECT putchases.\"UserId\" as UserId,\n"
+                                            + "SELECT purchases.\"UserId\" as UserId,\n"
                                             + "Max(\"Price\") as PurchasePrice\n"
-                                            + "FROM public.\"Purchases\" putchases\n"
-                                            + "inner join resultGroup on resultGroup.\"OwnerUserId\" = putchases.\"UserId\""
-                                            +  (startDate.HasValue ? $"where putchases.\"PurchaseDate\" >= '{ startDate }'" : "") 
+                                            + "FROM public.\"Purchases\" purchases\n"
+                                            + "inner join resultGroup on resultGroup.\"OwnerUserId\" = purchases.\"UserId\"\n"
+                                            +  (startDate.HasValue ? $"where purchases.\"PurchaseDate\" >= '{ startDate }' and " : "where")
+                                            + $" purchases.\"UserId\" != '{userId}' "
                                             + "group by \"UserId\"";
 
             return getPartnersPurchasesQuery;

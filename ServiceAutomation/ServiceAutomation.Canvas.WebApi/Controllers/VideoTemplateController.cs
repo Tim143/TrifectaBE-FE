@@ -11,6 +11,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class VideoTemplateController : ApiBaseController
     {
         private readonly IVideoTemplateService videoTemplateService;
@@ -19,14 +20,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.videoTemplateService = videoTemplateService;
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.VideoTemplate.GetVideos)]
         public async Task<IEnumerable<VideoLessonResponseModel>> GetAllVideoTemplates()
         {
             return await videoTemplateService.GetVideos();
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.VideoTemplate.GetVideo)]
         public async Task<VideoLessonResponseModel> GetVideoTemplate(Guid id)
         {

@@ -16,11 +16,11 @@ namespace ServiceAutomation.Canvas.WebApi.Models
 
         public string PackageType { get; init; }
 
-        public double PersonalTurnover { get; init; }
+        public double PersonalTurnover { get; set; }
 
         public double FirstLineTurnover { get; init; }
 
-        public double GroupTurnover { get; init; }
+        public double GroupTurnover { get; set; }
 
         public int BaseLevel { get; set; }
     }

@@ -14,6 +14,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class WithdrawController : ApiBaseController
     {
         private readonly IWithdrawService withdrawService;
@@ -23,18 +24,22 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.withdrawService = withdrawService;
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Withdraw.GetWithdrawHistory)]
         public async Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default)
         {
             return await withdrawService.GetWithdrawHistory(userId, transactionStatus, period);
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Withdraw.GetAccuralHistory)]
-        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId)
+        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, BonusType bonus = default)
         {
-            return await withdrawService.GetAccuralHistory(userId);
+            return await withdrawService.GetAccuralHistory(userId, transactionStatus, bonus);
+        }
+
+        [HttpPost(Constants.Requests.Withdraw.MakeWithdraw)]
+        public async Task MakeWithdraw([FromBody] WithdrawRequestModel requestModel)
+        {
+            await withdrawService.MakeWithdraw(requestModel.UserId, requestModel.AccuralsId);
         }
     }
 }

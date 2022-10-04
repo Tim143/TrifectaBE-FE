@@ -11,6 +11,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class PackagesController : ApiBaseController
     {
         private readonly IPackagesService packagesService;
@@ -22,14 +23,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.purchaseService = purchaseService;
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Package.GetPackages)]
         public async Task<IEnumerable<PackageModel>> GetPackagesAsync()
         {
             return await packagesService.GetPackagesAsync();
         }
 
-        [Authorize]
         [HttpPost(Constants.Requests.Package.BuyPackage)]
         public async Task<IActionResult> BuyPackageAsync([FromBody] BuyPackageRequestModel buyPackageRequest)
         {
@@ -47,11 +46,10 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Package.GetUserPackage)]
         public async Task<PackageModel> GetUserPackageAsync(Guid userId)
         {
-            return await packagesService.GetUserPackageAsync(userId);
+            return await packagesService.GetUserPackageByIdAsync(userId);
         }
 
     }

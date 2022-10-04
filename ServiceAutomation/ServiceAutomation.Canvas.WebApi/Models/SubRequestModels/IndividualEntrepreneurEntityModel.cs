@@ -1,4 +1,5 @@
-﻿using ServiceAutomation.DataAccess.Models.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 
 namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
@@ -30,6 +31,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
         public string HouseNumber { get; set; }
         public string Location { get; set; }
         public string RoomNumber { get; set; }
+        public IFormFile VerificationData { get; set; }
         public TypeOfEmployment TypeOfEmployment = TypeOfEmployment.IndividualEntrepreneur;
     }
 }

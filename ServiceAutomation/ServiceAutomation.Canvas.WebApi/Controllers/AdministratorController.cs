@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using System;
@@ -8,6 +9,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "Admin")]
     public class AdministratorController : ApiBaseController
     {
         private readonly IAdministratorService administratorService;
@@ -50,6 +52,24 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         public async Task RejectUserContactVerification(Guid requestId, Guid userId)
         {
             await administratorService.RejectContactVerificationRequest(requestId, userId);
+        }
+
+        [HttpGet(Constants.Requests.Administrator.GetWithdrawRequestList)]
+        public async Task<IActionResult> GetWithdrawRequestList()
+        {
+            return Ok(await administratorService.GetWitdrawRequests());
+        }
+
+        [HttpPost(Constants.Requests.Administrator.AcceptUserWithdraw)]
+        public async Task AcceptUserWithdraw(Guid requestId)
+        {
+            await administratorService.AccepWitdrawRequest(requestId);
+        }
+
+        [HttpPost(Constants.Requests.Administrator.RejectUserWithdraw)]
+        public async Task RejectUserWithdraw(Guid requestId)
+        {
+            await administratorService.RejectWitdrawRequest(requestId);
         }
     }
 }

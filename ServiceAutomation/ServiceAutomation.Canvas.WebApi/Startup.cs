@@ -17,6 +17,7 @@ using ServiceAutomation.DataAccess.DbContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi
@@ -56,6 +57,15 @@ namespace ServiceAutomation.Canvas.WebApi
                     };
                 });
 
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("Admin", policy => {
+                    policy.RequireClaim("Role", "Admin");
+                });
+                opts.AddPolicy("User", policy => {
+                    policy.RequireClaim("Role", "User");
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -75,13 +85,13 @@ namespace ServiceAutomation.Canvas.WebApi
                         new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
-                            {                      
+                            {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
                         },
                         new string[] { }
-                    }           
+                    }
                 });
             });
 
@@ -94,10 +104,10 @@ namespace ServiceAutomation.Canvas.WebApi
             });
         }
 
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
-            if (env.IsProduction() || env.IsDevelopment() || env.IsStaging())
+            if (env.IsProduction() || env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();

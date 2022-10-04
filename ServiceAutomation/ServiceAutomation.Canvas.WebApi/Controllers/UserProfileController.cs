@@ -22,14 +22,13 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.UserProfile.GetProfileInfo)]
         public async Task<UserProfileResponseModel> GetProfileInfo(Guid userId)
         {
             return await userProfileService.GetUserInfo(userId);
         }
 
-        [Authorize]
+        [Authorize(Policy = "User")]
         [HttpPost(Constants.Requests.UserProfile.UploadProfilePhoto)]
         public async Task<IActionResult> UploadProfilePhoto([FromForm] UploadProfilePhotoRequestModel requestModel)
         {
@@ -45,7 +44,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Policy = "User")]
         [HttpPost(Constants.Requests.UserProfile.UploadProfileInfo)]
         public async Task<IActionResult> UploadProfileInfo([FromBody] UploadUserProfileRequestModel requestModel)
         {
@@ -59,7 +58,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Policy = "User")]
         [HttpPost(Constants.Requests.UserProfile.ChangePassword)]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestModel requestModel)
         {
@@ -78,7 +77,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Policy = "User")]
         [HttpPost(Constants.Requests.UserProfile.UploadPhoneNumber)]
         public async Task<IActionResult> UploadPhoneNumber([FromBody] ChangePhoneNumberRequestModel requestModel)
         {
@@ -92,7 +91,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Policy = "User")]
         [HttpPost(Constants.Requests.UserProfile.ChangeEmailAdress)]
         public async Task<IActionResult> ChangeEmailAdress([FromBody] ChangeEmailRequestModel requestModel)
         {
@@ -104,12 +103,6 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             }
 
             return Ok();
-        }
-
-        [HttpGet("Getpath")]
-        public async Task<IActionResult> GetPath()
-        {
-            return Ok(userProfileService.Foo());
         }
     }
 }

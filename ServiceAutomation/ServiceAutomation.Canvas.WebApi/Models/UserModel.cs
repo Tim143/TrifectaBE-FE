@@ -12,6 +12,7 @@ namespace ServiceAutomation.Common.Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string InviteCode { get; set; }
+        public string Role { get; set; }
         public Guid GroupId { get; set; }
         public Country Country { get; set; }
         public bool IsVeriveid { get; set; }

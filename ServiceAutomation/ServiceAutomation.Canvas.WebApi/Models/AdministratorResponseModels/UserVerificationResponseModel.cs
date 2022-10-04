@@ -17,5 +17,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.AdministratorResponseModels
         public string UNP { get; set; }
         public string RegistrationAuthority { get; set; }
         public string CertificateNumber { get; set; }
+        public string VerivicationPhoto { get; set; }
     }
 }

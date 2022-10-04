@@ -14,6 +14,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class UserDocumentController : ApiBaseController
     {
         private readonly IDocumentVerificationService verificationService;
@@ -23,7 +24,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.verificationService = verificationService;
         }
 
-        [Authorize]
+        
         [HttpPost(Constants.Requests.UserDocument.SendDataForVerification)]
         public async Task<IActionResult> SendDataForVerification([FromBody] DocumentVerificationRequestModel requestModel)
         {
@@ -37,7 +38,19 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        [HttpPost(Constants.Requests.UserDocument.SendPhotoForVerification)]
+        public async Task<IActionResult> SendPhotoForVerification([FromForm] UploadProfilePhotoRequestModel requestModel)
+        {
+            var response = await verificationService.SendUserVerificationPhoto(requestModel.ProfilePhoto, requestModel.UserId);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response);
+        }
+
         [HttpGet(Constants.Requests.UserDocument.GetVerifiedData)]
         public async Task<IActionResult> GetVerifiedData(Guid userId)
         {

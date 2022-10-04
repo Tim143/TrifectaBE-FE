@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4stOhQkOBJv/PLtGmSb5de2wIlCPbX7pZj4buZksHUOL8TNXnB5DnL48/EFW+kS1Tqb2a2k/Z+c25Cs1smRV5A==",
+  "dgSpecHash": "5xQYrXT4jh/xNgM5hCe7y2YfxfShF2KsGyhDA24ytpt0eKfVieS87YBqqbbp/8EVaQgd44gvFQrgB3W+e2u+gw==",
   "success": true,
-  "projectFilePath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
+  "projectFilePath": "D:\\MyProjects\\OutOfWork\\core-service\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

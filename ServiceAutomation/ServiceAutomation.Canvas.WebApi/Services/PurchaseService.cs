@@ -5,6 +5,7 @@ using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using ServiceAutomation.DataAccess.Schemas.Enums;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
@@ -14,53 +15,53 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly AppDbContext _dbContext;
         private readonly IPackagesService _packagesService;
         private readonly ILevelCalculationService _levelCalculationService;
+        private readonly IRewardAccrualService _rewardAccrualService;
 
-        public PurchaseService(AppDbContext dbContext, IPackagesService packagesService, ILevelCalculationService levelCalculationService)
+        public PurchaseService(AppDbContext dbContext,
+                              IPackagesService packagesService,
+                              ILevelCalculationService levelCalculationService,
+                              IRewardAccrualService rewardAccrualService)
         {
             _dbContext = dbContext;
             _packagesService = packagesService;
             _levelCalculationService = levelCalculationService;
+            _rewardAccrualService = rewardAccrualService;
         }
 
         public async Task BuyPackageAsync(PackageModel package, Guid userId)
         {
-            var currentUserPackage = await _packagesService.GetUserPackageAsync(userId);
-
+            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
             if (currentUserPackage != null && currentUserPackage.Price > package.Price)
             {
                 throw new Exception("The purchased package must be larger than the current one!");
             }
 
-            var purchase = new PurchaseEntity
-            {
-                UserId = userId,
-                PackageId = package.Id,
-                Price = package.Price,
-                PurchaseDate = DateTime.Now
-            };
-
-            await _dbContext.UsersPurchases.AddAsync(purchase);
-            await _dbContext.SaveChangesAsync();
-
-            await _levelCalculationService.СalculateParentPartnersLevelsAsync(userId);
+            await AddNewPurchaseAsync(package, userId);
         }
 
         public async Task BuyPackageByPackageTypeAsync(PackageType packageType, Guid userId)
         {
-            var purchasedPackage = await _dbContext.Packages.AsNoTracking().FirstOrDefaultAsync(p => p.Type == packageType);
-
-            var currentUserPackage = await _packagesService.GetUserPackageAsync(userId);
+            var purchasedPackage = await _packagesService.GetPackageByTypeAsync(packageType);
+            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
 
             if (currentUserPackage != null && currentUserPackage.Price > purchasedPackage.Price)
             {
                 throw new Exception("The purchased package must be larger than the current one!");
             }
 
+            await AddNewPurchaseAsync(purchasedPackage, userId);
+        }    
+       
+
+        private async Task AddNewPurchaseAsync(PackageModel package, Guid userId)
+        {
+            var purchasePrice = package.Price;
+
             var purchase = new PurchaseEntity
             {
                 UserId = userId,
-                PackageId = purchasedPackage.Id,
-                Price = purchasedPackage.Price,
+                PackageId = package.Id,
+                Price = purchasePrice,
                 PurchaseDate = DateTime.Now
             };
 
@@ -68,6 +69,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.SaveChangesAsync();
 
             await _levelCalculationService.СalculateParentPartnersLevelsAsync(userId);
+
+            var inviteReferral = await _dbContext.Users.AsNoTracking()
+                                           .Where(u => u.Id == userId)
+                                           .Select(u => u.InviteReferral)
+                                           .FirstOrDefaultAsync();
+            if (inviteReferral == null)
+                return;
+
+            var referralUserId = await _dbContext.Users.AsNoTracking()
+                                                       .Where(u => u.PersonalReferral == inviteReferral)
+                                                       .Select(u => u.Id)
+                                                       .FirstOrDefaultAsync();
+
+            await _rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, userId, purchasePrice);
         }
     }
 }

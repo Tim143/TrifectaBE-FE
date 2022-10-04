@@ -11,5 +11,7 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<decimal> GetMonthlyTurnoverByUserIdAsync(Guid userId);
 
         Task<decimal> GetTurnoverByUserIdAsync(Guid userId);
+
+        Task<decimal> GetUserPersonalTurnoverByUserIdAsync(Guid userId);
     }
 }

@@ -9,6 +9,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class ProgressController : ControllerBase
     {
         private readonly IUserProgressService progressService;
@@ -18,7 +19,6 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.progressService = progressService;
         }
 
-        //[Authorize]
         [HttpGet(Constants.Requests.Progress.GetUserProgress)]
         public async Task<IActionResult> GetUserProgress(Guid userId)
         {

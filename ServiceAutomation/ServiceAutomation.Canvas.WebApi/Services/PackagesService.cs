@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.DataAccess.DbContexts;
+using ServiceAutomation.DataAccess.Schemas.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return mapper.Map<PackageModel>(package);
         }
 
+        public async Task<PackageModel> GetPackageByTypeAsync(PackageType packageType)
+        {
+            var package = await dbContext.Packages.FirstAsync(x => x.Type == packageType);
+            return mapper.Map<PackageModel>(package);
+        }
+
         public async Task<IEnumerable<PackageModel>> GetPackagesAsync()
         {
             var packagesEntities = await dbContext.Packages
@@ -38,19 +45,29 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return packagesEntities.Select(x => mapper.Map<PackageModel>(x));
         }
 
-        public async Task<PackageModel> GetUserPackageAsync(Guid userId)
+        public async Task<UserPackageModel> GetUserPackageByIdAsync(Guid userId)
         {
-            var package = await dbContext.UsersPurchases
+            var purchaseInfo = await dbContext.UsersPurchases
                                 .AsNoTracking()
                                 .Where(x => x.UserId == userId)
                                 .OrderByDescending(x => x.PurchaseDate)
                                 .Include(x=> x.Package)
                                 .ThenInclude(x => x.PackageBonuses)
                                 .ThenInclude(x => x.Bonus)
-                                .Select(x => x.Package)                                
+                                .Select(x => new
+                                {
+                                    Package = x.Package,
+                                    PurchaseDate = x.PurchaseDate
+                                })                                
                                 .FirstOrDefaultAsync();
 
-            return mapper.Map<PackageModel>(package);
+            if (purchaseInfo == null)
+                return null;
+
+            var userPackage = mapper.Map<UserPackageModel>(purchaseInfo.Package);
+            userPackage.PurchaseDate = purchaseInfo.PurchaseDate;
+
+            return userPackage;
         }
 
     }

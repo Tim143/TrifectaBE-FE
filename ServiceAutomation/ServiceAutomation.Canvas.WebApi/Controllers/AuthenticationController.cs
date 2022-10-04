@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Constants;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
+using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -30,7 +33,14 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid");
+                return Ok(new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        "Неправильно введены данные"
+                    }
+                });
             }
 
             var response = await authProvider.AuthenticateAsync(requestModel);
@@ -38,13 +48,6 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok(response);
         }
 
-        [Authorize]
-        [HttpPost(Requests.User.GetUserId)]
-        public async Task<IActionResult> GetUserId()
-        {
-            var userId = GetCurrentUserId();
-            return Ok(userId);
-        }
 
         [AllowAnonymous]
         [HttpPost(Requests.User.Refresh)]
@@ -52,7 +55,14 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return Ok(new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        "Неверная модель"
+                    }
+                });
             }
 
             return Ok(await authProvider.RefreshAsync(requestModel));
@@ -64,12 +74,39 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             if(requestModel.Password.ToLower() != requestModel.ConfirmPassword.ToLower())
             {
-                return BadRequest("Passwords are not the same");
+                return Ok(new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        "Пароли не совпадают"
+                    }
+                });
+            }
+
+
+            if (!await userManager.IsReferraValidAsync(requestModel.ReferralCode))
+            {
+                return Ok(new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        "Неверный реферальный код"
+                    }
+                });
             }
 
             if (await userManager.IsUserAlreadyExistsAsync(requestModel.Email))
             {
-                return BadRequest("User already exists");
+                return Ok(new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        "Такой пользователь уже существует"
+                    }
+                });
             }
 
             var response = await authProvider.RegisterAsync(requestModel);

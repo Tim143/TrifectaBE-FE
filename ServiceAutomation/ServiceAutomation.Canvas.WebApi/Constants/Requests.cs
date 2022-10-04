@@ -35,7 +35,7 @@
         {
             public const string GetWithdrawHistory = "GetWithdrawHistory";
             public const string GetAccuralHistory = "GetAccuralHistory";
-            public const string MakeWithdraw = "Withdraw";
+            public const string MakeWithdraw = "MakeWithdraw";
         }
 
         public static class Structure
@@ -66,6 +66,7 @@
         public static class UserDocument
         {
             public const string SendDataForVerification = "SendDataForVerification";
+            public const string SendPhotoForVerification = "SendPhotoForVerification";
             public const string GetVerifiedData = "GetVerifiedData";
         }
 
@@ -84,9 +85,9 @@
             public const string AcceptUserContactVerification = "AcceptUserContactVerification";
             public const string RejectUserContactVerification = "RejectUserContactVerification";
 
-            //public const string GetUserContactsVerivicationList = "GetUserContactsVerivicationList";
-            //public const string AcceptUserContactVerification = "AcceptUserContactVerification";
-            //public const string RejectUserContactVerification = "RejectUserContactVerification";
+            public const string GetWithdrawRequestList = "GetWithdrawRequestList";
+            public const string AcceptUserWithdraw = "AcceptUserWithdraw";
+            public const string RejectUserWithdraw = "RejectUserWithdraw";
         }
     }
 }

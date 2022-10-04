@@ -16,5 +16,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         public string PackageName { get; set; }
         public Guid PackageId { get; set; }
         public string Level { get; set; }
+        public string Role { get; set; }
     }
 }

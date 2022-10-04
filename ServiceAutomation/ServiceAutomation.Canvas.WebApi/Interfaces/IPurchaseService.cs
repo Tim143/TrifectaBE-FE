@@ -10,5 +10,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task BuyPackageAsync(PackageModel package, Guid userId);
 
         Task BuyPackageByPackageTypeAsync(PackageType packageType, Guid userId);
+
     }
 }

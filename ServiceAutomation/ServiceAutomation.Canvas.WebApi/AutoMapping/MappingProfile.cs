@@ -25,7 +25,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
 
             CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>()
-                .ForMember(x => x.CardCode, opt => opt.MapFrom(x => x.Credential.IBAN))
+                .ForMember(x => x.CardCode, opt => opt.MapFrom(x => x.CheckingAccount))
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => x.TransactionStatus.ToString()))
                 .ForMember(x => x.Amount, opt => opt.MapFrom(x => x.Value))
                 .ForMember(x => x.DateTime, opt => opt.MapFrom(x => x.Date));
@@ -49,11 +49,20 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<PackageEntity, PackageModel>()
                 .ForMember(x => x.Bonuses, opt => opt.MapFrom(x => x.PackageBonuses.OrderBy(pb => pb.Bonus.DisplayOrder)));
 
+            CreateMap<PackageEntity, UserPackageModel>()
+                .ForMember(x => x.Bonuses, opt => opt.MapFrom(x => x.PackageBonuses.OrderBy(pb => pb.Bonus.DisplayOrder)));
+
             CreateMap<IndividualUserOrganizationDataEntity, IndividualEntityDataResponseModel>();
             CreateMap<IndividualEntrepreneurUserOrganizationDataEntity, IndividualEntrepreneurEntityDataResponseModel>();
             CreateMap<LegalUserOrganizationDataEntity, LegalEntityDataResponseModel>();
 
             CreateMap<AccrualsEntity, AccuralResponseModel>()
+                .ForMember(x => x.AccuralName, opt => opt.MapFrom(x => $"Начисление {x.Bonus.Name}"))
+                .ForMember(x => x.ReferralName, opt => opt.MapFrom(x => x.ForWhom.Email))
+                .ForMember(x => x.AccuralPercent, opt => opt.MapFrom(x => x.AccuralPercent))
+                .ForMember(x => x.InitialAmount, opt => opt.MapFrom(x => x.InitialAmount))
+                .ForMember(x => x.AccuralAmount, opt => opt.MapFrom(x => x.AccuralAmount))
+                .ForMember(x => x.AccuralDate, opt => opt.MapFrom(x => x.AccuralDate))
                 .ForMember(x => x.TransactionStatus, opt => opt.MapFrom(x => x.TransactionStatus.ToString()));
 
             CreateMap<LevelEntity, LevelModel>()
@@ -68,6 +77,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.BaseOrganization, opt => opt.MapFrom(x => x.BaseOrganization))
                 .ForMember(x => x.UNP, opt => opt.MapFrom(x => x.UNP))
                 .ForMember(x => x.RegistrationAuthority, opt => opt.MapFrom(x => x.RegistrationAuthority))
+                .ForMember(x => x.VerivicationPhoto, opt => opt.MapFrom(x => x.VerificationPhotoPath))
                 .ForMember(x => x.CertificateNumber, opt => opt.MapFrom(x => x.CertificateNumber));
 
             CreateMap<IndividualEntrepreneurUserOrganizationDataEntity, UserVerificationResponseModel>()
@@ -79,6 +89,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.BaseOrganization, opt => opt.MapFrom(x => x.BaseOrganization))
                 .ForMember(x => x.UNP, opt => opt.MapFrom(x => x.UNP))
                 .ForMember(x => x.RegistrationAuthority, opt => opt.MapFrom(x => x.RegistrationAuthority))
+                .ForMember(x => x.VerivicationPhoto, opt => opt.MapFrom(x => x.VerificationPhotoPath))
                 .ForMember(x => x.CertificateNumber, opt => opt.MapFrom(x => x.CertificateNumber));
 
             CreateMap<LegalUserOrganizationDataEntity, UserVerificationResponseModel>()
@@ -96,6 +107,12 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.PhoneNumber))
                 .ForMember(x => x.ContactVerificationType, opt => opt.MapFrom(x => x.VerificationType.ToString()))
                 .ForMember(x => x.NewData, opt => opt.MapFrom(x => x.NewData));
+
+            CreateMap<UserAccuralsVerificationEntity, WithdrawVerifictionResponseModel>()
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.User.FirstName))
+                .ForMember(x => x.Surname, opt => opt.MapFrom(x => x.User.LastName))
+                .ForMember(x => x.Email, opt => opt.MapFrom(x => x.User.Email))
+                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.PhoneNumber));
         }
     }
 }

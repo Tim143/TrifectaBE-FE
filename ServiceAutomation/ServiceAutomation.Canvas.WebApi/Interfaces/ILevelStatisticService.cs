@@ -1,16 +1,25 @@
-﻿using System;
+﻿using ServiceAutomation.Canvas.WebApi.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface ILevelStatisticService
     {
-        Task AddNewUserMonthlyLevelRecordAsync(Guid userId, Guid newLevelId, decimal currentMonthlyTurnover);
+        Task<LevelModel> GetMonthlyLevelByUserIdAsync(Guid userId);
 
-        Task UpdateUserMonthlyLevelTurnoverAsync(Guid userId, Guid ForLevelId, decimal newMonthTurnover);
+        Task<LevelInfoModel> GetMonthlyLevelInfoByUserIdAsync(Guid userId);
 
-        Task AddNewUserBasicLevelRecordAsync(Guid userId, Guid newLevelId, decimal currentTurnover);
+        Task<LevelInfoModel> GetBasicLevelInfoByUserIdAsync(Guid userId);
 
-        Task UpdateUserBasicLevelTurnoverAsync(Guid userId, Guid ForLevelId, decimal newTurnover);
+        Task AddMonthlyLevelInfoAsync(Guid userId, Guid newLevelId, decimal currentMonthlyTurnover);
+
+        Task UpdateMonthlyLevelInfoAsync(Guid userId, Guid levelId, decimal newMonthTurnover);
+
+        Task AddBasicLevelInfoAsync(Guid userId, Guid newLevelId, decimal currentTurnover);
+
+        Task UpdateBasicLevelInfoAsync(Guid userId, Guid ForLevelId, decimal newTurnover);
+
+        Task AddLevelsInfoForNewUserAsync(Guid userId);
     }
 }

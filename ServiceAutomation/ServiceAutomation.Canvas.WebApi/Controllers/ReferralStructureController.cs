@@ -8,6 +8,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class ReferralStructureController : ApiBaseController
     {
         private readonly ITenantGroupService groupService;
@@ -17,14 +18,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.groupService = groupService;
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Structure.GetTree)]
         public async Task<IActionResult> GetTree(Guid userId)
         {
             return Ok(await groupService.GetReferralTree(userId));
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Structure.GetUserReferralGroup)]
         public async Task<IActionResult> GetUserRefferalGroupAsync()
         {
@@ -32,14 +31,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok(await groupService.GetReferralGroupByUserIdAsync(userId));
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Structure.GetReferralGroup)]
         public async Task<IActionResult> GetRefferalGroupAsync(Guid groupId)
         {
             return Ok(await groupService.GetReferralGroupAsync(groupId));
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Structure.GetPartnersReferralGroups)]
         public async Task<IActionResult> GetPartnersRefferalGroupaAsync(Guid groupId)
         {

@@ -171,6 +171,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 new Claim(ClaimTypes.Name, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
+                new Claim("Role", user.Role)
             };
 
             var token = new JwtSecurityToken(

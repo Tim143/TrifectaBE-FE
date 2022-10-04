@@ -18,18 +18,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IIdentityGenerator identityGenerator;
         private readonly IUserReferralService userReferralService;
         private readonly ITenantGroupService tenantGroupService;
+        private readonly ILevelStatisticService levelStatisticService;
 
         public UserManager(AppDbContext dbContext,
                             IMapper mapper,
                             IIdentityGenerator identityGenerator,
                             IUserReferralService userReferralService,
-                            ITenantGroupService tenantGroupService)
+                            ITenantGroupService tenantGroupService,
+                            ILevelStatisticService levelStatisticService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.identityGenerator = identityGenerator;
             this.userReferralService = userReferralService;
             this.tenantGroupService = tenantGroupService;
+            this.levelStatisticService = levelStatisticService;
         }
 
         public async Task<UserModel> AddUserAsync(UserModel user)
@@ -49,7 +52,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
                 BasicLevel = firstBasicLevel,
-                IsVerifiedUser = false
+                IsVerifiedUser = false,
+                Role = "User"
             };
 
 
@@ -57,8 +61,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await dbContext.SaveChangesAsync();
 
             var userModel = mapper.Map<UserModel>(addedUser);
-
+            
             await tenantGroupService.CreateTenantGroupForUserAsync(userModel);
+            await levelStatisticService.AddLevelsInfoForNewUserAsync(addedUser.Id);
 
             await dbContext.SaveChangesAsync();
 
@@ -87,6 +92,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
 
             return mapper.Map<UserModel>(user);
+        }
+
+        public async Task<bool> IsReferraValidAsync(string referralCode)
+        {
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.PersonalReferral == referralCode);
+
+            if(user != null)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> IsUserAlreadyExistsAsync(string email)

@@ -57,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\DocumentVerification\Verifications\" />
     <Folder Include="wwwroot\ProfilePhotos\" />
   </ItemGroup>
 </Project>

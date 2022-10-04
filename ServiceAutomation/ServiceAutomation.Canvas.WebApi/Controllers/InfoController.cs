@@ -12,6 +12,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class InfoController : ApiBaseController
     {
         private readonly IInfoService infoService;
@@ -21,14 +22,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.infoService = infoService;
         }
 
-        [Authorize]
         [HttpGet(Requests.Info.GetThumbnails)]
         public async Task<IEnumerable<ThumbnailResponseModel>> GetThumbnails()
         {
             return await infoService.GetThumbnails();
         }
 
-        [Authorize]
         [HttpGet(Requests.Info.GetThumbnailById)]
         public async Task<ThumbnailResponseModel> GetThumbnail(Guid id)
         {
