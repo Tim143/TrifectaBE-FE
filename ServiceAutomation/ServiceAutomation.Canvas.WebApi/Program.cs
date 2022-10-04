@@ -25,7 +25,7 @@ namespace ServiceAutomation.Canvas.WebApi
                 .ConfigureKestrel(a =>
                 {
                     a.AddServerHeader = false;
-                }).UseUrls("http://*:5000");
+                }).UseUrls("https://*:5000");
 
             return builder;
         }
