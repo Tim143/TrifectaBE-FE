@@ -12,10 +12,10 @@ namespace ServiceAutomation.DataAccess.DbModelConfigurations
 
             builder.ToTable(WithdrawTransactionEntityDBConstants.TableName);
 
-            builder.HasOne(x => x.Credential)
-                .WithMany(x => x.WithdrawTransactions)
-                .HasForeignKey(x => x.CredentialId)
-                .IsRequired();
+           // builder.HasOne(x => x.Credential)
+                //.WithMany(x => x.WithdrawTransactions)
+                //.HasForeignKey(x => x.CredentialId)
+               // .IsRequired();
         }
     }
 

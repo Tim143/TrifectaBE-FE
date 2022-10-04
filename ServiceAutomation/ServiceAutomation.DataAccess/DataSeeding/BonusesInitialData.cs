@@ -15,18 +15,21 @@ namespace ServiceAutomation.DataAccess.DataSeeding
             { BonusType.LevelBonus , new Guid("511485d7-7a50-482f-ddb0-dd2b34aeacef")},
             { BonusType.AutoBonus , new Guid("00f35f8c-603d-13fa-3f23-49149d37f9be")},
             { BonusType.BunBonus , new Guid("556ecfc1-f1ae-feba-82d7-d91088cd8de2")},
-            { BonusType.BonusOverall, new Guid("306968a4-46f4-c5a8-ee39-39a77fd71002")}
+            { BonusType.BonusOverall, new Guid("306968a4-46f4-c5a8-ee39-39a77fd71002")},
+            { BonusType.StartBonus, new Guid("f7d833f0-3fd2-96a7-b11e-a1d849f5e3af")}
         };
 
         public static BonusEntity[] BonusSeeds = new BonusEntity[]
         {
-            new BonusEntity {Id = BonusesIdsByType[BonusType.TeamBonus], Name="Team Bonus", Type = BonusType.TeamBonus, DisplayOrder = 1 },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.DynamicBonus], Name="Dynamic Bonus", Type = BonusType.DynamicBonus, DisplayOrder = 3 },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.TravelBonus], Name="Travel Bonus", Type = BonusType.TravelBonus, DisplayOrder = 5 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.TeamBonus], Name="Team Bonus", Type = BonusType.TeamBonus, DisplayOrder = 1 },            
             new BonusEntity {Id = BonusesIdsByType[BonusType.LevelBonus], Name="Level Bonus", Type = BonusType.LevelBonus, DisplayOrder = 2 },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.AutoBonus], Name="Auto Bonus", Type = BonusType.AutoBonus, DisplayOrder = 4 },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.BunBonus], Name="Bun Bonus", Type = BonusType.BunBonus, DisplayOrder = 6 },
-            new BonusEntity {Id = BonusesIdsByType[BonusType.BonusOverall], Name="Bonus Overall", Type = BonusType.BonusOverall, DisplayOrder = 7 }
+            new BonusEntity {Id = BonusesIdsByType[BonusType.StartBonus], Name="Start Bonus", Type = BonusType.StartBonus, DisplayOrder = 3 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.DynamicBonus], Name="Dynamic Bonus", Type = BonusType.DynamicBonus, DisplayOrder = 4 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.AutoBonus], Name="Auto Bonus", Type = BonusType.AutoBonus, DisplayOrder = 5 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.TravelBonus], Name="Travel Bonus", Type = BonusType.TravelBonus, DisplayOrder = 6 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.BunBonus], Name="Bun Bonus", Type = BonusType.BunBonus, DisplayOrder = 7 },
+            new BonusEntity {Id = BonusesIdsByType[BonusType.BonusOverall], Name="Bonus Overall", Type = BonusType.BonusOverall, DisplayOrder = 8 },
+            
         };
     }
 }

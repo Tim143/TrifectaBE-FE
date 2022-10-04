@@ -28,7 +28,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
-            var firstbasicLevel = BasicLevelsEnitialData.BasicLevelIdsByType[Level.FirstLevel];
+            var firstbasicLevel = BasicLevelsInitialData.BasicLevelIdsByType[Level.FirstLevel];
             migrationBuilder.Sql($"update public.\"Users\" set \"BasicLevelId\" = '{firstbasicLevel}'");
         }
 

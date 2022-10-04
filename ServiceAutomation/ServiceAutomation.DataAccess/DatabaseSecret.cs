@@ -24,7 +24,7 @@ namespace ServiceAutomation.DataAccess
         //private string port = "5432";
         //private string username = "postgres";
         //private string password = "652431";
-        //private string database = "TrifectaDev2"; //TrifectaProd - prod DB Name
+        //private string database = "TrifectaDev4"; //TrifectaProd - prod DB Name
         //private string minPool = "1";
 
         public string GetConnectionString()

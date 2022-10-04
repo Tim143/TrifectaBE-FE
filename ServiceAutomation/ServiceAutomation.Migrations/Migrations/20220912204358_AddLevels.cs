@@ -80,7 +80,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
         private void FillBasicLevelsTable(MigrationBuilder migrationBuilder)
         {
-            var basicLevels = BasicLevelsEnitialData.BasicLevelSeeds;
+            var basicLevels = BasicLevelsInitialData.BasicLevelSeeds;
             foreach (var basicLevel in basicLevels)
             {
                 migrationBuilder.Sql($"insert into public.\"BasicLevels\" (\"Id\", \"Name\", \"Level\", \"Turnover\", \"PartnersCount\", \"PartnersLevelId\") values ('{basicLevel.Id}', '{basicLevel.Name}', {(int)basicLevel.Level}, {(basicLevel.Turnover.HasValue ? basicLevel.Turnover : "Null")}, {(basicLevel.PartnersCount.HasValue ? basicLevel.PartnersCount : "Null")}, {(basicLevel.PartnersLevelId.HasValue ? $"'{basicLevel.PartnersLevelId}'" : "Null")})");

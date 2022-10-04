@@ -8,6 +8,7 @@
         AutoBonus = 4,
         TravelBonus = 5,
         BunBonus = 6,
-        BonusOverall = 7
+        BonusOverall = 7,
+        StartBonus = 8
     }
 }

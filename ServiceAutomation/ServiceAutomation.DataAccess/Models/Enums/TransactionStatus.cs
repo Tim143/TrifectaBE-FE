@@ -10,6 +10,7 @@ namespace ServiceAutomation.DataAccess.Schemas.Enums
     {
         Accept = 1,
         Failed = 2,
-        Pending = 3
+        Pending = 3,
+        ReadyForWithdraw = 4,
     }
 }

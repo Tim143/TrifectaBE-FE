@@ -15,7 +15,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string PersonalReferral { get; set; }
         public string InviteReferral { get; set; }
 
-        //public Role Role { get; set; }
+        public string Role { get; set; }
 
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }

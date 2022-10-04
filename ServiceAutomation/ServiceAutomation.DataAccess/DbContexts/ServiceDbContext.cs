@@ -29,6 +29,16 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<UserContactVerificationEntity> UserContactVerifications { get; set; }
         public virtual DbSet<MonthlyLevelStatisticEntity> MonthlyLevelStatistics { get; set; }
         public virtual DbSet<BasicLevelStatisticEntity> BasicLevelStatistics { get; set; }
+        public virtual DbSet<LevelBonusRewardEntity> LevelBonusRewards { get; set; }
+        public virtual DbSet<LevelBonusRewardPercentEntity> LevelBonusRewardPercents { get; set; }
+        public virtual DbSet<BonusEntity> Bonuses { get; set; }
+        public virtual DbSet<StartBonusRewardEntity> StartBonusRewards { get; set; }
+        public virtual DbSet<DynamicBonusRewardEntity> DynamicBonusRewards { get; set; }
+        public virtual DbSet<UserAccuralsVerificationEntity> UserAccuralsVerifications { get; set; }
+        public virtual DbSet<AutoBonusRewardEntity> AutoBonusRewards { get; set; }
+        public virtual DbSet<TravelBonusRequirementEntity> TravelBonusRequirements { get; set; }
+        public virtual DbSet<TeamBonusRewardEntity> TeamBonusRewards { get; set; }
+        public virtual DbSet<UserVerificationPhotoEntity> UserVerificationPhotos { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -54,6 +64,14 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new UserLevelsInfoEntityConfiguration());
             modelBuilder.ApplyConfiguration(new MonthlyLevelStatisticEntityConfiguration());
             modelBuilder.ApplyConfiguration(new BasicLevelStatisticEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new LevelBonusRewardEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new LevelBonusRewardPercentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AccrualsEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new StartBonusRewardEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicBonusRewardEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AutoBonusRewardEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TravelBonusRequirementEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TeamBonusRewardEntityConfiguration());
         }
     }
 }
