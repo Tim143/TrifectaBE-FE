@@ -54,7 +54,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 BasicLevel = firstBasicLevel,
                 IsVerifiedUser = false,
                 DateOfBirth = user.DateOfBirth,
-                Role = "Admin"
+                Role = "User"
             };
 
 
