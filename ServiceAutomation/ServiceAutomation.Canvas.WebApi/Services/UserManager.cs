@@ -53,7 +53,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PasswordSalt = user.PasswordSalt,
                 BasicLevel = firstBasicLevel,
                 IsVerifiedUser = false,
-                Role = "User"
+                DateOfBirth = user.DateOfBirth,
+                Role = "Admin"
             };
 
 

@@ -81,8 +81,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                             + "Max(\"Price\") as PurchasePrice\n"
                                             + "FROM public.\"Purchases\" purchases\n"
                                             + "inner join resultGroup on resultGroup.\"OwnerUserId\" = purchases.\"UserId\"\n"
-                                            +  (startDate.HasValue ? $"where purchases.\"PurchaseDate\" >= '{ startDate }' and " : "where")
-                                            + $" purchases.\"UserId\" != '{userId}' "
+                                            +  (startDate.HasValue ? $"where purchases.\"PurchaseDate\" >= '{ startDate }' " : "")
+                                            /* $" purchases.\"UserId\" != '{userId}' "*/
                                             + "group by \"UserId\"";
 
             return getPartnersPurchasesQuery;

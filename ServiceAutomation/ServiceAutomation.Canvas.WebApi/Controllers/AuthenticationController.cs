@@ -85,17 +85,17 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             }
 
 
-            if (!await userManager.IsReferraValidAsync(requestModel.ReferralCode))
-            {
-                return Ok(new AuthenticationResult()
-                {
-                    Success = false,
-                    Errors = new List<string>()
-                    {
-                        "Неверный реферальный код"
-                    }
-                });
-            }
+            //if (!await userManager.IsReferraValidAsync(requestModel.ReferralCode))
+            //{
+            //    return Ok(new AuthenticationResult()
+            //    {
+            //        Success = false,
+            //        Errors = new List<string>()
+            //        {
+            //            "Неверный реферальный код"
+            //        }
+            //    });
+            //}
 
             if (await userManager.IsUserAlreadyExistsAsync(requestModel.Email))
             {

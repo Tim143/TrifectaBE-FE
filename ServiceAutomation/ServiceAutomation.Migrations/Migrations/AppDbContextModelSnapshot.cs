@@ -888,6 +888,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<int>("Country")
                         .HasColumnType("integer");
 
+                    b.Property<string>("DateOfBirth")
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
 

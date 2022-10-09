@@ -15,6 +15,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.RequestsModels
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string ReferralCode { get; set; }
+        public string DateOfBirth { get; set; }
         public Country country { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         public string Patronymic { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
         public bool isVerifiedUser { get; set; }
         public string ProfilePhoto { get; set; } 
         public string PersonalReferral { get; set; }

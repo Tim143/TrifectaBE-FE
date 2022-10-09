@@ -11,6 +11,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string Patronymic { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string DateOfBirth { get; set; }
         public Country Country { get; set; }
         public string PersonalReferral { get; set; }
         public string InviteReferral { get; set; }
