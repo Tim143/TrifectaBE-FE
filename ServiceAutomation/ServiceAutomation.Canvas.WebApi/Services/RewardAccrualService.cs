@@ -195,13 +195,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             while (true)
             {
-                var parentUser = await _dbContext.Users.AsNoTracking()
+                var parentGroup = await _dbContext.Users.AsNoTracking()
                                                        .Where(u => u.Id == whoSoldId)
-                                                       .Select(u => u.Group.Parent.OwnerUserId)
-                                                       .FirstAsync();
-                if (parentUser == Guid.Empty)
+                                                       .Select(u => u.Group.Parent)
+                                                       .FirstOrDefaultAsync();
+                if (parentGroup == null)
                     break;
 
+                var parentUser = parentGroup.OwnerUserId;
                 var monthlyLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(parentUser);
                 var basicLevelInfo = await _levelStatisticService.GetBasicLevelInfoByUserIdAsync(parentUser);
 

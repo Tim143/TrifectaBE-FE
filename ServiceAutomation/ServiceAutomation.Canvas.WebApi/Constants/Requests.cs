@@ -88,6 +88,8 @@
             public const string GetWithdrawRequestList = "GetWithdrawRequestList";
             public const string AcceptUserWithdraw = "AcceptUserWithdraw";
             public const string RejectUserWithdraw = "RejectUserWithdraw";
+
+            public const string GetAdminTree = "GetAdminTree";
         }
     }
 }

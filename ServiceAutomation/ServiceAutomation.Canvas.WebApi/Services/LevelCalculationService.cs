@@ -32,6 +32,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             _tenantGroupService = tenantGroupService;
         }
 
+        public async Task СalculateUserLevelsAsync(Guid userId)
+        {
+            var user = await _dbContext.Users.AsNoTracking().Include(u => u.BasicLevel).FirstAsync(u => u.Id == userId);
+            var basicLevels = await _dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
+
+            await СalculateUserBasicLevelsAsync(user, basicLevels);
+            await CalculateUserMonthlyLevelAsync(user);
+        }
+
         public async Task СalculateParentPartnersLevelsAsync(Guid userId)
         {
             var parentUsers = await GetParentUsersAsync(userId);
@@ -45,15 +54,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             foreach (var user in parentUsers)
             {
+                await СalculateUserBasicLevelsAsync(user, basicLevels);
                 await CalculateUserMonthlyLevelAsync(user);
-                await СalculatePartnersBasicLevelsAsync(user, basicLevels);
             }
         }
 
         private async Task CalculateUserMonthlyLevelAsync(UserEntity user)
         {
             var monthlyTurnover = await _turnoverService.GetMonthlyTurnoverByUserIdAsync(user.Id);
-            var earnedMonthlyLevel = await _levelsService.GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover);
+            var earnedMonthlyLevel = await _levelsService.GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover, user.BasicLevel.Level);
 
             var currentLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(user.Id);
 
@@ -69,7 +78,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task СalculatePartnersBasicLevelsAsync(UserEntity user, BasicLevelEntity[] basicLevels)
+        private async Task СalculateUserBasicLevelsAsync(UserEntity user, BasicLevelEntity[] basicLevels)
         {
             var turnover = await _turnoverService.GetTurnoverByUserIdAsync(user.Id);
 
@@ -112,9 +121,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     await _levelStatisticService.UpdateBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
                 }
             }
-
-
-
         }
 
         private async Task<UserEntity[]> GetParentUsersAsync(Guid userId)
@@ -157,7 +163,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                     + "inner join resultGroup parent on parent.\"ParentId\" = parentGroup2.\"Id\")\n"
 
                                     + "SELECT u.\"Id\",\n u.\"FirstName\",\n u.\"LastName\",\n u.\"Email\",\n u.\"Country\",\n u.\"PersonalReferral\",\n"
-                                    + "u.\"InviteReferral\",\n u.\"PasswordHash\",\n u.\"PasswordSalt\",\n"
+                                    + "u.\"InviteReferral\",\n u.\"PasswordHash\",\n u.\"PasswordSalt\", u.\"DateOfBirth\", \n"
                                     + "u.\"IsVerifiedUser\",\n u.\"BasicLevelId\",\n u.\"Patronymic\",\n u.\"PhoneNumber\",\n u.\"Role\" \n"
                                     + "from resultGroup\n"
                                     + "inner join public.\"Users\" as u on u.\"Id\" = resultGroup.\"OwnerUserId\"\n"

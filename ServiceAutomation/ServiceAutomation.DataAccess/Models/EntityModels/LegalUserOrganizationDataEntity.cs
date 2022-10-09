@@ -16,6 +16,10 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string BeneficiaryBankName { get; set; }
         public string CheckingAccount { get; set; }
         public string SWIFT { get; set; }
+        public string Number { get; set; }
+        public string IdentityNumber { get; set; }
+        public string RegistrationAuthority { get; set; }
+        public string CertificateDateIssue { get; set; }
         public string Disctrict { get; set; }
         public string City { get; set; }
         public string Index { get; set; }

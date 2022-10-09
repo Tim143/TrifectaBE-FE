@@ -9,7 +9,7 @@
         public NextBasicLevelRequirementsModel NextBasicLevelRequirements { get; set; }
         public LevelInfoModel MounthlyLevelInfo { get; set; }  
         public string ReuqiredAction { get; set; }
-        public long ReceivedPayoutPercentage {get; set; }
+        public double ReceivedPayoutPercentage {get; set; }
         public PackageModel Package { get; set; }
     }
 }

@@ -13,9 +13,11 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     public class AdministratorController : ApiBaseController
     {
         private readonly IAdministratorService administratorService;
-        public AdministratorController(IAdministratorService administratorService)
+        private readonly ITenantGroupService groupService;
+        public AdministratorController(IAdministratorService administratorService, ITenantGroupService groupService)
         {
             this.administratorService = administratorService;
+            this.groupService = groupService;
         }
 
         [HttpGet(Constants.Requests.Administrator.GetDocumentVerificationList)]
@@ -70,6 +72,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         public async Task RejectUserWithdraw(Guid requestId)
         {
             await administratorService.RejectWitdrawRequest(requestId);
+        }
+
+        [HttpGet(Constants.Requests.Administrator.GetAdminTree)]
+        public async Task<IActionResult> GetTree(Guid userId)
+        {
+            return Ok(await groupService.GetReferralTree(userId));
         }
     }
 }

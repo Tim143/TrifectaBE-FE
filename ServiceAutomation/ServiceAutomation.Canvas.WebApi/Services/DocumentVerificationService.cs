@@ -58,7 +58,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         Index = requestModel.DocumentVerificationModels.PersonalAddressModel.Index,
                         Street = requestModel.DocumentVerificationModels.PersonalAddressModel.Street,
                         HouseNumber = requestModel.DocumentVerificationModels.PersonalAddressModel.HouseNumber,
-                        Flat = requestModel.DocumentVerificationModels.PersonalAddressModel.Flat
+                        Flat = requestModel.DocumentVerificationModels.PersonalAddressModel.Flat,
+                        Number = requestModel.DocumentVerificationModels.PassportDataModel.Number,
+                        IdentityNumber = requestModel.DocumentVerificationModels.PassportDataModel.IdentityNumber,
+                        RegistrationAuthority = requestModel.DocumentVerificationModels.PassportDataModel.RegistrationAuthority,
+                        CertificateDateIssue = requestModel.DocumentVerificationModels.PassportDataModel.CertificateDateIssue,
                     };
 
                     return await SendLegalEntityData(legalEntityModel);
@@ -167,7 +171,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     Index = dataModel.Index,
                     Street = dataModel.Street,
                     HouseNumber = dataModel.HouseNumber,
-                    Flat = dataModel.Flat
+                    Flat = dataModel.Flat,
+                    Number = dataModel.Number,
+                    IdentityNumber = dataModel.IdentityNumber,
+                    CertificateDateIssue = dataModel.CertificateDateIssue,
+                    RegistrationAuthority = dataModel.RegistrationAuthority,
                 };
 
                 try

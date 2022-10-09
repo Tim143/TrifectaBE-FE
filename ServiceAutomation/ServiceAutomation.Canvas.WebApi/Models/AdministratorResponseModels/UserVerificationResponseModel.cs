@@ -12,6 +12,9 @@ namespace ServiceAutomation.Canvas.WebApi.Models.AdministratorResponseModels
         public string PhoneNumber { get; set; }
         public string TypeOfEmployment { get; set; }
         public string SWIFT { get; set; }
+        public string Number { get; set; }
+        public string IdentityNumber { get; set; }
+        public string CertificateDateIssue { get; set; }
         public string CheckingAccount { get; set; }
         public string BaseOrganization { get; set; }
         public string UNP { get; set; }

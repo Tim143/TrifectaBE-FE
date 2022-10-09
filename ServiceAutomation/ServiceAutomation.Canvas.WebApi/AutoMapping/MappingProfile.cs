@@ -96,7 +96,10 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.RequestId, opt => opt.MapFrom(x => x.Id))
                 .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.UserId))
                .ForMember(x => x.SWIFT, opt => opt.MapFrom(x => x.SWIFT))
-               .ForMember(x => x.CheckingAccount, opt => opt.MapFrom(x => x.CheckingAccount));
+                .ForMember(x => x.Number, opt => opt.MapFrom(x => x.Number))
+                .ForMember(x => x.IdentityNumber, opt => opt.MapFrom(x => x.IdentityNumber))
+               .ForMember(x => x.RegistrationAuthority, opt => opt.MapFrom(x => x.RegistrationAuthority))
+               .ForMember(x => x.CertificateDateIssue, opt => opt.MapFrom(x => x.CertificateDateIssue));
 
             CreateMap<UserContactVerificationEntity, UserContactsVerificationResponseModel>()
                 .ForMember(x => x.RequestId, opt => opt.MapFrom(x => x.Id))

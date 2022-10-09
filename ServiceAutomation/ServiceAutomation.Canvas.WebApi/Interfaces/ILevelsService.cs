@@ -11,7 +11,7 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 
         Task<LevelModel> GetNextMonthlyLevelAsync(int level);
 
-        Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover);
+        Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover, Level basicLevel);
 
     }
 }

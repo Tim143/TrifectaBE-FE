@@ -150,12 +150,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     .Include(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.Id == result1[i].UserId);
 
+                var legalUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result1[i].UserId);
+
                 if (itemExtraData != null)
                 {
                     result1[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result1[i].Email = itemExtraData?.Email;
                     result1[i].PhoneNumber = itemExtraData?.PhoneNumber;
                     result1[i].TypeOfEmployment = itemExtraData?.UserAccountOrganization.TypeOfEmployment.ToString();
+                    result1[i].VerivicationPhoto = legalUsersPhoto.FullPath;
+                }
+
+                if (legalUsersPhoto != null)
+                {
+                    result1[i].VerivicationPhoto = legalUsersPhoto.FullPath;
                 }
             }
 

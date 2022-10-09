@@ -434,6 +434,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("BeneficiaryBankName")
                         .HasColumnType("text");
 
+                    b.Property<string>("CertificateDateIssue")
+                        .HasColumnType("text");
+
                     b.Property<string>("CheckingAccount")
                         .HasColumnType("text");
 
@@ -449,6 +452,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("HouseNumber")
                         .HasColumnType("text");
 
+                    b.Property<string>("IdentityNumber")
+                        .HasColumnType("text");
+
                     b.Property<string>("Index")
                         .HasColumnType("text");
 
@@ -458,7 +464,13 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("Locality")
                         .HasColumnType("text");
 
+                    b.Property<string>("Number")
+                        .HasColumnType("text");
+
                     b.Property<string>("Region")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RegistrationAuthority")
                         .HasColumnType("text");
 
                     b.Property<string>("SWIFT")

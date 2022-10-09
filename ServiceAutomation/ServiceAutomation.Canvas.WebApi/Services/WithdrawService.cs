@@ -29,48 +29,48 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var withdraws = await dbContext.WithdrawTransactions.Where(x => x.UserId == userId).ToListAsync();
 
             var today = DateTime.Now;
-            //if (period != 0 && transactionStatus != 0)
-            //{
-            //    switch (period)
-            //    {
-            //        case PeriodType.OneWeek:
-            //            var oneWeekPeriod = new DateTime(today.Year, today.Month, today.Day - 7);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= oneWeekPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //        case PeriodType.OneMonth:
-            //            var oneMonthPeriod = new DateTime(today.Year, today.Month - 1, today.Day);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= oneMonthPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //        case PeriodType.ThreeMonth:
-            //            var threeMonthPeriod = new DateTime(today.Year, today.Month - 3, today.Day);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= threeMonthPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //        case PeriodType.OneYear:
-            //            var oneYearPeriod = new DateTime(today.Year - 1, today.Month, today.Day);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= oneYearPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //    }
-            //}
-            
-            //if(transactionStatus != 0)
-            //{
-            //    return user?.Credential?.WithdrawTransactions?.Where(x => x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //}
+            if (period != 0 && transactionStatus != 0)
+            {
+                switch (period)
+                {
+                    case PeriodType.OneWeek:
+                        var oneWeekPeriod = new DateTime(today.Year, today.Month, today.Day - 7);
+                        return withdraws.Where(x => x.Date >= oneWeekPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                    case PeriodType.OneMonth:
+                        var oneMonthPeriod = new DateTime(today.Year, today.Month - 1, today.Day);
+                        return withdraws.Where(x => x.Date >= oneMonthPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                    case PeriodType.ThreeMonth:
+                        var threeMonthPeriod = new DateTime(today.Year, today.Month - 3, today.Day);
+                        return withdraws.Where(x => x.Date >= threeMonthPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                    case PeriodType.OneYear:
+                        var oneYearPeriod = new DateTime(today.Year - 1, today.Month, today.Day);
+                        return withdraws.Where(x => x.Date >= oneYearPeriod && x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                }
+            }
 
-            //if(period != 0)
-            //{
-            //    switch (period)
-            //    {
-            //        case PeriodType.OneWeek:
-            //            var oneWeekPeriod = new DateTime(today.Year, today.Month, today.Day - 7);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= oneWeekPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //        case PeriodType.OneMonth:
-            //            var oneMonthPeriod = new DateTime(today.Year, today.Month - 1, today.Day);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= oneMonthPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //        case PeriodType.ThreeMonth:
-            //            var threeMonthPeriod = new DateTime(today.Year, today.Month - 3, today.Day);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= threeMonthPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //        case PeriodType.OneYear:
-            //            var oneYearPeriod = new DateTime(today.Year - 1, today.Month, today.Day);
-            //            return user?.Credential?.WithdrawTransactions?.Where(x => x.Date >= oneYearPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
-            //    }
-            //}
+            if (transactionStatus != 0)
+            {
+                return withdraws.Where(x => x.TransactionStatus == transactionStatus).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+            }
+
+            if (period != 0)
+            {
+                switch (period)
+                {
+                    case PeriodType.OneWeek:
+                        var oneWeekPeriod = new DateTime(today.Year, today.Month, today.Day - 7);
+                        return withdraws.Where(x => x.Date >= oneWeekPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                    case PeriodType.OneMonth:
+                        var oneMonthPeriod = new DateTime(today.Year, today.Month - 1, today.Day);
+                        return withdraws.Where(x => x.Date >= oneMonthPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                    case PeriodType.ThreeMonth:
+                        var threeMonthPeriod = new DateTime(today.Year, today.Month - 3, today.Day);
+                        return withdraws.Where(x => x.Date >= threeMonthPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                    case PeriodType.OneYear:
+                        var oneYearPeriod = new DateTime(today.Year - 1, today.Month, today.Day);
+                        return withdraws.Where(x => x.Date >= oneYearPeriod).Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
+                }
+            }
 
             return withdraws.Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
         }
@@ -82,34 +82,41 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                    .Include(x => x.ForWhom)
                                                    .Include(x => x.Bonus)
                                                    .ToListAsync();
+
+            if (bonus != 0 && transactionStatus != 0)
+            {
+                return accruals.Where(x => x.TransactionStatus == transactionStatus && x.Bonus.Name == bonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+            }
+
+            if (transactionStatus != 0)
+            {
+                return accruals.Where(x => x.TransactionStatus == transactionStatus).Select(x => mapper.Map<AccuralResponseModel>(x));
+            }
+
+            if (bonus != 0)
+            {
+                switch (bonus)
+                {
+                    case BonusType.AutoBonus:
+                        return accruals.Where(x => x.Bonus.Name == BonusType.AutoBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.TravelBonus:
+                        return accruals.Where(x => x.Bonus.Name == BonusType.TravelBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.TeamBonus:
+                        return accruals.Where(x => x.Bonus.Name == BonusType.TeamBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.LevelBonus:
+                        return accruals.Where(x => x.Bonus.Name == BonusType.LevelBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.DynamicBonus:
+                        return accruals.Where(x => x.Bonus.Name == BonusType.DynamicBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.StartBonus:
+                        return accruals.Where(x => x.Bonus.Name == BonusType.StartBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.BunBonus:
+                        return accruals.Where(x => x.Bonus.Name == BonusType.BunBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                }
+            }
+
             return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-
-            //if (bonus != 0 && transactionStatus != 0)
-            //{
-            //    switch (bonus)
-            //    {
-            //        case BonusType.LevelBonus:
-            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //        case BonusType.AutoBonus:
-            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //        case BonusType.BunBonus:
-            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //        case BonusType.DynamicBonus:
-            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //        case BonusType.TravelBonus:
-            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //        case BonusType.BonusOverall:
-            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //        case BonusType.TeamBonus:
-            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //    }
-            //}
-
-            //if (transactionStatus != 0)
-            //{
-            //    return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            //}
         }
+    
 
         public async Task MakeWithdraw(Guid userId, ICollection<Guid> accuralsId)
         {

@@ -20,10 +20,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             _mapper = mapper;
         }
 
-        public async Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover)
+        public async Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover, Level basicLevel)
         {
             var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
-                                                             .Where(x => !x.Turnover.HasValue || x.Turnover.Value < monthlyTurnover)
+                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < monthlyTurnover)
+                                                                          && x.Level <= basicLevel)
                                                              .Max(x => x.Level))
                                                              .SingleOrDefaultAsync();
 
