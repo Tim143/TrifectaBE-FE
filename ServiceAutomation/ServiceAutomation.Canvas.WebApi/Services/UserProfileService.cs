@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using ServiceAutomation.Canvas.WebApi.Constants;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
@@ -102,7 +103,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 try
                 {
-                    dbContext.Remove(photo);
+                    System.IO.File.Delete(webHostEnvironment.WebRootPath + photo.FullPath);
+                    dbContext.ProfilePhotos.Remove(photo);
                     await dbContext.SaveChangesAsync();
 
                     var newPhoto = new ProfilePhotoEntity()
