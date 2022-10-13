@@ -72,6 +72,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
             var profilePhotoName = userId.ToString() + ".png";
+
             var profilePhotoFullPath = BasePath + profilePhotoName;
 
             if (photo == null)
