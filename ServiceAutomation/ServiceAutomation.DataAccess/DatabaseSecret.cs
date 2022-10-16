@@ -25,7 +25,7 @@ namespace ServiceAutomation.DataAccess
         //private string username = "trifecta_db_usr";
         //private string password = "6z8GIKue2XyDwLUs";
         //private string database = "trifecta_db"; //TrifectaProd - prod DB Name
-        //private string minPool = "1";
+        //private string minPool = "1";   
 
         public string GetConnectionString()
         {
