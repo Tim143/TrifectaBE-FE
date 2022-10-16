@@ -12,5 +12,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         public decimal InitialAmount { get; set; }
         public decimal AccuralAmount { get; set; }
         public DateTime AccuralDate { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
