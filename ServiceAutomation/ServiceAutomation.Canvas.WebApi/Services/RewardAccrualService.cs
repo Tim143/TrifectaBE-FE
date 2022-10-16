@@ -70,11 +70,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = userId,
                 BonusId = levelBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
-                AccuralDate = DateTime.Now
+                AccuralDate = DateTime.Now,
+                AvailableIn = DateTime.Now.AddDays(14),
+                IsAvailable = false,
             };
 
             await _dbContext.Accruals.AddAsync(accrual);
@@ -109,11 +111,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = whoSoldId,
                 BonusId = startBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
+                AvailableIn = DateTime.Now.AddDays(14),
+                IsAvailable = false,
                 ForWhomId = whoBoughtId
             };
 
@@ -137,11 +141,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = whoSoldId,
                 BonusId = startBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
+                AvailableIn = DateTime.Now.AddDays(14),
+                IsAvailable = false,
                 ForWhomId = whoBoughtId
             };
 
@@ -166,11 +172,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = userId,
                 BonusId = autoBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
+                AvailableIn = DateTime.Now.AddDays(14),
+                IsAvailable = false,
                 ForBsicLevelId = userBasicLevelId
             };
 
@@ -229,11 +237,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = userId,
                 BonusId = autoBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
+                AvailableIn = DateTime.Now.AddDays(14),
+                IsAvailable = false,
                 ForWhomId = whoBoughtId
             };
 
