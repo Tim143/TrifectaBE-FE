@@ -25,6 +25,8 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public DateTime AccuralDate { get; set; }
 
         public Guid? ForBsicLevelId { get; set; }
+        public DateTime AvailableIn { get; set; }
+        public bool IsAvailable { get; set; }
 
         public BasicLevelEntity ForBsicLevel { get; set; }
     }

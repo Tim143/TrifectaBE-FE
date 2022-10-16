@@ -32,13 +32,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.TransactionStatus == DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw).ToListAsync();
-            var awaitingAccural = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).Where(x => x.UserId == userId).ToListAsync();
+            var awaitingVerificationAccural = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).Where(x => x.UserId == userId).ToListAsync();
+            var awaitingAccural = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == false).ToListAsync();
             double receivedPayoutPercentage = 0;
 
             decimal awaitin = 0;
-            foreach(var accural in awaitingAccural)
+            foreach(var accural in awaitingVerificationAccural)
             {
                 awaitin += accural.Accurals.Sum(x => x.AccuralAmount);
+            }
+
+            foreach (var accural in awaitingAccural)
+            {
+                awaitin += accural.AccuralAmount;
             }
 
             switch (monthlyLevelInfo.CurrentLevel.Level)

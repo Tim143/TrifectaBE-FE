@@ -98,19 +98,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 switch (bonus)
                 {
                     case BonusType.AutoBonus:
-                        return accruals.Where(x => x.Bonus.Name == BonusType.AutoBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Where(x => x.Bonus.Name == "Auto Bonus".ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.TravelBonus:
-                        return accruals.Where(x => x.Bonus.Name == BonusType.TravelBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Where(x => x.Bonus.Name == "Travel Bonus".ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.TeamBonus:
-                        return accruals.Where(x => x.Bonus.Name == BonusType.TeamBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Where(x => x.Bonus.Name == "Team Bonus".ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.LevelBonus:
-                        return accruals.Where(x => x.Bonus.Name == BonusType.LevelBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Where(x => x.Bonus.Name == "Level Bonus".ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.DynamicBonus:
-                        return accruals.Where(x => x.Bonus.Name == BonusType.DynamicBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Where(x => x.Bonus.Name == "Dynamic Bonus".ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.StartBonus:
-                        return accruals.Where(x => x.Bonus.Name == BonusType.StartBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Where(x => x.Bonus.Name == "StartBonus".ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.BunBonus:
-                        return accruals.Where(x => x.Bonus.Name == BonusType.BunBonus.ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Where(x => x.Bonus.Name == "Bun Bonus".ToString()).Select(x => mapper.Map<AccuralResponseModel>(x));
                 }
             }
 
@@ -126,7 +126,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             foreach(var accural in accuralsId)
             {
                 var result = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == accural);
-                result.TransactionStatus = TransactionStatus.Pending;
+                result.TransactionStatus = TransactionStatus.ReadyForWithdraw;
 
                 await dbContext.SaveChangesAsync();
 
