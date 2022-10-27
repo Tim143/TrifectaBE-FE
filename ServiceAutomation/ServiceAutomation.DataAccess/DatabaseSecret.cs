@@ -20,13 +20,6 @@ namespace ServiceAutomation.DataAccess
         private string database = "TrifectaProduction"; //TrifectaProd - prod DB Name
         private string minPool = "1";
 
-        //private string host = "localhost";
-        //private string port = "5432";
-        //private string username = "trifecta_db_usr";
-        //private string password = "6z8GIKue2XyDwLUs";
-        //private string database = "trifecta_db"; //TrifectaProd - prod DB Name
-        //private string minPool = "1";   
-
         public string GetConnectionString()
         {
             return $"Host={host};Port={port};Username={username};Password={password};Database={database};MinPoolSize={minPool}";
