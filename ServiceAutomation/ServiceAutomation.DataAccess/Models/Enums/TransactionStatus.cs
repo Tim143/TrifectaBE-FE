@@ -12,5 +12,6 @@ namespace ServiceAutomation.DataAccess.Schemas.Enums
         Failed = 2,
         Pending = 3,
         ReadyForWithdraw = 4,
+        AdministratorReview = 5,
     }
 }

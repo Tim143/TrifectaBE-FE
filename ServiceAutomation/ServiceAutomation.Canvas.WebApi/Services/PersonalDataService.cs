@@ -3,6 +3,7 @@ using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.Enums;
+using ServiceAutomation.DataAccess.Schemas.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,22 +27,30 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<HomePageResponseModel> GetHomeUserData(Guid userId)
         {
+            var userAccurals = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == false).ToListAsync();
+            var currentDate = DateTime.UtcNow;
+
+            for (int i = 0; i < userAccurals.Count; i++)
+            {
+                if (userAccurals[i].AvailableIn.Date <= currentDate)
+                {
+                    userAccurals[i].IsAvailable = true;
+                    userAccurals[i].TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw;
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
+
             var package = await packagesService.GetUserPackageByIdAsync(userId);
             var monthlyLevelInfo = await levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
             var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
-            var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.TransactionStatus == DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw).ToListAsync();
-            var awaitingVerificationAccural = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).Where(x => x.UserId == userId).ToListAsync();
+            var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == true && x.TransactionStatus == TransactionStatus.ReadyForWithdraw).ToListAsync();
             var awaitingAccural = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == false).ToListAsync();
             double receivedPayoutPercentage = 0;
 
             decimal awaitin = 0;
-            foreach(var accural in awaitingVerificationAccural)
-            {
-                awaitin += accural.Accurals.Sum(x => x.AccuralAmount);
-            }
-
             foreach (var accural in awaitingAccural)
             {
                 awaitin += accural.AccuralAmount;

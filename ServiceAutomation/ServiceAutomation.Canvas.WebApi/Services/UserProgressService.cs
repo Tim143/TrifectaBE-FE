@@ -40,13 +40,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var travelBonusInfo = await travelBonusService.GetTravelBonusInfoByUserIdAsync(userId);
             var referralLevelsInfos = await tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(userId);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
-            var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.TransactionStatus == DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw).ToListAsync();
-            var awaitingAccural = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).Where(x => x.UserId == userId).ToListAsync();
+            var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == true && x.TransactionStatus == DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw).ToListAsync();
+            var awaitingAccural = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == false).ToListAsync();
 
             decimal awaitin = 0;
             foreach (var accural in awaitingAccural)
             {
-                awaitin += accural.Accurals.Sum(x => x.AccuralAmount);
+                awaitin += accural.AccuralAmount;
             }
 
             var structuralLevelProgress = new StructuralLevelProgressInfoModel

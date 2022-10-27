@@ -126,7 +126,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             foreach(var accural in accuralsId)
             {
                 var result = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == accural);
-                result.TransactionStatus = TransactionStatus.ReadyForWithdraw;
+                result.TransactionStatus = TransactionStatus.AdministratorReview;
 
                 await dbContext.SaveChangesAsync();
 
