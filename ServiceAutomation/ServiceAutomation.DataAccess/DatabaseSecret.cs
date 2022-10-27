@@ -17,7 +17,7 @@ namespace ServiceAutomation.DataAccess
         private string port = "11042";
         private string username = "admin";
         private string password = "652431Tim";
-        private string database = "TrifectaProduction"; //TrifectaProd - prod DB Name
+        private string database = "TrifectaProduction"; 
         private string minPool = "1";
 
         public string GetConnectionString()
