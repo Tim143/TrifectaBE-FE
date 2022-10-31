@@ -46,6 +46,23 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok();
         }
 
+        [HttpPost(Constants.Requests.Package.BuyPackageByCash)]
+        public async Task<IActionResult> BuyPackageByCashAsyncAsync([FromBody] BuyPackageRequestModel buyPackageRequest)
+        {
+            var userId = GetCurrentUserId();
+
+            var package = await packagesService.GetPackageByIdAsync(buyPackageRequest.PackageId);
+
+            if (package == null)
+            {
+                return BadRequest();
+            }
+
+            await purchaseService.BuyPackageByCashAsync(package, userId);
+
+            return Ok();
+        }
+
         [HttpGet(Constants.Requests.Package.GetUserPackage)]
         public async Task<PackageModel> GetUserPackageAsync(Guid userId)
         {

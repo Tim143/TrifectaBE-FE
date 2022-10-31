@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.AdministratorResponseModels;
@@ -20,11 +21,30 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment hostEnvironment;
-        public AdministratorService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment hostEnvironment)
+        private readonly IPackagesService packagesService;
+        private readonly IPurchaseService purchaseService;
+        public AdministratorService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment hostEnvironment, IPackagesService packagesService, IPurchaseService purchaseService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.hostEnvironment = hostEnvironment;
+            this.packagesService = packagesService;
+            this.purchaseService = purchaseService;
+        }
+
+        public async Task AccepCashRequest(Guid requestId, Guid userId, Guid packageId)
+        {
+            var package = await packagesService.GetPackageByIdAsync(packageId);
+            await purchaseService.BuyPackageAsync(package, userId);
+
+            var cashRequest = await dbContext.CashPurchases.FirstOrDefaultAsync(x => x.Id == requestId);
+
+            if(cashRequest != null)
+            {
+                cashRequest.IsClosed = true;
+            }
+            
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task AcceptContactVerificationRequest(Guid requestId, Guid userId)
@@ -121,6 +141,31 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             verificationRequest.IsVerified = true;
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<PackageVerificationResponseModel>> GetCashRequests()
+        {
+            var requests = await dbContext.CashPurchases.Where(x => x.IsClosed == false).ToListAsync();
+            var response = new List<PackageVerificationResponseModel>();
+
+            foreach(var request in requests)
+            {
+                var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+                var package = await dbContext.Packages.FirstOrDefaultAsync(x => x.Id == request.PackageId);
+
+                response.Add(new PackageVerificationResponseModel()
+                {
+                    RequestId = request.Id,
+                    UserId = user.Id,
+                    PackageId = package.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PackageName = package.Name
+                });
+            }
+
+            return response;
         }
 
         public async Task<ICollection<UserContactsVerificationResponseModel>> GetContactVerificationRequest()
@@ -260,6 +305,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
 
             return result;
+        }
+
+        public async Task RejectCashRequest(Guid requestId)
+        {
+            var request = await dbContext.CashPurchases.FirstOrDefaultAsync(x => x.Id == requestId);
+
+            if(request != null)
+            {
+                dbContext.CashPurchases.Remove(request);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task RejectContactVerificationRequest(Guid requestId, Guid userId)

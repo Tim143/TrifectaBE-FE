@@ -79,5 +79,23 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             return Ok(await groupService.GetReferralTree(userId));
         }
+
+        [HttpGet(Constants.Requests.Administrator.GetCashRequests)]
+        public async Task<IActionResult> GetCashRequests()
+        {
+            return Ok(await administratorService.GetCashRequests());
+        }
+
+        [HttpPost(Constants.Requests.Administrator.AcceptCashRequests)]
+        public async Task AcceptCashRequests(Guid requestId, Guid userId, Guid packageId)
+        {
+            await administratorService.AccepCashRequest(requestId, userId, packageId);
+        }
+
+        [HttpPost(Constants.Requests.Administrator.RejectCashRequests)]
+        public async Task RejectCashRequests(Guid requestId)
+        {
+            await administratorService.RejectCashRequest(requestId);
+        }
     }
 }

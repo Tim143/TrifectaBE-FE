@@ -377,18 +377,25 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
 
             var userOrganizationType = userOrganizationData.TypeOfEmployment;
+            var usersVerificationPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
             switch (userOrganizationType)
             {
                 case TypeOfEmployment.LegalEntity:
                     var legalEntity = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
-                    return mapper.Map<LegalEntityDataResponseModel>(legalEntity);
+                    var legalUserResponse = mapper.Map<LegalEntityDataResponseModel >(legalEntity);
+                    legalUserResponse.Image = usersVerificationPhoto.FullPath;
+                    return legalUserResponse;
                 case TypeOfEmployment.IndividualEntity:
                     var individualEntity = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
-                    return mapper.Map<IndividualEntityDataResponseModel>(individualEntity);
+                    var individualEntityResponse = mapper.Map<IndividualEntityDataResponseModel>(individualEntity);
+                    individualEntityResponse.Image = usersVerificationPhoto.FullPath;
+                    return individualEntityResponse;
                 case TypeOfEmployment.IndividualEntrepreneur:
                     var individualEntrepreneurEntity = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
-                    return mapper.Map<IndividualEntrepreneurEntityDataResponseModel>(individualEntrepreneurEntity);
+                    var individualEntrepreneurEntityResponse = mapper.Map<IndividualEntrepreneurEntityDataResponseModel>(individualEntrepreneurEntity);
+                    individualEntrepreneurEntityResponse.Image = usersVerificationPhoto.FullPath;
+                    return individualEntrepreneurEntityResponse;
                 default:
                     throw new ArgumentException("Invalid argument");
             }

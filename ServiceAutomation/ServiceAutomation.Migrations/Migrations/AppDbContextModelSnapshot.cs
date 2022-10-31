@@ -191,6 +191,30 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.ToTable("Bonuses");
                 });
 
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CashPurchaseEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PackageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CashPurchases");
+                });
+
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1145,6 +1169,25 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("Level");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CashPurchaseEntity", b =>
+                {
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.PackageEntity", "Package")
+                        .WithMany()
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Package");
 
                     b.Navigation("User");
                 });

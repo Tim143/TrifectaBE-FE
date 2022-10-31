@@ -29,5 +29,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         public string HouseNumber { get; set; }
         public string Location { get; set; }
         public string RoomNumber { get; set; }
+        public string Image { get; set; }
     }
 }

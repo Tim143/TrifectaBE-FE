@@ -17,5 +17,8 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<ICollection<WithdrawVerifictionResponseModel>> GetWitdrawRequests();
         Task AccepWitdrawRequest(Guid requestId);
         Task RejectWitdrawRequest(Guid requestId);
+        Task<ICollection<PackageVerificationResponseModel>> GetCashRequests();
+        Task AccepCashRequest(Guid requestId, Guid userId, Guid packageId);
+        Task RejectCashRequest(Guid requestId);
     }
 }

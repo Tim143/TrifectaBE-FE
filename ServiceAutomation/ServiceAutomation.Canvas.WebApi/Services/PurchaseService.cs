@@ -39,6 +39,25 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await AddNewPurchaseAsync(package, userId);
         }
 
+        public async Task BuyPackageByCashAsync(PackageModel package, Guid userId)
+        {
+            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            if (currentUserPackage != null && currentUserPackage.Price >= package.Price)
+            {
+                throw new Exception("The purchased package must be larger than the current one!");
+            }
+
+            var purchaseRequest = new CashPurchaseEntity()
+            {
+                UserId = userId,
+                PackageId = package.Id,
+                IsClosed = false,
+            };
+
+            await _dbContext.CashPurchases.AddAsync(purchaseRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task BuyPackageByPackageTypeAsync(PackageType packageType, Guid userId)
         {
             var purchasedPackage = await _packagesService.GetPackageByTypeAsync(packageType);

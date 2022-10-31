@@ -17,5 +17,10 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         public string Street { get; set; }
         public string HouseNumber { get; set; }
         public string Flat { get; set; }
+        public string Number { get; set; }
+        public string IdentityNumber { get; set; }
+        public string RegistrationAuthority { get; set; }
+        public string CertificateDateIssue { get; set; }
+        public string Image { get; set; }
     }
 }

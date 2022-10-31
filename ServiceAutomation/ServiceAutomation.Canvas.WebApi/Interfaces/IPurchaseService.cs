@@ -8,7 +8,7 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     public interface IPurchaseService
     {
         Task BuyPackageAsync(PackageModel package, Guid userId);
-
+        Task BuyPackageByCashAsync(PackageModel package, Guid userId);
         Task BuyPackageByPackageTypeAsync(PackageType packageType, Guid userId);
 
     }

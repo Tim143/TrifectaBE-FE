@@ -28,6 +28,7 @@
         {
             public const string GetPackages = nameof(GetPackages);
             public const string BuyPackage = nameof(BuyPackage);
+            public const string BuyPackageByCash = nameof(BuyPackageByCash);
             public const string GetUserPackage = nameof(GetUserPackage);
         }
 
@@ -90,6 +91,9 @@
             public const string RejectUserWithdraw = "RejectUserWithdraw";
 
             public const string GetAdminTree = "GetAdminTree";
+            public const string GetCashRequests = "GetCashRequests";
+            public const string AcceptCashRequests = "AcceptCashRequests";
+            public const string RejectCashRequests = "RejectCashRequests";
         }
     }
 }
