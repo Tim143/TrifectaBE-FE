@@ -4,6 +4,7 @@ using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.Enums;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,11 +14,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ITurnoverService turnoverService;
 
-        public LevelsService(AppDbContext dbContext, IMapper mapper)
+        public LevelsService(AppDbContext dbContext, IMapper mapper, ITurnoverService turnoverService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            this.turnoverService = turnoverService;
         }
 
         public async Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover, Level basicLevel)
@@ -29,6 +32,25 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                              .SingleOrDefaultAsync();
 
             return _mapper.Map<LevelModel>(monthlyLevel);
+        }
+
+        public async Task<LevelInfoModel> GetCurrentMonthlyLevelAsync(Guid userId)
+        {
+            var basicLevel = await _dbContext.Users.Where(x => x.Id == userId).Select(x => x.BasicLevel.Level).FirstAsync();
+            var turnover = await turnoverService.GetMonthlyTurnoverByUserIdAsync(userId);
+
+            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
+                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < turnover)
+                                                                          && x.Level <= basicLevel)
+                                                             .Max(x => x.Level))
+                                                             .SingleOrDefaultAsync();
+            var lefelInfoModel = new LevelInfoModel()
+            {
+                CurrentLevel = _mapper.Map<LevelModel>(monthlyLevel),
+                CurrentTurnover = turnover,
+            };
+
+            return lefelInfoModel;
         }
 
         public async Task<LevelModel> GetNextMonthlyLevelAsync(int level)

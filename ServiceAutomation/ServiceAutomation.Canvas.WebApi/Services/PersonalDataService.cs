@@ -42,7 +42,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await dbContext.SaveChangesAsync();
 
             var package = await packagesService.GetUserPackageByIdAsync(userId);
-            var monthlyLevelInfo = await levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
+            var monthlyLevelInfo = await levelsService.GetCurrentMonthlyLevelAsync(userId);
             var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
