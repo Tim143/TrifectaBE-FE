@@ -33,7 +33,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<ProgressResponseModel> GetUserProgress(Guid userId)
         {
-            var monthlyLevelInfo = await levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
+            var monthlyLevelInfo = await levelsService.GetCurrentMonthlyLevelAsync(userId);
             var basicLevelInfo = await levelsService.GetUserBasicLevelAsync(userId);
             var nextMounthlyLevelRequirements = await levelsService.GetNextMonthlyLevelAsync(monthlyLevelInfo.CurrentLevel.Level);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
