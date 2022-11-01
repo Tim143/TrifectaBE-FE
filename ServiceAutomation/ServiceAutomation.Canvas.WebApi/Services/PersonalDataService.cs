@@ -43,7 +43,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var package = await packagesService.GetUserPackageByIdAsync(userId);
             var monthlyLevelInfo = await levelsService.GetCurrentMonthlyLevelAsync(userId);
-            var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
+            var basicLevelInfo = await levelsService.GetUserBasicLevelAsync(userId);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == true && x.TransactionStatus == TransactionStatus.ReadyForWithdraw).ToListAsync();
