@@ -173,6 +173,14 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.22.0, )"
+            },
+            "Twilio": {
+              "target": "Package",
+              "version": "[5.81.1, )"
+            },
+            "sib_api_v3_sdk": {
+              "target": "Package",
+              "version": "[3.3.0, )"
             }
           },
           "imports": [

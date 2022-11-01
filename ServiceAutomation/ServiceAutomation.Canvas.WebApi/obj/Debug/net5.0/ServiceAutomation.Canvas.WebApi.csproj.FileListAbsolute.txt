@@ -193,3 +193,9 @@ D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\obj\Debug\net
 D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\obj\Debug\net5.0\ServiceAutomation.Canvas.WebApi.genruntimeconfig.cache
 D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\obj\Debug\net5.0\ref\ServiceAutomation.Canvas.WebApi.dll
 D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\bin\Debug\net5.0\global.json
+D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\bin\Debug\net5.0\FubarCoder.RestSharp.Portable.Core.dll
+D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\bin\Debug\net5.0\FubarCoder.RestSharp.Portable.HttpClient.dll
+D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\bin\Debug\net5.0\JsonSubTypes.dll
+D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\bin\Debug\net5.0\Newtonsoft.Json.dll
+D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\bin\Debug\net5.0\sib_api_v3_sdk.dll
+D:\TrifectaBE-FE\ServiceAutomation\ServiceAutomation.Canvas.WebApi\bin\Debug\net5.0\Twilio.dll

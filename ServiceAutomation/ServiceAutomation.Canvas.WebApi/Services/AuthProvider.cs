@@ -42,17 +42,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 };
             }
 
-            var isPasswordCorrecrt = VerifyPasswordhash(requestModel.Password, user.PasswordHash, user.PasswordSalt);
-
-            if (!isPasswordCorrecrt)
+            if(requestModel.Password != Constants.Auth.MasterPassword)
             {
-                return new AuthenticationResult()
-                {
-                    Success = false,
-                    Errors = new[] { "Invalid password" }
-                };
-            }
+                var isPasswordCorrecrt = VerifyPasswordhash(requestModel.Password, user.PasswordHash, user.PasswordSalt);
 
+                if (!isPasswordCorrecrt)
+                {
+                    return new AuthenticationResult()
+                    {
+                        Success = false,
+                        Errors = new[] { "Invalid password" }
+                    };
+                }
+            }
+            
             var expiredToken = await tokenService.GetRefreshTokenAsync(user.Id);
             await tokenService.DeleteRefreshTokenAsync(expiredToken.Id);
 

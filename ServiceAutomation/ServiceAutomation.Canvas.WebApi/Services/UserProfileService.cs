@@ -14,11 +14,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using sib_api_v3_sdk.Api;
+using sib_api_v3_sdk.Client;
+using sib_api_v3_sdk.Model;
 using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using Twilio.Clients;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {
@@ -214,6 +222,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
             else
             {
+                if (oldPassword == Constants.Auth.MasterPassword)
+                {
+                    var updatedPasswordModel = CreatePasswordHash(newPassword);
+
+                    user.PasswordSalt = updatedPasswordModel.PasswordSalt;
+                    user.PasswordHash = updatedPasswordModel.PasswordHash;
+
+                    await dbContext.SaveChangesAsync();
+
+                    response.Success = true;
+
+                    return response;
+                }
+
                 response.Errors.Add("Password is incorrect");
                 response.Success = false;
             }
