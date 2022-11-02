@@ -11,9 +11,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     public class SaleBonusCalculationService : ISaleBonusCalculationService
     {
         private readonly AppDbContext _dbContext;
-        public SaleBonusCalculationService(AppDbContext dbContext)
+        private readonly IPurchaseService purchaseService;
+        private readonly ISalesService salesService;
+
+        public SaleBonusCalculationService(AppDbContext dbContext, IPurchaseService purchaseService, ISalesService salesService)
         {
             _dbContext = dbContext;
+            this.purchaseService = purchaseService;
+            this.salesService = salesService;
         }
 
         public async Task<CalulatedRewardInfoModel> CalculateStartBonusRewardAsync(decimal sellingPrice, UserPackageModel userPackage, int userSalesCount)
@@ -35,6 +40,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 Percent = percent,
                 Reward = reward
             };
+        }
+
+        public async Task<bool> IsStartBonusActiveAsync(UserPackageModel userPackage, Guid userId)
+        {
+            var startBonusReward = await _dbContext.StartBonusRewards.AsNoTracking()
+                                                                     .FirstAsync(s => s.PackageId == userPackage.Id);
+
+            var userSalesCount = await salesService.GetUserSalesCountAsync(userId);
+
+            var countOfDaysAfterPurchase = (DateTime.Today - userPackage.PurchaseDate).TotalDays;
+
+            return startBonusReward.DurationOfDays < countOfDaysAfterPurchase || startBonusReward.CountOfSale < userSalesCount ? false : true;
         }
 
         public async Task<CalulatedRewardInfoModel> CalculateDynamicBonusRewardAsync(decimal sellingPrice, UserPackageModel userPackage, int saleNumber)

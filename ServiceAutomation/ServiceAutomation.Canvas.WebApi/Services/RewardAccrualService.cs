@@ -191,7 +191,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var userMonthlyLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(whoSoldId);
             var userBasicLevelInfo = await _levelStatisticService.GetBasicLevelInfoByUserIdAsync(whoSoldId);
 
-            var userRewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(sellingPrice, userMonthlyLevel, userBasicLevelInfo.CurrentTurnover);
+            var userRewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(sellingPrice, userMonthlyLevel, userBasicLevelInfo.CurrentTurnover, whoSoldId);
 
             if (userRewardInfo.Reward == 0)
                 return;
@@ -214,7 +214,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var monthlyLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(parentUser);
                 var basicLevelInfo = await _levelStatisticService.GetBasicLevelInfoByUserIdAsync(parentUser);
 
-                var rewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(tempReward, monthlyLevel, tempMonthlyLevel, basicLevelInfo.CurrentTurnover);
+                var rewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(tempReward, monthlyLevel, tempMonthlyLevel, basicLevelInfo.CurrentTurnover, parentUser);
 
                 if (rewardInfo.Reward == 0)
                     break;

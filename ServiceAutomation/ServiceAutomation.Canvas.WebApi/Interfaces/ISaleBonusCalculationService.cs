@@ -1,4 +1,5 @@
 ﻿using ServiceAutomation.Canvas.WebApi.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces
@@ -7,5 +8,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     {
         Task<CalulatedRewardInfoModel> CalculateStartBonusRewardAsync(decimal sellingPrice, UserPackageModel userPackage, int userSalesCount);
         Task<CalulatedRewardInfoModel> CalculateDynamicBonusRewardAsync(decimal sellingPrice, UserPackageModel userPackage, int saleNumber);
+        Task<bool> IsStartBonusActiveAsync(UserPackageModel userPackage, Guid userId);
     }
 }
