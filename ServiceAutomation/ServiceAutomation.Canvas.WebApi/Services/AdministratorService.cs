@@ -205,9 +205,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     result1[i].Email = itemExtraData?.Email;
                     result1[i].PhoneNumber = itemExtraData?.PhoneNumber;
                     result1[i].TypeOfEmployment = itemExtraData?.UserAccountOrganization.TypeOfEmployment.ToString();
-                    result1[i].VerivicationPhoto2 = legalUsersPhoto2.FullPath;
-                    result1[i].VerivicationPhoto3 = legalUsersPhoto3.FullPath;
-                    result1[i].VerivicationPhoto4 = legalUsersPhoto4.FullPath;
+                        if (legalUsersPhoto2 != null)
+                        {
+                            result1[i].VerivicationPhoto2 = legalUsersPhoto2.FullPath;
+                        }
+
+                    if (legalUsersPhoto3 != null)
+                    {
+                        result1[i].VerivicationPhoto3 = legalUsersPhoto3.FullPath;
+                    }
+
+                    if (legalUsersPhoto4 != null)
+                    {
+                        result1[i].VerivicationPhoto4 = legalUsersPhoto4.FullPath;
+                    }
                 }
 
                 if (legalUsersPhoto2 != null)
@@ -220,7 +231,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     result1[i].VerivicationPhoto3 = legalUsersPhoto3.FullPath;
                 }
 
-                if (legalUsersPhoto2 != null)
+                if (legalUsersPhoto4 != null)
                 {
                     result1[i].VerivicationPhoto4 = legalUsersPhoto4.FullPath;
                 }
@@ -353,22 +364,44 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 case TypeOfEmployment.LegalEntity:
                     var legalEntityRequest = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
                     dbContext.LegalUserOrganizationsData.Remove(legalEntityRequest);
-                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath2.FullPath);
-                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath3.FullPath);
-                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath4.FullPath);
+
+                    if(photoPath2 != null)
+                    {
+                        System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath2.FullPath);
+                        dbContext.UserVerificationPhotos.Remove(photoPath2);
+                    }
+                    if (photoPath3 != null)
+                    {
+                        System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath3.FullPath);
+                        dbContext.UserVerificationPhotos.Remove(photoPath3);
+                    }
+                    if (photoPath4 != null)
+                    {
+                        System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath4.FullPath);
+                        dbContext.UserVerificationPhotos.Remove(photoPath4);
+                    }
+
                     break;
                 case TypeOfEmployment.IndividualEntity:
                     var individualEntityRequest = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
-                    dbContext.IndividualUserOrganizationsData.Remove(individualEntityRequest);
-                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath.FullPath);
+                    dbContext.IndividualUserOrganizationsData.Remove(individualEntityRequest);  
+                    if (photoPath != null)
+                    {
+                        System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath.FullPath);
+                        dbContext.UserVerificationPhotos.Remove(photoPath);
+                    }
                     break;
                 case TypeOfEmployment.IndividualEntrepreneur:
                     var individualEntrepreneurEntityRequest = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
                     dbContext.IndividualEntrepreneurUserOrganizationsData.Remove(individualEntrepreneurEntityRequest);
-                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath.FullPath);
+                    if (photoPath != null)
+                    {
+                        System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath.FullPath);
+                        dbContext.UserVerificationPhotos.Remove(photoPath);
+                    }
                     break;
             }
-
+        
             var accountOrganization = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == userId);
 
 

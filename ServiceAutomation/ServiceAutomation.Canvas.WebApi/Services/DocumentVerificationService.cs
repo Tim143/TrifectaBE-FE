@@ -380,14 +380,32 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
 
             var userOrganizationType = userOrganizationData.TypeOfEmployment;
-            var usersVerificationPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId);
+            var usersVerificationPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType ==1);
+            var usersVerificationPhoto2 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType == 2);
+            var usersVerificationPhoto3 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType == 3);
+            var usersVerificationPhoto4 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType == 4);
 
             switch (userOrganizationType)
             {
                 case TypeOfEmployment.LegalEntity:
                     var legalEntity = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
                     var legalUserResponse = mapper.Map<LegalEntityDataResponseModel >(legalEntity);
-                    legalUserResponse.Image = usersVerificationPhoto.FullPath;
+
+                    if(usersVerificationPhoto2 != null)
+                    {
+                        legalUserResponse.Image = usersVerificationPhoto2.FullPath;
+                    }
+
+                    if (usersVerificationPhoto3 != null)
+                    {
+                        legalUserResponse.Image2 = usersVerificationPhoto3.FullPath;
+                    }
+
+                    if (usersVerificationPhoto4 != null)
+                    {
+                        legalUserResponse.Image3 = usersVerificationPhoto4.FullPath;
+                    }
+
                     return legalUserResponse;
                 case TypeOfEmployment.IndividualEntity:
                     var individualEntity = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == userId);
