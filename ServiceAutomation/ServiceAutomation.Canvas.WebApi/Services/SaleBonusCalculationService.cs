@@ -11,13 +11,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     public class SaleBonusCalculationService : ISaleBonusCalculationService
     {
         private readonly AppDbContext _dbContext;
-        private readonly IPurchaseService purchaseService;
         private readonly ISalesService salesService;
 
-        public SaleBonusCalculationService(AppDbContext dbContext, IPurchaseService purchaseService, ISalesService salesService)
+        public SaleBonusCalculationService(AppDbContext dbContext, ISalesService salesService)
         {
             _dbContext = dbContext;
-            this.purchaseService = purchaseService;
             this.salesService = salesService;
         }
 

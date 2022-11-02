@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
+using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
@@ -39,6 +42,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             _teamBonusService = teamBonusService;
         }
 
+        private async Task<decimal> GetCurrency()
+        {
+            using HttpClient client = new HttpClient();
+            var responseString = await client.GetAsync("https://developerhub.alfabank.by:8273/partner/1.0.1/public/nationalRates?currencyCode=840");
+            var jsonResponse = await responseString.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<RatesArr>(jsonResponse);
+
+            return result.Rates[0].Rate;
+        }
+
         public async Task AccrueRewardForBasicLevelAsync(Guid userId)
         {
             var userPackage = await _packagesService.GetUserPackageByIdAsync(userId);
@@ -66,6 +79,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                        .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.LevelBonus)
                                                        .Select(b => b.Id)
                                                        .FirstAsync();
+            var dailyCurrency = await GetCurrency();
+
             var accrual = new AccrualsEntity
             {
                 UserId = userId,
@@ -73,7 +88,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
-                AccuralAmount = rewardInfo.Reward,
+                AccuralAmount = rewardInfo.Reward * dailyCurrency,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
@@ -107,6 +122,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                        .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.StartBonus)
                                                        .Select(b => b.Id)
                                                        .FirstAsync();
+            var dailyCurrency = await GetCurrency();
+
             var accrual = new AccrualsEntity
             {
                 UserId = whoSoldId,
@@ -114,7 +131,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
-                AccuralAmount = rewardInfo.Reward,
+                AccuralAmount = rewardInfo.Reward * dailyCurrency,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
@@ -137,6 +154,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                        .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.DynamicBonus)
                                                        .Select(b => b.Id)
                                                        .FirstAsync();
+            var dailyCurrency = await GetCurrency();
+
             var accrual = new AccrualsEntity
             {
                 UserId = whoSoldId,
@@ -144,7 +163,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
-                AccuralAmount = rewardInfo.Reward,
+                AccuralAmount = rewardInfo.Reward * dailyCurrency,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
@@ -168,6 +187,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                       .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.AutoBonus)
                                                       .Select(b => b.Id)
                                                       .FirstAsync();
+            var dailyCurrency = await GetCurrency();
+
             var accrual = new AccrualsEntity
             {
                 UserId = userId,
@@ -175,7 +196,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
-                AccuralAmount = rewardInfo.Reward,
+                AccuralAmount = rewardInfo.Reward * dailyCurrency,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
@@ -233,6 +254,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                       .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.TeamBonus)
                                                       .Select(b => b.Id)
                                                       .FirstAsync();
+
+            var dailyCurrency = await GetCurrency();
             var accrual = new AccrualsEntity
             {
                 UserId = userId,
@@ -240,7 +263,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
-                AccuralAmount = rewardInfo.Reward,
+                AccuralAmount = rewardInfo.Reward * dailyCurrency,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
