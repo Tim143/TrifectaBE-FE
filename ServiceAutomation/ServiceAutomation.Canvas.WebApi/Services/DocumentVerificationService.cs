@@ -27,6 +27,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IWebHostEnvironment webHostEnvironment;
 
         private const string VerificationBasePath = "/DocumentVerification/Verifications/";
+        private const string VerificationBasePath2 = "/DocumentVerification/Verification2/";
+        private const string VerificationBasePath3 = "/DocumentVerification/Verification3/";
+        private const string VerificationBasePath4 = "/DocumentVerification/Verification4/";
         private const string IndividualEmpBasePath = "/DocumentVerification/IndividualEntrepreneur/";
         public DocumentVerificationService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
@@ -417,13 +420,140 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     UserId = userId,
                     FileName = verificationPhotoName,
-                    FullPath = verificationPhotoFullPath
+                    FullPath = verificationPhotoFullPath,
+                    PhotoType = 1
                 };
 
                 await dbContext.UserVerificationPhotos.AddAsync(verificationPhoto);
                 await dbContext.SaveChangesAsync();
             }
             catch(Exception ex)
+            {
+                return new ResultModel()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        ex.Message
+                    }
+                };
+            }
+
+
+            return new ResultModel()
+            {
+                Success = true,
+            };
+        }
+
+        public async Task<ResultModel> SendUserVerificationPhoto2(IFormFile file, Guid userId)
+        {
+            var verificationPhotoName = userId + "Verification2" + ".png";
+            var verificationPhotoFullPath = VerificationBasePath2 + verificationPhotoName;
+
+            try
+            {
+                using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                var verificationPhoto = new UserVerificationPhotoEntity()
+                {
+                    UserId = userId,
+                    FileName = verificationPhotoName,
+                    FullPath = verificationPhotoFullPath,
+                    PhotoType = 2
+                };
+
+                await dbContext.UserVerificationPhotos.AddAsync(verificationPhoto);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return new ResultModel()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        ex.Message
+                    }
+                };
+            }
+
+
+            return new ResultModel()
+            {
+                Success = true,
+            };
+        }
+
+        public async Task<ResultModel> SendUserVerificationPhoto3(IFormFile file, Guid userId)
+        {
+            var verificationPhotoName = userId + "Verification3" + ".png";
+            var verificationPhotoFullPath = VerificationBasePath3 + verificationPhotoName;
+
+            try
+            {
+                using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                var verificationPhoto = new UserVerificationPhotoEntity()
+                {
+                    UserId = userId,
+                    FileName = verificationPhotoName,
+                    FullPath = verificationPhotoFullPath,
+                    PhotoType = 3
+                };
+
+                await dbContext.UserVerificationPhotos.AddAsync(verificationPhoto);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return new ResultModel()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        ex.Message
+                    }
+                };
+            }
+
+
+            return new ResultModel()
+            {
+                Success = true,
+            };
+        }
+
+        public async Task<ResultModel> SendUserVerificationPhoto4(IFormFile file, Guid userId)
+        {
+            var verificationPhotoName = userId + "Verification4" + ".png";
+            var verificationPhotoFullPath = VerificationBasePath4 + verificationPhotoName;
+
+            try
+            {
+                using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                var verificationPhoto = new UserVerificationPhotoEntity()
+                {
+                    UserId = userId,
+                    FileName = verificationPhotoName,
+                    FullPath = verificationPhotoFullPath,
+                    PhotoType = 4
+                };
+
+                await dbContext.UserVerificationPhotos.AddAsync(verificationPhoto);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
             {
                 return new ResultModel()
                 {

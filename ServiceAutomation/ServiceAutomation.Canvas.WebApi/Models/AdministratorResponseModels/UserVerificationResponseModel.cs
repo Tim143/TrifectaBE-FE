@@ -21,5 +21,8 @@ namespace ServiceAutomation.Canvas.WebApi.Models.AdministratorResponseModels
         public string RegistrationAuthority { get; set; }
         public string CertificateNumber { get; set; }
         public string VerivicationPhoto { get; set; }
+        public string VerivicationPhoto2 { get; set; }
+        public string VerivicationPhoto3 { get; set; }
+        public string VerivicationPhoto4 { get; set; }
     }
 }

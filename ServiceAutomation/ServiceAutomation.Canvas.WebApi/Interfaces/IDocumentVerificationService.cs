@@ -12,6 +12,9 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     {
         Task<ResultModel> SendUserVerificationData(DocumentVerificationRequestModel requestModel);
         Task<ResultModel> SendUserVerificationPhoto(IFormFile file, Guid userId);
+        Task<ResultModel> SendUserVerificationPhoto2(IFormFile file, Guid userId);
+        Task<ResultModel> SendUserVerificationPhoto3(IFormFile file, Guid userId);
+        Task<ResultModel> SendUserVerificationPhoto4(IFormFile file, Guid userId);
         Task<OneOf<IndividualEntityDataResponseModel, IndividualEntrepreneurEntityDataResponseModel, LegalEntityDataResponseModel, ResultModel>> GetUserVerifiedData(Guid userId);
     }
 }

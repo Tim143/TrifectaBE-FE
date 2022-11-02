@@ -51,6 +51,45 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPost(Constants.Requests.UserDocument.SendPhotoForVerification2)]
+        public async Task<IActionResult> SendPhotoForVerification2([FromForm] UploadProfilePhotoRequestModel requestModel)
+        {
+            var response = await verificationService.SendUserVerificationPhoto2(requestModel.ProfilePhoto, requestModel.UserId);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost(Constants.Requests.UserDocument.SendPhotoForVerification3)]
+        public async Task<IActionResult> SendPhotoForVerification3([FromForm] UploadProfilePhotoRequestModel requestModel)
+        {
+            var response = await verificationService.SendUserVerificationPhoto3(requestModel.ProfilePhoto, requestModel.UserId);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost(Constants.Requests.UserDocument.SendPhotoForVerification4)]
+        public async Task<IActionResult> SendPhotoForVerification4([FromForm] UploadProfilePhotoRequestModel requestModel)
+        {
+            var response = await verificationService.SendUserVerificationPhoto4(requestModel.ProfilePhoto, requestModel.UserId);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response);
+        }
+
         [HttpGet(Constants.Requests.UserDocument.GetVerifiedData)]
         public async Task<IActionResult> GetVerifiedData(Guid userId)
         {

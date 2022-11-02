@@ -195,7 +195,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     .Include(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.Id == result1[i].UserId);
 
-                var legalUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result1[i].UserId);
+                var legalUsersPhoto2 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result1[i].UserId && x.PhotoType == 2);
+                var legalUsersPhoto3 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result1[i].UserId && x.PhotoType == 3);
+                var legalUsersPhoto4 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result1[i].UserId && x.PhotoType == 4);
 
                 if (itemExtraData != null)
                 {
@@ -203,12 +205,24 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     result1[i].Email = itemExtraData?.Email;
                     result1[i].PhoneNumber = itemExtraData?.PhoneNumber;
                     result1[i].TypeOfEmployment = itemExtraData?.UserAccountOrganization.TypeOfEmployment.ToString();
-                    result1[i].VerivicationPhoto = legalUsersPhoto.FullPath;
+                    result1[i].VerivicationPhoto2 = legalUsersPhoto2.FullPath;
+                    result1[i].VerivicationPhoto3 = legalUsersPhoto3.FullPath;
+                    result1[i].VerivicationPhoto4 = legalUsersPhoto4.FullPath;
                 }
 
-                if (legalUsersPhoto != null)
+                if (legalUsersPhoto2 != null)
                 {
-                    result1[i].VerivicationPhoto = legalUsersPhoto.FullPath;
+                    result1[i].VerivicationPhoto2 = legalUsersPhoto2.FullPath;
+                }
+
+                if (legalUsersPhoto3 != null)
+                {
+                    result1[i].VerivicationPhoto3 = legalUsersPhoto3.FullPath;
+                }
+
+                if (legalUsersPhoto2 != null)
+                {
+                    result1[i].VerivicationPhoto4 = legalUsersPhoto4.FullPath;
                 }
             }
 
@@ -218,7 +232,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     .Include(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.Id == result2[i].UserId);
 
-                var individualUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result2[i].UserId);
+                var individualUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result2[i].UserId && x.PhotoType == 1);
 
                 if (itemExtraData != null)
                 {
@@ -240,7 +254,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     .Include(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.Id == result3[i].UserId);
 
-                var individualUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result3[i].UserId);
+                var individualUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result3[i].UserId && x.PhotoType == 1);
 
                 if (itemExtraData != null)
                 {
@@ -329,13 +343,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task RejectVerificationRequest(Guid requestId, Guid userId)
         {
             var userOrganizationType = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == userId);
-            var photoPath = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId);
+            var photoPath = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType == 1);
+            var photoPath2 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType == 2);
+            var photoPath3 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType == 3);
+            var photoPath4 = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId && x.PhotoType == 4);
             
             switch (userOrganizationType.TypeOfEmployment)
             {
                 case TypeOfEmployment.LegalEntity:
                     var legalEntityRequest = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
                     dbContext.LegalUserOrganizationsData.Remove(legalEntityRequest);
+                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath2.FullPath);
+                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath3.FullPath);
+                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath4.FullPath);
                     break;
                 case TypeOfEmployment.IndividualEntity:
                     var individualEntityRequest = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);

@@ -11,6 +11,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public Guid UserId { get; set; }
         public string FileName { get; set; }
         public string FullPath { get; set; }
+        public int PhotoType { get; set; }
         public virtual UserEntity User { get; set; }
     }
 }

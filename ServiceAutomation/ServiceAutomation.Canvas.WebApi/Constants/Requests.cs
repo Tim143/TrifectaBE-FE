@@ -68,6 +68,9 @@
         {
             public const string SendDataForVerification = "SendDataForVerification";
             public const string SendPhotoForVerification = "SendPhotoForVerification";
+            public const string SendPhotoForVerification2 = "SendPhotoForVerification2";
+            public const string SendPhotoForVerification3 = "SendPhotoForVerification3";
+            public const string SendPhotoForVerification4 = "SendPhotoForVerification4";
             public const string GetVerifiedData = "GetVerifiedData";
         }
 
