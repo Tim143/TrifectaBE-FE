@@ -62,15 +62,24 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var startBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
                 var dynamicBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
 
+
                 if (startBonusWorkingTime < startBonusReward.DurationOfDays)
                 {
                     startBonusExpTime = startBonusReward.DurationOfDays - startBonusWorkingTime;
                 }
 
-                if (dynamicBonusWorkingTime < dynamicBonusReward.DurationOfDays)
+                if(dynamicBonusReward.DurationOfDays != null)
                 {
-                    dynamicBonusExpTime = (int)dynamicBonusReward.DurationOfDays - dynamicBonusWorkingTime;
+                    if (dynamicBonusWorkingTime < dynamicBonusReward.DurationOfDays)
+                    {
+                        dynamicBonusExpTime = (int)dynamicBonusReward.DurationOfDays - dynamicBonusWorkingTime;
+                    }
                 }
+                else
+                {
+                    dynamicBonusExpTime = 999;
+                }
+                
             }
            
             double receivedPayoutPercentage = 0;
