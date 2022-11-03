@@ -52,37 +52,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == true && x.TransactionStatus == TransactionStatus.ReadyForWithdraw).ToListAsync();
             var awaitingAccural = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == false).ToListAsync();
 
-            var startBonusReward = await dbContext.StartBonusRewards.FirstOrDefaultAsync(x => x.PackageId == package.Id);
-            var dynamicBonusReward = await dbContext.DynamicBonusRewards.FirstOrDefaultAsync(x => x.PackageId == package.Id);
-
-            var userPurchase = await dbContext.UsersPurchases.FirstOrDefaultAsync(x => x.PackageId == package.Id && x.UserId == userId);
-
-            var startBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
-            var dynamicBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
-
-            if (startBonusWorkingTime < startBonusReward.DurationOfDays)
+            if(package != null)
             {
-                startBonusExpTime = startBonusReward.DurationOfDays - startBonusWorkingTime;
+                var startBonusReward = await dbContext.StartBonusRewards.FirstOrDefaultAsync(x => x.PackageId == package.Id);
+                var dynamicBonusReward = await dbContext.DynamicBonusRewards.FirstOrDefaultAsync(x => x.PackageId == package.Id);
+
+                var userPurchase = await dbContext.UsersPurchases.FirstOrDefaultAsync(x => x.PackageId == package.Id && x.UserId == userId);
+
+                var startBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
+                var dynamicBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
+
+                if (startBonusWorkingTime < startBonusReward.DurationOfDays)
+                {
+                    startBonusExpTime = startBonusReward.DurationOfDays - startBonusWorkingTime;
+                }
+
+                if (dynamicBonusWorkingTime < dynamicBonusReward.DurationOfDays)
+                {
+                    dynamicBonusExpTime = (int)dynamicBonusReward.DurationOfDays - dynamicBonusWorkingTime;
+                }
             }
-
-            if (dynamicBonusWorkingTime < dynamicBonusReward.DurationOfDays)
-            {
-                dynamicBonusExpTime = (int)dynamicBonusReward.DurationOfDays - dynamicBonusWorkingTime;
-            }
-
-            //if(package.Name == "Start")
-            //{
-
-            //}
-            //else if(package.Name == "Classic")
-            //{
-
-            //}
-            //else
-            //{
-
-            //}
-
+           
             double receivedPayoutPercentage = 0;
 
             decimal awaitin = 0;
