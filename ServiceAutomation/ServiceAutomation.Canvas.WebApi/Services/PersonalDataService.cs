@@ -39,6 +39,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 }
             }
 
+            var startBonusExpTime = 0;
+            var dynamicBonusExpTime = 0;
+
             await dbContext.SaveChangesAsync();
 
             var package = await packagesService.GetUserPackageByIdAsync(userId);
@@ -48,6 +51,38 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == true && x.TransactionStatus == TransactionStatus.ReadyForWithdraw).ToListAsync();
             var awaitingAccural = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == false).ToListAsync();
+
+            var startBonusReward = await dbContext.StartBonusRewards.FirstOrDefaultAsync(x => x.PackageId == package.Id);
+            var dynamicBonusReward = await dbContext.DynamicBonusRewards.FirstOrDefaultAsync(x => x.PackageId == package.Id);
+
+            var userPurchase = await dbContext.UsersPurchases.FirstOrDefaultAsync(x => x.PackageId == package.Id && x.UserId == userId);
+
+            var startBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
+            var dynamicBonusWorkingTime = (DateTime.Now - userPurchase.PurchaseDate).Days;
+
+            if (startBonusWorkingTime < startBonusReward.DurationOfDays)
+            {
+                startBonusExpTime = startBonusReward.DurationOfDays - startBonusWorkingTime;
+            }
+
+            if (dynamicBonusWorkingTime < dynamicBonusReward.DurationOfDays)
+            {
+                dynamicBonusExpTime = (int)dynamicBonusReward.DurationOfDays - dynamicBonusWorkingTime;
+            }
+
+            //if(package.Name == "Start")
+            //{
+
+            //}
+            //else if(package.Name == "Classic")
+            //{
+
+            //}
+            //else
+            //{
+
+            //}
+
             double receivedPayoutPercentage = 0;
 
             decimal awaitin = 0;
@@ -98,6 +133,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 ReceivedPayoutPercentage = receivedPayoutPercentage,
                 ReuqiredAction = "test comment",
                 NextBasicLevelRequirements = nextBasicLevelRequirements,
+                StartBonusExpTime = startBonusExpTime,
+                DynamicBonusExpTime = dynamicBonusExpTime,
             };
 
             return response;

@@ -11,5 +11,7 @@
         public string ReuqiredAction { get; set; }
         public double ReceivedPayoutPercentage {get; set; }
         public PackageModel Package { get; set; }
+        public int DynamicBonusExpTime { get; set; }
+        public int StartBonusExpTime { get; set; }
     }
 }
