@@ -18,7 +18,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models
 
         public double PersonalTurnover { get; set; }
 
-        public double FirstLineTurnover { get; init; }
+        public double MounthlyTurnover { get; set; }
 
         public double GroupTurnover { get; set; }
 

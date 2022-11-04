@@ -17,8 +17,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     public class TenantGroupService : ITenantGroupService
     {
         private readonly AppDbContext dbContext;
-        private readonly ILevelStatisticService levelStatisticService;
-        public TenantGroupService(AppDbContext dbContext, ILevelStatisticService levelStatisticService)
+        private readonly ILevelsService levelStatisticService;
+        public TenantGroupService(AppDbContext dbContext, ILevelsService levelStatisticService)
         {
             this.dbContext = dbContext;
             this.levelStatisticService = levelStatisticService;
@@ -32,11 +32,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                     .Select(GetReferralGroupWithPartners)
                                                     .FirstOrDefaultAsync();
 
-            var monthlyLevelInfo = await levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
-            var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
+            var monthlyLevelInfo = await levelStatisticService.GetCurrentMonthlyLevelAsync(userId);
+            var basicLevelInfo = await levelStatisticService.GetUserBasicLevelAsync(userId);
 
             referralGroup.GroupOwner.PersonalTurnover = (double)basicLevelInfo.CurrentTurnover;
             referralGroup.GroupOwner.GroupTurnover = (double)monthlyLevelInfo.CurrentTurnover;
+            referralGroup.GroupOwner.MounthlyTurnover = (double)monthlyLevelInfo.CurrentTurnover;
             referralGroup.GroupOwner.BaseLevel = basicLevelInfo.CurrentLevel.Level;
 
             await FillReferralTreeAsync(referralGroup.PartnersGroups);
@@ -50,11 +51,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var childParetnerGroups = await GetPartnersReferralGroupsAsync(partner.Id);
                 partner.PartnersGroups = childParetnerGroups;
 
-                var monthlylevelinfo = await levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(partner.GroupOwner.UserId);
-                var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(partner.GroupOwner.UserId);
+                var monthlylevelinfo = await levelStatisticService.GetCurrentMonthlyLevelAsync(partner.GroupOwner.UserId);
+                var basicLevelInfo = await levelStatisticService.GetUserBasicLevelAsync(partner.GroupOwner.UserId);
 
                 partner.GroupOwner.PersonalTurnover = (double)basicLevelInfo.CurrentTurnover;
                 partner.GroupOwner.GroupTurnover = (double)monthlylevelinfo.CurrentTurnover;
+                partner.GroupOwner.MounthlyTurnover = (double)monthlylevelinfo.CurrentTurnover;
                 partner.GroupOwner.BaseLevel = basicLevelInfo.CurrentLevel.Level;
                 await FillReferralTreeAsync(childParetnerGroups);
             }

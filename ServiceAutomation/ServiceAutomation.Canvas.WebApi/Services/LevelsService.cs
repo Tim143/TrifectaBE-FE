@@ -16,9 +16,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ITurnoverService turnoverService;
-        private readonly ITenantGroupService tenantGroupService;
+        private readonly ITMPService tenantGroupService;
 
-        public LevelsService(AppDbContext dbContext, IMapper mapper, ITurnoverService turnoverService, ITenantGroupService tenantGroupService)
+        public LevelsService(AppDbContext dbContext, IMapper mapper, ITurnoverService turnoverService, ITMPService tenantGroupService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
