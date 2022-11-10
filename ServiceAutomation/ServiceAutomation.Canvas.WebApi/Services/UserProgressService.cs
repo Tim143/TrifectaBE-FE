@@ -14,19 +14,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     public class UserProgressService : IUserProgressService
     {
         private readonly ILevelsService levelsService;
-        private readonly ILevelStatisticService levelStatisticService;
         private readonly ITravelBonusService travelBonusService;
         private readonly ITenantGroupService tenantGroupService;
         private readonly AppDbContext dbContext;
 
         public UserProgressService(ILevelsService levelsService,
-                                   ILevelStatisticService levelStatisticService,
                                    ITravelBonusService travelBonusService,
                                    ITenantGroupService tenantGroupService,
                                    AppDbContext dbContext)
         {
             this.levelsService = levelsService;
-            this.levelStatisticService = levelStatisticService;
             this.travelBonusService = travelBonusService;
             this.tenantGroupService = tenantGroupService;
             this.dbContext = dbContext;
@@ -34,8 +31,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<ProgressResponseModel> GetUserProgress(Guid userId)
         {
-            var monthlyLevelInfo = await levelsService.GetCurrentMonthlyLevelAsync(userId);
             var basicLevelInfo = await levelsService.GetUserBasicLevelAsync(userId);
+            var monthlyLevelInfo = await levelsService.GetUserMonthlyLevelInfoAsync(userId, basicLevelInfo.CurrentLevel);
             var nextMounthlyLevelRequirements = await levelsService.GetNextMonthlyLevelAsync(monthlyLevelInfo.CurrentLevel.Level);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
             var travelBonusInfo = await travelBonusService.GetTravelBonusInfoByUserIdAsync(userId);

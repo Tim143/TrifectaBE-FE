@@ -7,14 +7,14 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface ILevelsService
     {
-
         Task<NextBasicLevelRequirementsModel> GetNextBasicLevelRequirementsAsync(Level currentUserBasicLevel);
 
         Task<LevelModel> GetNextMonthlyLevelAsync(int level);
 
-        Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover, Level basicLevel);
-        Task<LevelInfoModel> GetCurrentMonthlyLevelAsync(Guid userId);
+        Task<LevelInfoModel> GetUserMonthlyLevelInfoAsync(Guid userId, LevelModel basicLevelModel);
+
         Task<LevelInfoModel> GetUserBasicLevelAsync(Guid userId);
 
+        Task<LevelInfoModel> CalculateBasicLevelByTurnoverAsync(Guid userId, decimal turnover);
     }
 }

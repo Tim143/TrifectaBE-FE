@@ -32,8 +32,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                     .Select(GetReferralGroupWithPartners)
                                                     .FirstOrDefaultAsync();
 
-            var monthlyLevelInfo = await levelStatisticService.GetCurrentMonthlyLevelAsync(userId);
             var basicLevelInfo = await levelStatisticService.GetUserBasicLevelAsync(userId);
+            var monthlyLevelInfo = await levelStatisticService.GetUserMonthlyLevelInfoAsync(userId, basicLevelInfo.CurrentLevel);
 
             referralGroup.GroupOwner.PersonalTurnover = (double)basicLevelInfo.CurrentTurnover;
             referralGroup.GroupOwner.GroupTurnover = (double)monthlyLevelInfo.CurrentTurnover;
@@ -51,8 +51,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var childParetnerGroups = await GetPartnersReferralGroupsAsync(partner.Id);
                 partner.PartnersGroups = childParetnerGroups;
 
-                var monthlylevelinfo = await levelStatisticService.GetCurrentMonthlyLevelAsync(partner.GroupOwner.UserId);
                 var basicLevelInfo = await levelStatisticService.GetUserBasicLevelAsync(partner.GroupOwner.UserId);
+                var monthlylevelinfo = await levelStatisticService.GetUserMonthlyLevelInfoAsync(partner.GroupOwner.UserId, basicLevelInfo.CurrentLevel);
+                
 
                 partner.GroupOwner.PersonalTurnover = (double)basicLevelInfo.CurrentTurnover;
                 partner.GroupOwner.GroupTurnover = (double)monthlylevelinfo.CurrentTurnover;

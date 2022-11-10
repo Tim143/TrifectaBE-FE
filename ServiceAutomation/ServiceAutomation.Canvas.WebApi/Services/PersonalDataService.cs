@@ -14,14 +14,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly IPackagesService packagesService;
         private readonly ILevelsService levelsService;
-        private readonly ILevelStatisticService levelStatisticService;
         private readonly AppDbContext dbContext;
 
-        public PersonalDataService(IPackagesService packagesService, ILevelsService levelsService, ILevelStatisticService levelStatisticService, AppDbContext dbContext)
+        public PersonalDataService(IPackagesService packagesService, ILevelsService levelsService, AppDbContext dbContext)
         {
             this.packagesService = packagesService;
             this.levelsService = levelsService;
-            this.levelStatisticService = levelStatisticService;
             this.dbContext = dbContext;
         }
 
@@ -45,8 +43,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await dbContext.SaveChangesAsync();
 
             var package = await packagesService.GetUserPackageByIdAsync(userId);
-            var monthlyLevelInfo = await levelsService.GetCurrentMonthlyLevelAsync(userId);
             var basicLevelInfo = await levelsService.GetUserBasicLevelAsync(userId);
+            var monthlyLevelInfo = await levelsService.GetUserMonthlyLevelInfoAsync(userId, basicLevelInfo.CurrentLevel);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.IsAvailable == true && x.TransactionStatus == TransactionStatus.ReadyForWithdraw).ToListAsync();

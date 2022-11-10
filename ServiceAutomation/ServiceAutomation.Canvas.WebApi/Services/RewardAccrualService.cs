@@ -19,27 +19,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IPackagesService _packagesService;
         private readonly ISaleBonusCalculationService _saleBonusCalculationService;
         private readonly ISalesService _salesService;
-        private readonly ILevelStatisticService _levelStatisticService;
         private readonly IAutoBonusCalculatorService _autoBonusCalculatorService;
         private readonly ITeamBonusService _teamBonusService;
+        private readonly ILevelsService _levelsService;
 
         public RewardAccrualService(AppDbContext dbContext,
                                             ILevelBonusCalculatorService levelBonusCalculatorService,
                                             ISaleBonusCalculationService saleBonusCalculationService,
                                             IPackagesService packagesService,
                                             ISalesService salesService,
-                                            ILevelStatisticService levelStatisticService,
                                             IAutoBonusCalculatorService autoBonusCalculatorService,
-                                            ITeamBonusService teamBonusService)
+                                            ITeamBonusService teamBonusService,
+                                            ILevelsService levelsService)
         {
             _dbContext = dbContext;
             _levelBonusCalculatorService = levelBonusCalculatorService;
             _packagesService = packagesService;
             _saleBonusCalculationService = saleBonusCalculationService;
             _salesService = salesService;
-            _levelStatisticService = levelStatisticService;
             _autoBonusCalculatorService = autoBonusCalculatorService;
             _teamBonusService = teamBonusService;
+            _levelsService = levelsService;
         }
 
         private async Task<decimal> GetCurrency()
@@ -52,29 +52,23 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return result.Rates[0].Rate;
         }
 
-        public async Task AccrueRewardForBasicLevelAsync(Guid userId)
+        public async Task AccrueRewardForBasicLevelAsync(Guid userId, LevelInfoModel basicLevelInfo)
         {
             var userPackage = await _packagesService.GetUserPackageByIdAsync(userId);
             if (userPackage == null)
                 return;
 
-            var userBasicLevelId = await _dbContext.Users.Where(u => u.Id == userId).Select(u => u.BasicLevelId).FirstOrDefaultAsync();
-
-            if (userBasicLevelId == null)
-                return;
-
-            await AccrueLevelBonusRewardAsync(userId, userBasicLevelId.Value, userPackage);
-            await AccrueAutoBonusRewardAsync(userId, userBasicLevelId.Value, userPackage);
+            await AccrueLevelBonusRewardAsync(userId, basicLevelInfo, userPackage);
+            await AccrueAutoBonusRewardAsync(userId, basicLevelInfo, userPackage);
         }
 
-        private async Task AccrueLevelBonusRewardAsync(Guid userId, Guid userBasicLevelId, UserPackageModel userPackage)
+        private async Task AccrueLevelBonusRewardAsync(Guid userId, LevelInfoModel basicLevelInfo, UserPackageModel userPackage)
         {
-            var rewardInfo = await _levelBonusCalculatorService.CalculateLevelBonusRewardAsync(userBasicLevelId, userPackage.Id);
+            var rewardInfo = await _levelBonusCalculatorService.CalculateLevelBonusRewardAsync(basicLevelInfo.CurrentLevel.Id, userPackage.Id);
 
             if (rewardInfo.Reward == 0)
                 return;
 
-            var basicLevel = await _dbContext.Users.AsNoTracking().Where(u => u.Id == userId).Select(u => u.BasicLevelId).FirstAsync();
             var levelBonusId = await _dbContext.Bonuses.AsNoTracking()
                                                        .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.LevelBonus)
                                                        .Select(b => b.Id)
@@ -174,11 +168,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.SaveChangesAsync();
         }
     
-        private async Task AccrueAutoBonusRewardAsync(Guid userId, Guid userBasicLevelId, UserPackageModel userPackage)
+        private async Task AccrueAutoBonusRewardAsync(Guid userId, LevelInfoModel basicLevelInfo, UserPackageModel userPackage)
         {
-            var monthlyLevelInfo = await _levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
+            var monthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(userId, basicLevelInfo.CurrentLevel);
 
-            var rewardInfo = await _autoBonusCalculatorService.CalculateAutoBonusRewardAsync(userBasicLevelId, userPackage.Id, monthlyLevelInfo.CurrentTurnover);
+            var rewardInfo = await _autoBonusCalculatorService.CalculateAutoBonusRewardAsync(basicLevelInfo.CurrentLevel.Id, userPackage.Id, monthlyLevelInfo.CurrentTurnover);
 
             if (rewardInfo.Reward == 0)
                 return;
@@ -200,7 +194,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
-                ForBsicLevelId = userBasicLevelId
+                ForBsicLevelId = basicLevelInfo.CurrentLevel.Id
             };
 
             await _dbContext.Accruals.AddAsync(accrual);
@@ -209,8 +203,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         private async Task AccrualTeamBonusRewardsAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice)
         {
-            var userMonthlyLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(whoSoldId);
-            var userBasicLevelInfo = await _levelStatisticService.GetBasicLevelInfoByUserIdAsync(whoSoldId);
+            var userBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(whoSoldId);
+            var userMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(whoSoldId, userBasicLevelInfo.CurrentLevel);
+            var userMonthlyLevel = userMonthlyLevelInfo.CurrentLevel;
 
             var userRewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(sellingPrice, userMonthlyLevel, userBasicLevelInfo.CurrentTurnover, whoSoldId);
 
@@ -232,8 +227,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     break;
 
                 var parentUser = parentGroup.OwnerUserId;
-                var monthlyLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(parentUser);
-                var basicLevelInfo = await _levelStatisticService.GetBasicLevelInfoByUserIdAsync(parentUser);
+                var basicLevelInfo = await _levelsService.GetUserBasicLevelAsync(parentUser);
+                var monthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(parentUser, basicLevelInfo.CurrentLevel);
+                var monthlyLevel = monthlyLevelInfo.CurrentLevel;
 
                 var rewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(tempReward, monthlyLevel, tempMonthlyLevel, basicLevelInfo.CurrentTurnover, parentUser);
 
