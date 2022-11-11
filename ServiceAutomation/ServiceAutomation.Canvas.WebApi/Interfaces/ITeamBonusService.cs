@@ -9,6 +9,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     {
         Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardAsync(decimal initialReward, LevelModel monthlyLevel, decimal commonTurnover, Guid userId);
 
-        Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardAsync(decimal initialReward, LevelModel userMonthlyLevel, LevelModel partnerMonthlyLevel, decimal commonTurnover, Guid userId);
+        Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardForChildRefferalAsync(CalulatedRewardInfoModel childRefferalRewardInfo, LevelModel childRefferalMonthlyLevel, LevelModel userMonthlyLevel, decimal commonTurnover);
     }
 }

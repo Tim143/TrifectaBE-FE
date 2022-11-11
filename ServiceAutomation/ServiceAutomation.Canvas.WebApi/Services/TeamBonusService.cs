@@ -6,7 +6,6 @@ using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {
@@ -49,46 +48,44 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return new CalulatedRewardInfoModel
             {
                 InitialReward = initialReward,
-                Percent = (int)percent,
+                Percent = percent,
                 Reward = reward
             };
         }
 
-        public async Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardAsync(decimal initialReward, LevelModel userMonthlyLevel, LevelModel partnerMonthlyLevel, decimal commonTurnover, Guid userId)
+        public async Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardForChildRefferalAsync(CalulatedRewardInfoModel childRefferalRewardInfo,  LevelModel childRefferalMonthlyLevel, LevelModel userMonthlyLevel, decimal commonTurnover)
         {
-            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            //var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            //var startBonusIsActive = await _saleBonusCalculationService.IsStartBonusActiveAsync(currentUserPackage, userId);
 
-            var startBonusIsActive = await _saleBonusCalculationService.IsStartBonusActiveAsync(currentUserPackage, userId);
+            //if (startBonusIsActive)
+            //{
+            //    return new CalulatedRewardInfoModel();
+            //}
 
-            if (startBonusIsActive)
-            {
+            if (userMonthlyLevel.Level <= childRefferalMonthlyLevel.Level)
                 return new CalulatedRewardInfoModel();
-            }
 
             var appropriateBonusRewars = await _dbContext.TeamBonusRewards.AsNoTracking()
-                                                              .Where(t => t.MonthlyLevel.Level <= (Level)userMonthlyLevel.Level && t.CommonTurnover <= commonTurnover)
-                                                              .OrderByDescending(t => t.MonthlyLevel.Level)
-                                                              .FirstOrDefaultAsync();
-
+                                                                          .Where(t => t.MonthlyLevel.Level <= (Level)userMonthlyLevel.Level && t.CommonTurnover <= commonTurnover)
+                                                                          .OrderByDescending(t => t.MonthlyLevel.Level)
+                                                                          .FirstOrDefaultAsync();
 
             if (appropriateBonusRewars == null)
                 return new CalulatedRewardInfoModel();
 
-            var partnerBonusReward = await _dbContext.TeamBonusRewards.AsNoTracking()
-                                                              .Where(t => t.MonthlyLevel.Level == (Level)partnerMonthlyLevel.Level )
-                                                              .FirstOrDefaultAsync();
-
-            var percent = appropriateBonusRewars.Percent - partnerBonusReward.Percent;
+            var percent = appropriateBonusRewars.Percent - childRefferalRewardInfo.Percent;
 
             if (percent <= 0)
                 return new CalulatedRewardInfoModel();
 
+            var initialReward = childRefferalRewardInfo.Reward;
             var reward = (initialReward * (decimal)percent) / 100;
 
             return new CalulatedRewardInfoModel
             {
                 InitialReward = initialReward,
-                Percent = (int)percent,
+                Percent = percent,
                 Reward = reward
             };
         }

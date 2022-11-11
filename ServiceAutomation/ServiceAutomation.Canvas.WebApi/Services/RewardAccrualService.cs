@@ -114,7 +114,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             if (teamBonusRewards.Reward > dinamicBonusReward.Reward)
             {
-                await AccrualTeamBonusRewardsAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId, sellingPrice);
+                await AccrualTeamBonusRewardsAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId);
             }
             else
             {
@@ -230,39 +230,41 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return userRewardInfo;
         }
 
-        private async Task AccrualTeamBonusRewardsAsync(CalulatedRewardInfoModel userRewardInfo, LevelInfoModel userMonthlyLevelInfo, Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice)
+        private async Task AccrualTeamBonusRewardsAsync(CalulatedRewardInfoModel sellerRewardInfo, LevelInfoModel sellerMonthlyLevelInfo, Guid sellerId, Guid customerId)
         {
-            if (userRewardInfo.Reward == 0)
+            if (sellerRewardInfo.Reward == 0)
                 return;
 
-            await AccrualTeamBonusRewardsAsync(whoSoldId, whoBoughtId, userRewardInfo);
+            await AccrualTeamBonusRewardsAsync(sellerId, customerId, sellerRewardInfo);
 
-            decimal tempReward = userRewardInfo.Reward;
-            LevelModel tempMonthlyLevel = userMonthlyLevelInfo.CurrentLevel;
+            var childRefferalRewardInfo = sellerRewardInfo;
+            var childRefferalMonthlyLevel = sellerMonthlyLevelInfo.CurrentLevel;
 
             while (true)
             {
-                var parentGroup = await _dbContext.Users.AsNoTracking()
-                                                       .Where(u => u.Id == whoSoldId)
-                                                       .Select(u => u.Group.Parent)
-                                                       .FirstOrDefaultAsync();
-                if (parentGroup == null)
+                var parentRefferalGroup = await _dbContext.Users.AsNoTracking()
+                                                          .Where(u => u.Id == sellerId)
+                                                          .Select(u => u.Group.Parent)
+                                                          .FirstOrDefaultAsync();
+                if (parentRefferalGroup == null)
                     break;
 
-                var parentUser = parentGroup.OwnerUserId;
-                var basicLevelInfo = await _levelsService.GetUserBasicLevelAsync(parentUser);
-                var monthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(parentUser, basicLevelInfo.CurrentLevel);
-                var monthlyLevel = monthlyLevelInfo.CurrentLevel;
+                var parentRefferalId = parentRefferalGroup.OwnerUserId;
 
-                var rewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(tempReward, monthlyLevel, tempMonthlyLevel, basicLevelInfo.CurrentTurnover, parentUser);
+                var parentRefferalBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(parentRefferalId);
+                var parentRefferalMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(parentRefferalId, parentRefferalBasicLevelInfo.CurrentLevel);
 
-                if (rewardInfo.Reward == 0)
+                var parentRefferalMonthlyLevel = parentRefferalMonthlyLevelInfo.CurrentLevel;
+
+                var parentRefferalRewardInfo = await _teamBonusService.CalculateTeamBonusRewardForChildRefferalAsync(childRefferalRewardInfo, childRefferalMonthlyLevel, parentRefferalMonthlyLevel, parentRefferalBasicLevelInfo.CurrentTurnover);
+
+                if (parentRefferalRewardInfo.Reward == 0)
                     break;
 
-                await AccrualTeamBonusRewardsAsync(parentUser, whoBoughtId, rewardInfo);
+                await AccrualTeamBonusRewardsAsync(parentRefferalId, customerId, parentRefferalRewardInfo);
 
-                tempReward = rewardInfo.Reward;
-                tempMonthlyLevel = monthlyLevel;
+                childRefferalRewardInfo = parentRefferalRewardInfo;
+                childRefferalMonthlyLevel = parentRefferalMonthlyLevel;
             }
         }
 
