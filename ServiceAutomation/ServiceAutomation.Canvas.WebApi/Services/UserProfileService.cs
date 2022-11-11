@@ -113,7 +113,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 try
                 {
                     System.IO.File.Delete(webHostEnvironment.WebRootPath + photo.FullPath);
+
                     dbContext.ProfilePhotos.Remove(photo);
+                    
                     await dbContext.SaveChangesAsync();
 
                     var newPhoto = new ProfilePhotoEntity()
@@ -123,12 +125,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         FullPath = profilePhotoFullPath
                     };
 
-
                     using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + profilePhotoFullPath, FileMode.Create))
                     {
                         await data.CopyToAsync(fileStream);
                     }
 
+                    await dbContext.ProfilePhotos.AddAsync(newPhoto);
                     await dbContext.SaveChangesAsync();
                 }
                 catch (Exception ex)

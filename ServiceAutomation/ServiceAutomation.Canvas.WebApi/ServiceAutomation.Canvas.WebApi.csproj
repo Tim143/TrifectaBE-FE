@@ -61,7 +61,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\DocumentVerification\Verification4\" />
     <Folder Include="wwwroot\DocumentVerification\Verification3\" />
-    <Folder Include="wwwroot\DocumentVerification\Verification2\" />
     <Folder Include="wwwroot\DocumentVerification\Verifications\" />
     <Folder Include="wwwroot\ProfilePhotos\" />
   </ItemGroup>

@@ -205,10 +205,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     result1[i].Email = itemExtraData?.Email;
                     result1[i].PhoneNumber = itemExtraData?.PhoneNumber;
                     result1[i].TypeOfEmployment = itemExtraData?.UserAccountOrganization.TypeOfEmployment.ToString();
-                        if (legalUsersPhoto2 != null)
-                        {
-                            result1[i].VerivicationPhoto2 = legalUsersPhoto2.FullPath;
-                        }
+
+                    if (legalUsersPhoto2 != null)
+                    {
+                        result1[i].VerivicationPhoto2 = legalUsersPhoto2.FullPath;
+                    }
 
                     if (legalUsersPhoto3 != null)
                     {
