@@ -99,8 +99,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 return;
 
             await AccrueRewardForStartBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
-            await AccrueRewardForDynamicBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
-            await AccrualTeamBonusRewardsAsync(whoSoldId, whoBoughtId, sellingPrice);
+            await AccuralRewardsForTeamOrDynamicBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
+
+
+        }
+
+        private async Task AccuralRewardsForTeamOrDynamicBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
+        {
+            var userBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(whoSoldId);
+            var userMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(whoSoldId, userBasicLevelInfo.CurrentLevel);
+
+            var teamBonusRewards = await CalculateRewardForTeamBonus(whoSoldId, userBasicLevelInfo, userMonthlyLevelInfo, sellingPrice);
+            var dinamicBonusReward = await CalculateRewardForDynamicBonusAsync(whoSoldId, sellingPrice, userPackage);
+
+            if (teamBonusRewards.Reward > dinamicBonusReward.Reward)
+            {
+                await AccrualTeamBonusRewardsAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId, sellingPrice);
+            }
+            else
+            {
+                await AccrueRewardForDynamicBonusAsync(dinamicBonusReward, whoSoldId, whoBoughtId, sellingPrice, userPackage);
+            }
         }
 
         private async Task AccrueRewardForStartBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
@@ -136,11 +155,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        private async Task AccrueRewardForDynamicBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
+        private async Task<CalulatedRewardInfoModel> CalculateRewardForDynamicBonusAsync(Guid whoSoldId, decimal sellingPrice, UserPackageModel userPackage)
         {
             var userSalesCount = await _salesService.GerSalesCountInMonthAsync(whoSoldId);
             var rewardInfo = await _saleBonusCalculationService.CalculateDynamicBonusRewardAsync(sellingPrice, userPackage, userSalesCount);
+            return rewardInfo;
+        }
 
+        private async Task AccrueRewardForDynamicBonusAsync(CalulatedRewardInfoModel rewardInfo, Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
+        {
             if (rewardInfo.Reward == 0)
                 return;
 
@@ -201,21 +224,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        private async Task AccrualTeamBonusRewardsAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice)
+        private async Task<CalulatedRewardInfoModel> CalculateRewardForTeamBonus(Guid whoSoldId, LevelInfoModel userBasicLevelInfo, LevelInfoModel userMonthlyLevelInfo, decimal sellingPrice)
         {
-            var userBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(whoSoldId);
-            var userMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(whoSoldId, userBasicLevelInfo.CurrentLevel);
-            var userMonthlyLevel = userMonthlyLevelInfo.CurrentLevel;
+            var userRewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(sellingPrice, userMonthlyLevelInfo.CurrentLevel, userBasicLevelInfo.CurrentTurnover, whoSoldId);
+            return userRewardInfo;
+        }
 
-            var userRewardInfo = await _teamBonusService.CalculateTeamBonusRewardAsync(sellingPrice, userMonthlyLevel, userBasicLevelInfo.CurrentTurnover, whoSoldId);
-
+        private async Task AccrualTeamBonusRewardsAsync(CalulatedRewardInfoModel userRewardInfo, LevelInfoModel userMonthlyLevelInfo, Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice)
+        {
             if (userRewardInfo.Reward == 0)
                 return;
 
             await AccrualTeamBonusRewardsAsync(whoSoldId, whoBoughtId, userRewardInfo);
 
             decimal tempReward = userRewardInfo.Reward;
-            LevelModel tempMonthlyLevel = userMonthlyLevel;
+            LevelModel tempMonthlyLevel = userMonthlyLevelInfo.CurrentLevel;
 
             while (true)
             {

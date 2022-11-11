@@ -25,14 +25,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardAsync(decimal initialReward, LevelModel monthlyLevel, decimal commonTurnover, Guid userId)
         {
-            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            //var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
 
-            var startBonusIsActive = await _saleBonusCalculationService.IsStartBonusActiveAsync(currentUserPackage, userId);
+            //var startBonusIsActive = await _saleBonusCalculationService.IsStartBonusActiveAsync(currentUserPackage, userId);
 
-            if (startBonusIsActive)
-            {
-                return new CalulatedRewardInfoModel();
-            }
+            //if (startBonusIsActive)
+            //{
+            //    return new CalulatedRewardInfoModel();
+            //}
 
             var appropriateBonusRewars = await _dbContext.TeamBonusRewards.AsNoTracking()
                                                                           .Where(t => t.MonthlyLevel.Level <= (Level)monthlyLevel.Level && t.CommonTurnover <= commonTurnover)
