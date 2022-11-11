@@ -38,7 +38,6 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.Email))
                 .ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.ProfilePhoto.FullPath))
                 .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.PhoneNumber))
-                .ForMember(x => x.Level, opt => opt.MapFrom(x => x.BasicLevel.Name))
                 .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.PersonalReferral));
 
 

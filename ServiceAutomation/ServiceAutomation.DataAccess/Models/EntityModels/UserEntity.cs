@@ -22,10 +22,6 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public byte[] PasswordSalt { get; set; }
         public bool IsVerifiedUser { get; set; }
 
-        public Guid? BasicLevelId { get; set; }
-
-        public BasicLevelEntity BasicLevel { get; set; }
-
         public virtual CredentialEntity Credential { get; set; }
         public virtual TenantGroupEntity Group { get; set; }
         public virtual UserProfileInfoEntity UserContact { get; set; }

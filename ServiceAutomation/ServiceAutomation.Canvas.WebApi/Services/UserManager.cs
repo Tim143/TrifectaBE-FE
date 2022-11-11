@@ -18,27 +18,22 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IIdentityGenerator identityGenerator;
         private readonly IUserReferralService userReferralService;
         private readonly ITenantGroupService tenantGroupService;
-        private readonly ILevelStatisticService levelStatisticService;
 
         public UserManager(AppDbContext dbContext,
                             IMapper mapper,
                             IIdentityGenerator identityGenerator,
                             IUserReferralService userReferralService,
-                            ITenantGroupService tenantGroupService,
-                            ILevelStatisticService levelStatisticService)
+                            ITenantGroupService tenantGroupService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.identityGenerator = identityGenerator;
             this.userReferralService = userReferralService;
             this.tenantGroupService = tenantGroupService;
-            this.levelStatisticService = levelStatisticService;
         }
 
         public async Task<UserModel> AddUserAsync(UserModel user)
         {
-            var firstBasicLevel = await dbContext.BasicLevels.SingleOrDefaultAsync(x => x.Level == DataAccess.Models.Enums.Level.FirstLevel);
-
             var addedUser = new UserEntity()
             {
                 FirstName = user.FirstName,
@@ -51,7 +46,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PersonalReferral = userReferralService.GenerateIviteCode(),
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
-                BasicLevel = firstBasicLevel,
                 IsVerifiedUser = false,
                 DateOfBirth = user.DateOfBirth,
                 Role = "User"
@@ -64,7 +58,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var userModel = mapper.Map<UserModel>(addedUser);
             
             await tenantGroupService.CreateTenantGroupForUserAsync(userModel);
-            await levelStatisticService.AddLevelsInfoForNewUserAsync(addedUser.Id);
 
             await dbContext.SaveChangesAsync();
 

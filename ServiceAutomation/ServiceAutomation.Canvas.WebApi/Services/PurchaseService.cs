@@ -14,17 +14,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly AppDbContext _dbContext;
         private readonly IPackagesService _packagesService;
-        private readonly ILevelCalculationService _levelCalculationService;
+        private readonly IBonusesCalculationService _bonusesCalculationService;
         private readonly IRewardAccrualService _rewardAccrualService;
 
         public PurchaseService(AppDbContext dbContext,
                               IPackagesService packagesService,
-                              ILevelCalculationService levelCalculationService,
+                              IBonusesCalculationService bonusesCalculationService,
                               IRewardAccrualService rewardAccrualService)
         {
             _dbContext = dbContext;
             _packagesService = packagesService;
-            _levelCalculationService = levelCalculationService;
+            _bonusesCalculationService = bonusesCalculationService;
             _rewardAccrualService = rewardAccrualService;
         }
 
@@ -87,22 +87,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.UsersPurchases.AddAsync(purchase);
             await _dbContext.SaveChangesAsync();
 
-            await _levelCalculationService.СalculateUserLevelsAsync(userId);
-            await _levelCalculationService.СalculateParentPartnersLevelsAsync(userId);
-
-            var inviteReferral = await _dbContext.Users.AsNoTracking()
-                                           .Where(u => u.Id == userId)
-                                           .Select(u => u.InviteReferral)
-                                           .FirstOrDefaultAsync();
-            if (inviteReferral == null)
-                return;
-
-            var referralUserId = await _dbContext.Users.AsNoTracking()
-                                                       .Where(u => u.PersonalReferral == inviteReferral)
-                                                       .Select(u => u.Id)
-                                                       .FirstOrDefaultAsync();
-
-            await _rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, userId, purchasePrice);
+            await _bonusesCalculationService.CalculateBonusesForRefferalsAsync(userId, purchasePrice);
         }
     }
 }

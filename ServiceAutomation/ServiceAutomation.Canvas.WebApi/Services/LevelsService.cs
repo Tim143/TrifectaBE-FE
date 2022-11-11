@@ -8,6 +8,7 @@ using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {
@@ -26,31 +27,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.tenantGroupService = tenantGroupService;
         }
 
-        public async Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover, Level basicLevel)
+        public async Task<LevelInfoModel> GetUserMonthlyLevelInfoAsync(Guid userId, LevelModel basicLevelModel)
         {
-            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
-                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < monthlyTurnover)
-                                                                          && x.Level <= basicLevel)
-                                                             .Max(x => x.Level))
-                                                             .SingleOrDefaultAsync();
-
-            return _mapper.Map<LevelModel>(monthlyLevel);
-        }
-
-        public async Task<LevelInfoModel> GetCurrentMonthlyLevelAsync(Guid userId)
-        {
-            var basicLevel = await _dbContext.Users.Where(x => x.Id == userId).Select(x => x.BasicLevel.Level).FirstAsync();
-            var turnover = await turnoverService.GetMonthlyTurnoverByUserIdAsync(userId);
+            var userMonthlyTurnover = await turnoverService.GetMonthlyTurnoverByUserIdAsync(userId);
 
             var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
-                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < turnover)
-                                                                          && x.Level <= basicLevel)
+                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < userMonthlyTurnover)
+                                                                          && x.Level <= (Level)basicLevelModel.Level)
                                                              .Max(x => x.Level))
                                                              .SingleOrDefaultAsync();
             var lefelInfoModel = new LevelInfoModel()
             {
                 CurrentLevel = _mapper.Map<LevelModel>(monthlyLevel),
-                CurrentTurnover = turnover,
+                CurrentTurnover = userMonthlyTurnover,
             };
 
             return lefelInfoModel;
@@ -82,11 +71,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<LevelInfoModel> GetUserBasicLevelAsync(Guid userId)
         {
-            BasicLevelEntity[] basicLevels = await _dbContext.BasicLevels.ToArrayAsync();
-
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
             var turnover = await turnoverService.GetTurnoverByUserIdAsync(userId);
+            return await GetUserBasicLevelAsync(userId, turnover);
+        }
 
+        public async Task<LevelInfoModel> CalculateBasicLevelByTurnoverAsync(Guid userId, decimal turnover)
+        {
+            return await GetUserBasicLevelAsync(userId, turnover);
+        }
+
+        private async Task<LevelInfoModel> GetUserBasicLevelAsync(Guid userId, decimal turnover)
+        {
+            BasicLevelEntity[] basicLevels = await GetBasicLevelsAsync();
             var levelsInfo = await tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(userId);
             var appropriateLevels = basicLevels.Where(l => l.Turnover == null || l.Turnover < turnover).OrderByDescending(l => (int)l.Level);
 
@@ -110,7 +106,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 if (newLevel != null)
                     break;
             }
-            var currentBasicLevel = newLevel ?? user.BasicLevel;
+            var currentBasicLevel = newLevel;
             var lefelInfoModel = new LevelInfoModel()
             {
                 CurrentLevel = _mapper.Map<LevelModel>(currentBasicLevel),
@@ -119,6 +115,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             return lefelInfoModel;
         }
+
+        private async Task<BasicLevelEntity[]> GetBasicLevelsAsync()
+        {
+            if (_basicLevels == null)
+            {
+                _basicLevels = await _dbContext.BasicLevels.ToArrayAsync();
+            }
+
+            return _basicLevels;
+        }
+
+        private BasicLevelEntity[] _basicLevels;
     }
 }
 

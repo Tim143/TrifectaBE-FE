@@ -35,14 +35,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ILevelsService _levelsService;
 
         private const string BasePath = "/ProfilePhotos/";
 
-        public UserProfileService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public UserProfileService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment, ILevelsService levelsService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.webHostEnvironment = webHostEnvironment;
+            _levelsService= levelsService;
         }
 
         public async Task<UserProfileResponseModel> GetUserInfo(Guid userId)
@@ -50,7 +52,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var user = await dbContext.Users
                 .Include(x => x.ProfilePhoto)
                 .Include(x => x.UserContact)
-                .Include(x => x.BasicLevel)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             var package = await dbContext.UsersPurchases
@@ -64,6 +65,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                 .FirstOrDefaultAsync();
 
             var response = mapper.Map<UserProfileResponseModel>(user);
+            response.Level = (await _levelsService.GetUserBasicLevelAsync(userId)).CurrentLevel.Name;
 
             if(package != null)
             {
