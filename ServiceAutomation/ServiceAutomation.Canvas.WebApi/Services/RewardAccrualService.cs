@@ -98,10 +98,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (userPackage == null)
                 return;
 
-            await AccrueRewardForStartBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
-            await AccuralRewardsForTeamOrDynamicBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
+            var startBonusIsActive = await _saleBonusCalculationService.IsStartBonusActiveAsync(userPackage, whoSoldId);
 
-
+            if (startBonusIsActive)
+            {
+                await AccrueRewardForStartBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
+            }
+            else
+            {
+                await AccuralRewardsForTeamOrDynamicBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
+            }
         }
 
         private async Task AccuralRewardsForTeamOrDynamicBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
