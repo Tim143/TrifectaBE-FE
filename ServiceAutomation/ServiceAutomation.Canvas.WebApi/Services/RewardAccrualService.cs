@@ -112,7 +112,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private async Task AccuralRewardsForTeamOrDynamicBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage, bool startBonusIsActive)
         {
             var userBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(whoSoldId);
-            var userMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(whoSoldId, userBasicLevelInfo.CurrentLevel);
+            var userMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoWithouLastPurchaseAsync(whoSoldId, userBasicLevelInfo.CurrentLevel, sellingPrice);
 
             var teamBonusRewards = await CalculateRewardForTeamBonus(whoSoldId, userBasicLevelInfo, userMonthlyLevelInfo, sellingPrice);
 
@@ -130,7 +130,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 }
             }
 
-            await AccuralTeamBonusStructureAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId);
+            await AccuralTeamBonusStructureAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId, sellingPrice);
         }
 
         private async Task AccrueRewardForStartBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
@@ -249,7 +249,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
            await AccrualTeamBonusRewardsAsync(sellerId, customerId, sellerRewardInfo);
         }
 
-        private async Task AccuralTeamBonusStructureAsync(CalulatedRewardInfoModel sellerRewardInfo, LevelInfoModel sellerMonthlyLevelInfo, Guid sellerId, Guid customerId)
+        private async Task AccuralTeamBonusStructureAsync(CalulatedRewardInfoModel sellerRewardInfo, LevelInfoModel sellerMonthlyLevelInfo, Guid sellerId, Guid customerId, decimal price)
         {
             if (sellerRewardInfo.Reward == 0)
                 return;
@@ -269,7 +269,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var parentRefferalId = parentRefferalGroup.OwnerUserId;
 
                 var parentRefferalBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(parentRefferalId);
-                var parentRefferalMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(parentRefferalId, parentRefferalBasicLevelInfo.CurrentLevel);
+                var parentRefferalMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoWithouLastPurchaseAsync(parentRefferalId, parentRefferalBasicLevelInfo.CurrentLevel, price);
 
                 var parentRefferalMonthlyLevel = parentRefferalMonthlyLevelInfo.CurrentLevel;
 

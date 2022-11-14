@@ -126,6 +126,24 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return _basicLevels;
         }
 
+        public async Task<LevelInfoModel> GetUserMonthlyLevelInfoWithouLastPurchaseAsync(Guid userId, LevelModel basicLevelModel, decimal price)
+        {
+            var userMonthlyTurnover = await turnoverService.GetMonthlyTurnoverByUserIdAsync(userId) - price;
+
+            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
+                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < userMonthlyTurnover)
+                                                                          && x.Level <= (Level)basicLevelModel.Level)
+                                                             .Max(x => x.Level))
+                                                             .SingleOrDefaultAsync();
+            var lefelInfoModel = new LevelInfoModel()
+            {
+                CurrentLevel = _mapper.Map<LevelModel>(monthlyLevel),
+                CurrentTurnover = userMonthlyTurnover,
+            };
+
+            return lefelInfoModel;
+        }
+
         private BasicLevelEntity[] _basicLevels;
     }
 }

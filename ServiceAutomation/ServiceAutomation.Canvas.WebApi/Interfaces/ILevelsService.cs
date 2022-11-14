@@ -12,6 +12,9 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<LevelModel> GetNextMonthlyLevelAsync(int level);
 
         Task<LevelInfoModel> GetUserMonthlyLevelInfoAsync(Guid userId, LevelModel basicLevelModel);
+        Task<LevelInfoModel> GetUserMonthlyLevelInfoWithouLastPurchaseAsync(Guid userId, LevelModel basicLevelModel, decimal price);
+
+
 
         Task<LevelInfoModel> GetUserBasicLevelAsync(Guid userId);
 
