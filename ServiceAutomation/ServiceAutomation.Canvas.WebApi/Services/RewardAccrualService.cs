@@ -104,28 +104,33 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 await AccrueRewardForStartBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
             }
-            else
-            {
-                await AccuralRewardsForTeamOrDynamicBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage);
-            }
+
+            await AccuralRewardsForTeamOrDynamicBonusAsync(whoSoldId, whoBoughtId, sellingPrice, userPackage, startBonusIsActive);
+
         }
 
-        private async Task AccuralRewardsForTeamOrDynamicBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
+        private async Task AccuralRewardsForTeamOrDynamicBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage, bool startBonusIsActive)
         {
             var userBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(whoSoldId);
             var userMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(whoSoldId, userBasicLevelInfo.CurrentLevel);
 
             var teamBonusRewards = await CalculateRewardForTeamBonus(whoSoldId, userBasicLevelInfo, userMonthlyLevelInfo, sellingPrice);
-            var dinamicBonusReward = await CalculateRewardForDynamicBonusAsync(whoSoldId, sellingPrice, userPackage);
 
-            if (teamBonusRewards.Reward > dinamicBonusReward.Reward)
+            if (!startBonusIsActive)
             {
-                await AccrualTeamBonusRewardsAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId);
+                var dinamicBonusReward = await CalculateRewardForDynamicBonusAsync(whoSoldId, sellingPrice, userPackage);
+
+                if (teamBonusRewards.Reward > dinamicBonusReward.Reward)
+                {
+                    await AccrualTeamBonusRewardsAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId);
+                }
+                else
+                {
+                    await AccrueRewardForDynamicBonusAsync(dinamicBonusReward, whoSoldId, whoBoughtId, sellingPrice, userPackage);
+                }
             }
-            else
-            {
-                await AccrueRewardForDynamicBonusAsync(dinamicBonusReward, whoSoldId, whoBoughtId, sellingPrice, userPackage);
-            }
+
+            await AccuralTeamBonusStructureAsync(teamBonusRewards, userMonthlyLevelInfo, whoSoldId, whoBoughtId);
         }
 
         private async Task AccrueRewardForStartBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage)
@@ -241,7 +246,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (sellerRewardInfo.Reward == 0)
                 return;
 
-            await AccrualTeamBonusRewardsAsync(sellerId, customerId, sellerRewardInfo);
+           await AccrualTeamBonusRewardsAsync(sellerId, customerId, sellerRewardInfo);
+        }
+
+        private async Task AccuralTeamBonusStructureAsync(CalulatedRewardInfoModel sellerRewardInfo, LevelInfoModel sellerMonthlyLevelInfo, Guid sellerId, Guid customerId)
+        {
+            if (sellerRewardInfo.Reward == 0)
+                return;
 
             var childRefferalRewardInfo = sellerRewardInfo;
             var childRefferalMonthlyLevel = sellerMonthlyLevelInfo.CurrentLevel;
