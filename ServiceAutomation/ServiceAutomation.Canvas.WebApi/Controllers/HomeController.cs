@@ -41,7 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpGet(Constants.Requests.Home.GetPersonalPageInfo)]
         public async Task<IActionResult> GetPersonalPageInfo(Guid userId)
         {
-            return Ok(await personalDataService.GetHomeUserData(userId));
+            return Ok(await personalDataService.GetHomeUserData(userId));//test for qq
         }
     }
 }

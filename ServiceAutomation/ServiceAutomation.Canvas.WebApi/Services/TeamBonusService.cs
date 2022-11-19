@@ -79,7 +79,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (percent <= 0)
                 return new CalulatedRewardInfoModel();
 
-            var initialReward = childRefferalRewardInfo.Reward;
+            var initialReward = childRefferalRewardInfo.InitialReward;
             var reward = (initialReward * (decimal)percent) / 100;
 
             return new CalulatedRewardInfoModel

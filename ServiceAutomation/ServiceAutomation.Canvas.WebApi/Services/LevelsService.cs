@@ -83,6 +83,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private async Task<LevelInfoModel> GetUserBasicLevelAsync(Guid userId, decimal turnover)
         {
             BasicLevelEntity[] basicLevels = await GetBasicLevelsAsync();
+            var user = await _dbContext.Users.Include(x => x.BasicLevel).FirstOrDefaultAsync(x => x.Id == userId);
             var levelsInfo = await tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(userId);
             var appropriateLevels = basicLevels.Where(l => l.Turnover == null || l.Turnover < turnover).OrderByDescending(l => (int)l.Level);
 
@@ -106,10 +107,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 if (newLevel != null)
                     break;
             }
-            var currentBasicLevel = newLevel;
+
+            //var currentBasicLevel = newLevel;
+
+            if(user.BasicLevel == null || user.BasicLevel.Level < newLevel.Level)
+            {
+                user.BasicLevelId = newLevel.Id;
+                await _dbContext.SaveChangesAsync();
+            }
+
             var lefelInfoModel = new LevelInfoModel()
             {
-                CurrentLevel = _mapper.Map<LevelModel>(currentBasicLevel),
+                CurrentLevel = _mapper.Map<LevelModel>(newLevel),
                 CurrentTurnover = turnover,
             };
 

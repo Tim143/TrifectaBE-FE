@@ -251,9 +251,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         private async Task AccuralTeamBonusStructureAsync(CalulatedRewardInfoModel sellerRewardInfo, LevelInfoModel sellerMonthlyLevelInfo, Guid sellerId, Guid customerId, decimal price)
         {
-            if (sellerRewardInfo.Reward == 0)
-                return;
-
             var childRefferalRewardInfo = sellerRewardInfo;
             var childRefferalMonthlyLevel = sellerMonthlyLevelInfo.CurrentLevel;
 
@@ -267,7 +264,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     break;
 
                 var parentRefferalId = parentRefferalGroup.OwnerUserId;
-
+                
                 var parentRefferalBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(parentRefferalId);
                 var parentRefferalMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoWithouLastPurchaseAsync(parentRefferalId, parentRefferalBasicLevelInfo.CurrentLevel, price);
 
@@ -275,13 +272,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
                 var parentRefferalRewardInfo = await _teamBonusService.CalculateTeamBonusRewardForChildRefferalAsync(childRefferalRewardInfo, childRefferalMonthlyLevel, parentRefferalMonthlyLevel, parentRefferalBasicLevelInfo.CurrentTurnover);
 
-                if (parentRefferalRewardInfo.Reward == 0)
-                    break;
-
-                await AccrualTeamBonusRewardsAsync(parentRefferalId, customerId, parentRefferalRewardInfo);
-
+                if (parentRefferalRewardInfo.Reward != 0) { await AccrualTeamBonusRewardsAsync(parentRefferalId, customerId, parentRefferalRewardInfo); }
+                    
                 childRefferalRewardInfo = parentRefferalRewardInfo;
                 childRefferalMonthlyLevel = parentRefferalMonthlyLevel;
+
+                sellerId = parentRefferalGroup.OwnerUserId;
             }
         }
 

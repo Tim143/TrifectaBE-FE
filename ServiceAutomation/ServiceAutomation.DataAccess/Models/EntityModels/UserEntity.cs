@@ -15,6 +15,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public Country Country { get; set; }
         public string PersonalReferral { get; set; }
         public string InviteReferral { get; set; }
+        public Guid? BasicLevelId { get; set; }
 
         public string Role { get; set; }
 
@@ -23,6 +24,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public bool IsVerifiedUser { get; set; }
 
         public virtual CredentialEntity Credential { get; set; }
+        public virtual BasicLevelEntity BasicLevel { get; set; }
         public virtual TenantGroupEntity Group { get; set; }
         public virtual UserProfileInfoEntity UserContact { get; set; }
         public virtual ProfilePhotoEntity ProfilePhoto { get; set; }

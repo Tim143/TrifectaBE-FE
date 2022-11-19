@@ -11,6 +11,11 @@ namespace ServiceAutomation.DataAccess.DbModelConfigurations
             base.Configure(builder);
 
             builder.ToTable(UserEntityDBConstants.TableName);
+            builder.HasOne(x => x.BasicLevel)
+                   .WithMany()
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .IsRequired(false)
+                   .HasForeignKey(x => x.BasicLevelId);
         }
     }
 
