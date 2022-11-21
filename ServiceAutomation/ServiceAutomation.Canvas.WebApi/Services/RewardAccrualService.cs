@@ -274,7 +274,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
                 if (parentRefferalRewardInfo.Reward != 0) { await AccrualTeamBonusRewardsAsync(parentRefferalId, customerId, parentRefferalRewardInfo); }
                     
-                childRefferalRewardInfo = parentRefferalRewardInfo;
+                //childRefferalRewardInfo = parentRefferalRewardInfo;
                 childRefferalMonthlyLevel = parentRefferalMonthlyLevel;
 
                 sellerId = parentRefferalGroup.OwnerUserId;
