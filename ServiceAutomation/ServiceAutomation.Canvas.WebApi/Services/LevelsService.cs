@@ -6,6 +6,7 @@ using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using ServiceAutomation.DataAccess.Models.Enums;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
@@ -139,11 +140,24 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var userMonthlyTurnover = await turnoverService.GetMonthlyTurnoverByUserIdAsync(userId) - price;
 
-            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
-                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < userMonthlyTurnover)
+            var levelsUser = await GetLevelsInfoInReferralStructureByUserIdAsync(userId);
+
+            var monthlyLevel = new MonthlyLevelEntity();
+
+            if (levelsUser.Count == 1)
+            {
+                monthlyLevel = await _dbContext.MonthlyLevels.FirstOrDefaultAsync(l => l.Id == Guid.Parse("3d0c7240-1b5a-493e-8288-6a347d06903a"));
+            }
+            else
+            {
+                monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
+                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value <= userMonthlyTurnover)
                                                                           && x.Level <= (Level)basicLevelModel.Level)
                                                              .Max(x => x.Level))
                                                              .SingleOrDefaultAsync();
+            }
+
+            
             var lefelInfoModel = new LevelInfoModel()
             {
                 CurrentLevel = _mapper.Map<LevelModel>(monthlyLevel),
@@ -154,6 +168,57 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         }
 
         private BasicLevelEntity[] _basicLevels;
+
+        private async Task<IDictionary<Level, int>> GetLevelsInfoInReferralStructureByUserIdAsync(Guid userId)
+        {
+            var groupId = await _dbContext.Users.AsNoTracking()
+                                               .Where(u => u.Id == userId)
+                                               .Select(u => u.Group.Id)
+                                               .FirstAsync();
+
+            var getLevelsInBranchInfosString = GetLevelsInfoSqlQueryString(groupId);
+            var levelsInfo = await _dbContext.UserLevelsInfos
+                                              .FromSqlRaw(getLevelsInBranchInfosString)
+                                              .Include(x => x.BasicLevel)
+                                              .ToDictionaryAsync(x => x.BasicLevel.Level, x => x.BranchCount);
+            return levelsInfo;
+        }
+
+        private string GetLevelsInfoSqlQueryString(Guid groupId)
+        {
+            var getLevelsInBranchInfos = "with recursive resultGroup as (\n"
+                                         + "SELECT firstLine.\"Id\",\n"
+                                         + "firstLine.\"OwnerUserId\",\n"
+                                         + "firstLine.\"ParentId\",\n"
+                                         + "users.\"BasicLevelId\",\n"
+                                         + "users.\"Id\" as \"OwnerBranchId\",\n"
+                                         + "ROW_NUMBER() OVER(ORDER BY firstLine.\"Id\") as \"BranchNumber\"\n"
+                                         + "FROM public.\"TenantGroups\" as firstLine\n"
+                                         + "inner join public.\"Users\" as users on firstLine.\"OwnerUserId\" = users.\"Id\"\n"
+                                         + $"where firstLine.\"ParentId\" = '{groupId}'\n"
+                                         + "union all\n"
+                                         + "select childTenantGroup.\"Id\",\n"
+                                         + "childTenantGroup.\"OwnerUserId\",\n"
+                                         + "childTenantGroup.\"ParentId\",\n"
+                                         + "childUser.\"BasicLevelId\",\n"
+                                         + "res.\"OwnerBranchId\",\n"
+                                         + "res.\"BranchNumber\"\n"
+                                         + "FROM public.\"TenantGroups\" as childTenantGroup\n"
+                                         + "inner join public.\"Users\" as childUser on childTenantGroup.\"OwnerUserId\" = childUser.\"Id\"\n"
+                                         + "inner join resultGroup as res\n"
+                                         + "on childTenantGroup.\"ParentId\" = res.\"Id\"\n"
+                                         + ")\n"
+
+                                         + "select levelsInfos.\"BasicLevelId\", count(levelsInfos.\"BranchNumber\") as \"BranchCount\"\n"
+                                         + "from("
+                                         + "select \"BranchNumber\", \"OwnerBranchId\", \"BasicLevelId\", count(\"BasicLevelId\") as \"CountLevelInBranch\" from resultGroup\n"
+                                         + "group by \"BranchNumber\", \"BasicLevelId\", \"OwnerBranchId\"\n"
+                                         + ") as levelsInfos \n"
+                                         + "group by \"BasicLevelId\"";
+
+
+            return getLevelsInBranchInfos;
+        }
     }
 }
 

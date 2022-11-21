@@ -62,6 +62,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                .Where(u => u.Id == userId)
                                .Select(u => u.InviteReferral)
                                .FirstOrDefaultAsync();
+
             if (inviteReferral == null)
                 return;
 
