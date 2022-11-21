@@ -273,14 +273,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var parentRefferalRewardInfo = await _teamBonusService.CalculateTeamBonusRewardForChildRefferalAsync(childRefferalRewardInfo, childRefferalMonthlyLevel, parentRefferalMonthlyLevel, parentRefferalBasicLevelInfo.CurrentTurnover);
 
                 if (parentRefferalRewardInfo.Reward != 0) { await AccrualTeamBonusRewardsAsync(parentRefferalId, customerId, parentRefferalRewardInfo); }
-                    
+
+                var parentAccuralPercent = await CalculateRewardForTeamBonus(sellerId, parentRefferalBasicLevelInfo, parentRefferalMonthlyLevelInfo, price);
+
+
+                if (parentRefferalRewardInfo.Percent != null)
+                {
+                    childRefferalRewardInfo = parentAccuralPercent;
+                }
+                
                 //childRefferalRewardInfo = parentRefferalRewardInfo;
                 childRefferalMonthlyLevel = parentRefferalMonthlyLevel;
 
                 sellerId = parentRefferalGroup.OwnerUserId;
             }
         }
-
 
         private async Task AccrualTeamBonusRewardsAsync(Guid userId, Guid whoBoughtId, CalulatedRewardInfoModel rewardInfo)
         {
