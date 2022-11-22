@@ -50,7 +50,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var jsonResponse = await responseString.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RatesArr>(jsonResponse);
 
-            return 2;
+            return (decimal)2.42;
             return result.Rates[0].Rate;
         }
 
