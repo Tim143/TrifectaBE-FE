@@ -5,6 +5,7 @@ using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
+using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -49,6 +50,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var jsonResponse = await responseString.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RatesArr>(jsonResponse);
 
+            return 2;
             return result.Rates[0].Rate;
         }
 
@@ -69,27 +71,36 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (rewardInfo.Reward == 0)
                 return;
 
+            
+
             var levelBonusId = await _dbContext.Bonuses.AsNoTracking()
                                                        .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.LevelBonus)
                                                        .Select(b => b.Id)
-                                                       .FirstAsync();
-            var dailyCurrency = await GetCurrency();
+            .FirstAsync();
 
-            var accrual = new AccrualsEntity
+            var userLevelAccural = await _dbContext.Accruals.FirstOrDefaultAsync(x => x.AccuralPercent == rewardInfo.Percent && x.InitialAmount == rewardInfo.InitialReward && x.Bonus.Id == levelBonusId);
+
+            if(userLevelAccural == null)
             {
-                UserId = userId,
-                BonusId = levelBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
-                AccuralPercent = rewardInfo.Percent,
-                InitialAmount = rewardInfo.InitialReward,
-                AccuralAmount = rewardInfo.Reward * dailyCurrency,
-                AccuralDate = DateTime.Now,
-                AvailableIn = DateTime.Now.AddDays(14),
-                IsAvailable = false,
-            };
+                var dailyCurrency = await GetCurrency();
 
-            await _dbContext.Accruals.AddAsync(accrual);
-            await _dbContext.SaveChangesAsync();
+                var accrual = new AccrualsEntity
+                {
+                    UserId = userId,
+                    BonusId = levelBonusId,
+                    TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                    AccuralPercent = rewardInfo.Percent,
+                    InitialAmount = rewardInfo.InitialReward,
+                    AccuralAmount = rewardInfo.Reward * dailyCurrency,
+                    AccuralDate = DateTime.Now,
+                    AvailableIn = DateTime.Now.AddDays(14),
+                    IsAvailable = false,
+                };
+
+                await _dbContext.Accruals.AddAsync(accrual);
+                await _dbContext.SaveChangesAsync();
+            }
+            
         }
 
         public async Task AccrueRewardForSaleAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice)

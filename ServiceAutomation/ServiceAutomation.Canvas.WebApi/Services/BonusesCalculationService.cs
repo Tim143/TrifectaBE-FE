@@ -46,8 +46,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var currentTurnover = await _turnoverService.GetTurnoverByUserIdAsync(user.Id);
                 var turnoverWithoutPurchase = currentTurnover - purchasePrice;
 
-                var currentBasicLevel = await _levelsService.CalculateBasicLevelByTurnoverAsync(userId, currentTurnover);
-                var previousBasicLevel = await _levelsService.CalculateBasicLevelByTurnoverAsync(userId, turnoverWithoutPurchase);
+                var currentBasicLevel = await _levelsService.CalculateBasicLevelByTurnoverAsync(user.Id, currentTurnover);
+                var previousBasicLevel = await _levelsService.CalculateBasicLevelByTurnoverWithPreviousPurchaseAsync(user.Id, turnoverWithoutPurchase);
 
                 if (previousBasicLevel.CurrentLevel.Level < currentBasicLevel.CurrentLevel.Level)
                 {

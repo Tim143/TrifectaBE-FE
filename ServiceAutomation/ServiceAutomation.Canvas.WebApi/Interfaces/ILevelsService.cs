@@ -19,5 +19,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<LevelInfoModel> GetUserBasicLevelAsync(Guid userId);
 
         Task<LevelInfoModel> CalculateBasicLevelByTurnoverAsync(Guid userId, decimal turnover);
+        Task<LevelInfoModel> CalculateBasicLevelByTurnoverWithPreviousPurchaseAsync(Guid userId, decimal turnover);
     }
 }
