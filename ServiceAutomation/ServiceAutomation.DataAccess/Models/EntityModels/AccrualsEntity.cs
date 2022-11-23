@@ -21,6 +21,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
 
         public decimal InitialAmount { get; set; }
         public decimal AccuralAmount { get; set; }
+        public decimal AccuralAmountUSD { get; set; }
 
         public DateTime AccuralDate { get; set; }
 

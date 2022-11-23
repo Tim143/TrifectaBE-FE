@@ -61,6 +61,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.AccuralPercent, opt => opt.MapFrom(x => x.AccuralPercent))
                 .ForMember(x => x.InitialAmount, opt => opt.MapFrom(x => x.InitialAmount))
                 .ForMember(x => x.AccuralAmount, opt => opt.MapFrom(x => x.AccuralAmount))
+                .ForMember(x => x.AccuralAmountUSD, opt => opt.MapFrom(x => x.AccuralAmountUSD))
                 .ForMember(x => x.AccuralDate, opt => opt.MapFrom(x => x.AccuralDate))
                 .ForMember(x => x.TransactionStatus, opt => opt.MapFrom(x => x.TransactionStatus.ToString()));
 

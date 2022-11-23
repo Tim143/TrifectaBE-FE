@@ -29,6 +29,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<decimal>("AccuralAmount")
                         .HasColumnType("numeric");
 
+                    b.Property<decimal>("AccuralAmountUSD")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("AccuralDate")
                         .HasColumnType("timestamp without time zone");
 

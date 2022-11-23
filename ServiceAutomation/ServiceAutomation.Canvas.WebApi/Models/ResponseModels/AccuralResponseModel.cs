@@ -11,6 +11,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         public string TransactionStatus { get; set; }
         public decimal InitialAmount { get; set; }
         public decimal AccuralAmount { get; set; }
+        public decimal AccuralAmountUSD { get; set; }
         public DateTime AccuralDate { get; set; }
         public bool IsAvailable { get; set; }
     }

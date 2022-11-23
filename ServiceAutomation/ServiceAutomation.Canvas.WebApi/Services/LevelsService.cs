@@ -142,14 +142,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var levelsUser = await GetLevelsInfoInReferralStructureByUserIdAsync(userId);
 
+
             var monthlyLevel = new MonthlyLevelEntity();
 
             monthlyLevel = await _dbContext.MonthlyLevels.AsNoTracking().Where(l => l.Level == _dbContext.MonthlyLevels
-                                                             .Where(x => (!x.Turnover.HasValue || x.Turnover.Value <= userMonthlyTurnover)
+                                                             .Where(x => (x.Turnover == null || x.Turnover.Value <= userMonthlyTurnover)
                                                                           && x.Level <= (Level)basicLevelModel.Level)
                                                              .Max(x => x.Level))
                                                              .SingleOrDefaultAsync();
-            //if (basicLevelModel.Level == 1)
+
+            //if (monthlyLevel.Id == Guid.Parse("02142b58-bba1-4ba2-91ce-bcd1414489f0"))
             //{
             //    monthlyLevel = await _dbContext.MonthlyLevels.AsNoTracking().FirstOrDefaultAsync(l => l.Id == Guid.Parse("3d0c7240-1b5a-493e-8288-6a347d06903a"));
             //}
@@ -162,7 +164,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             //                                                 .SingleOrDefaultAsync();
             //}
 
-            
+
             var lefelInfoModel = new LevelInfoModel()
             {
                 CurrentLevel = _mapper.Map<LevelModel>(monthlyLevel),

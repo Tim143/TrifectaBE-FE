@@ -46,12 +46,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private async Task<decimal> GetCurrency()
         {
             using HttpClient client = new HttpClient();
-            var responseString = await client.GetAsync("https://developerhub.alfabank.by:8273/partner/1.0.1/public/nationalRates?currencyCode=840");
+            var responseString = await client.GetAsync("https://www.nbrb.by/api/exrates/rates/431");
             var jsonResponse = await responseString.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RatesArr>(jsonResponse);
 
             return (decimal)2.42;
-            return result.Rates[0].Rate;
+            return result.Rates[0].Cur_OfficialRate;
         }
 
         public async Task AccrueRewardForBasicLevelAsync(Guid userId, LevelInfoModel basicLevelInfo)
@@ -92,6 +92,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     AccuralPercent = rewardInfo.Percent,
                     InitialAmount = rewardInfo.InitialReward,
                     AccuralAmount = rewardInfo.Reward * dailyCurrency,
+                    AccuralAmountUSD = rewardInfo.Reward,
                     AccuralDate = DateTime.Now,
                     AvailableIn = DateTime.Now.AddDays(14),
                     IsAvailable = false,
@@ -122,7 +123,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         private async Task AccuralRewardsForTeamOrDynamicBonusAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice, UserPackageModel userPackage, bool startBonusIsActive)
         {
-            var userBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(whoSoldId);
+            var userBasicLevelInfo = await _levelsService.CalculateBasicLevelByTurnoverWithPreviousPurchaseAsync(whoSoldId, sellingPrice);
             var userMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoWithouLastPurchaseAsync(whoSoldId, userBasicLevelInfo.CurrentLevel, sellingPrice);
 
             var teamBonusRewards = await CalculateRewardForTeamBonus(whoSoldId, userBasicLevelInfo, userMonthlyLevelInfo, sellingPrice);
@@ -167,6 +168,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward * dailyCurrency,
+                AccuralAmountUSD = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
@@ -203,6 +205,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward * dailyCurrency,
+                AccuralAmountUSD = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
@@ -236,6 +239,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward * dailyCurrency,
+                AccuralAmountUSD = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
@@ -277,7 +281,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var parentRefferalId = parentRefferalGroup.OwnerUserId;
                 
                 var parentRefferalBasicLevelInfo = await _levelsService.GetUserBasicLevelAsync(parentRefferalId);
-                var parentRefferalMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoWithouLastPurchaseAsync(parentRefferalId, parentRefferalBasicLevelInfo.CurrentLevel, price);
+                var parentRefferalMonthlyLevelInfo = await _levelsService.GetUserMonthlyLevelInfoAsync(parentRefferalId, parentRefferalBasicLevelInfo.CurrentLevel);
 
                 var parentRefferalMonthlyLevel = parentRefferalMonthlyLevelInfo.CurrentLevel;
 
@@ -316,6 +320,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward * dailyCurrency,
+                AccuralAmountUSD = rewardInfo.Reward,
                 AccuralDate = DateTime.Now,
                 AvailableIn = DateTime.Now.AddDays(14),
                 IsAvailable = false,
