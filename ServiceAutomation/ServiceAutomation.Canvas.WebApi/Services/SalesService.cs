@@ -10,22 +10,22 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class SalesService: ISalesService
     {
-        private readonly AppDbContext _dbContext;
+        private readonly AppDbContext dbContext;
 
         public SalesService(AppDbContext dbContext)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
         }
         public async Task<int> GetUserSalesCountAsync(Guid userId)
         {
-            var referralUsersIds = await _dbContext.Users.AsNoTracking()
+            var referralUsersIds = await dbContext.Users.AsNoTracking()
                                                          .Where(u => u.Id == userId)
                                                          .Select(u => u.Group)
                                                          .SelectMany(g => g.ChildGroups)
                                                          .Select(g => g.OwnerUserId)
                                                          .ToArrayAsync();
 
-            var countSales = await _dbContext.UsersPurchases.AsNoTracking()
+            var countSales = await dbContext.UsersPurchases.AsNoTracking()
                                                             .Where(p => referralUsersIds.Contains(p.UserId))
                                                             .CountAsync();
             return countSales;
@@ -33,7 +33,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<int> GerSalesCountInMonthAsync(Guid userId)
         {
-            var referralUsersIds = await _dbContext.Users.AsNoTracking()
+            var referralUsersIds = await dbContext.Users.AsNoTracking()
                                              .Where(u => u.Id == userId)
                                              .Select(u => u.Group)
                                              .SelectMany(g => g.ChildGroups)
@@ -41,7 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                              .ToArrayAsync();
 
             var startOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            var countSales = await _dbContext.UsersPurchases.AsNoTracking()
+            var countSales = await dbContext.UsersPurchases.AsNoTracking()
                                                             .Where(p => referralUsersIds.Contains(p.UserId))
                                                             .Where(p => p.PurchaseDate >= startOfMonth)
                                                             .CountAsync();

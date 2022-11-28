@@ -10,20 +10,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class BonusesCalculationService : IBonusesCalculationService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly ILevelsService _levelsService;
-        private readonly ITurnoverService _turnoverService;
-        private readonly IRewardAccrualService _rewardAccrualService;
+        private readonly AppDbContext dbContext;
+        private readonly ILevelsService levelsService;
+        private readonly ITurnoverService turnoverService;
+        private readonly IRewardAccrualService rewardAccrualService;
 
         public BonusesCalculationService(AppDbContext dbContext,
                                        ITurnoverService turnoverService,
                                        ILevelsService levelsService,
                                        IRewardAccrualService rewardAccrualService)
         {
-            _dbContext = dbContext;
-            _turnoverService = turnoverService;
-            _levelsService = levelsService;
-            _rewardAccrualService = rewardAccrualService;
+            this.dbContext = dbContext;
+            this.turnoverService = turnoverService;
+            this.levelsService = levelsService;
+            this.rewardAccrualService = rewardAccrualService;
         }
 
         public async Task CalculateBonusesForRefferalsAsync(Guid userId, decimal purchasePrice)
@@ -43,22 +43,22 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             foreach (var user in parentUsers)
             {
-                var currentTurnover = await _turnoverService.GetTurnoverByUserIdAsync(user.Id);
+                var currentTurnover = await turnoverService.GetTurnoverByUserIdAsync(user.Id);
                 var turnoverWithoutPurchase = currentTurnover - purchasePrice;
 
-                var currentBasicLevel = await _levelsService.CalculateBasicLevelByTurnoverAsync(user.Id, currentTurnover);
-                var previousBasicLevel = await _levelsService.CalculateBasicLevelByTurnoverWithPreviousPurchaseAsync(user.Id, turnoverWithoutPurchase);
+                var currentBasicLevel = await levelsService.CalculateBasicLevelByTurnoverAsync(user.Id, currentTurnover);
+                var previousBasicLevel = await levelsService.CalculateBasicLevelByTurnoverWithPreviousPurchaseAsync(user.Id, turnoverWithoutPurchase);
 
                 if (previousBasicLevel.CurrentLevel.Level < currentBasicLevel.CurrentLevel.Level)
                 {
-                    await _rewardAccrualService.AccrueRewardForBasicLevelAsync(user.Id, currentBasicLevel);
+                    await rewardAccrualService.AccrueRewardForBasicLevelAsync(user.Id, currentBasicLevel);
                 }
             }
         }
 
         private async Task CalculateBonesesForSale(Guid userId, decimal purchasePrice)
         {
-            var inviteReferral = await _dbContext.Users.AsNoTracking()
+            var inviteReferral = await dbContext.Users.AsNoTracking()
                                .Where(u => u.Id == userId)
                                .Select(u => u.InviteReferral)
                                .FirstOrDefaultAsync();
@@ -66,17 +66,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (inviteReferral == null)
                 return;
 
-            var referralUserId = await _dbContext.Users.AsNoTracking()
+            var referralUserId = await dbContext.Users.AsNoTracking()
                                                        .Where(u => u.PersonalReferral == inviteReferral)
                                                        .Select(u => u.Id)
                                                        .FirstOrDefaultAsync();
 
-            await _rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, userId, purchasePrice);
+            await rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, userId, purchasePrice);
         }
 
         private async Task<UserEntity[]> GetParentUsersAsync(Guid userId)
         {
-            var tenantGroup = await _dbContext.Users
+            var tenantGroup = await dbContext.Users
                                               .Where(u => u.Id == userId)
                                               .Select(x => x.Group)
                                               .FirstOrDefaultAsync();
@@ -87,7 +87,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var getParentUsersQuery = GetParenUsersSqlQueryString(tenantGroup);
 
-            var parentUsers = await _dbContext.Users
+            var parentUsers = await dbContext.Users
                                               .FromSqlRaw(getParentUsersQuery)
                                               .Include(x => x.Group)
                                               .ToArrayAsync();

@@ -10,11 +10,11 @@
         "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
         "projectName": "ServiceAutomation.DataAccess",
         "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\ServiceAutomation.DataAccess.csproj",
-        "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\J\\.nuget\\packages\\",
         "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\J\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "D:\\Program Files (x86)\\DevExpress 17.2": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -106,7 +105,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -116,11 +115,11 @@
         "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
         "projectName": "ServiceAutomation.DataAccess.Migrations",
         "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\ServiceAutomation.DataAccess.Migrations.csproj",
-        "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\J\\.nuget\\packages\\",
         "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Migrations\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\J\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -128,7 +127,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "D:\\Program Files (x86)\\DevExpress 17.2": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -176,7 +174,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

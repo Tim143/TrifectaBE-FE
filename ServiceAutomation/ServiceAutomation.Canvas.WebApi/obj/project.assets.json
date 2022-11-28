@@ -8939,7 +8939,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\": {}
+    "C:\\Users\\J\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -8947,11 +8947,11 @@
       "projectUniqueName": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
       "projectName": "ServiceAutomation.Canvas.WebApi",
       "projectPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\ServiceAutomation.Canvas.WebApi.csproj",
-      "packagesPath": "C:\\Users\\Tsimafei.Yakubouski\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\J\\.nuget\\packages\\",
       "outputPath": "D:\\TrifectaBE-FE\\ServiceAutomation\\ServiceAutomation.Canvas.WebApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Tsimafei.Yakubouski\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\J\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8959,7 +8959,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "D:\\Program Files (x86)\\DevExpress 17.2": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -9080,7 +9079,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

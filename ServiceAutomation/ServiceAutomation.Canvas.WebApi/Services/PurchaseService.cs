@@ -12,25 +12,25 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class PurchaseService: IPurchaseService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IPackagesService _packagesService;
-        private readonly IBonusesCalculationService _bonusesCalculationService;
-        private readonly IRewardAccrualService _rewardAccrualService;
+        private readonly AppDbContext dbContext;
+        private readonly IPackagesService packagesService;
+        private readonly IBonusesCalculationService bonusesCalculationService;
+        private readonly IRewardAccrualService rewardAccrualService;
 
         public PurchaseService(AppDbContext dbContext,
                               IPackagesService packagesService,
                               IBonusesCalculationService bonusesCalculationService,
                               IRewardAccrualService rewardAccrualService)
         {
-            _dbContext = dbContext;
-            _packagesService = packagesService;
-            _bonusesCalculationService = bonusesCalculationService;
-            _rewardAccrualService = rewardAccrualService;
+            this.dbContext = dbContext;
+            this.packagesService = packagesService;
+            this.bonusesCalculationService = bonusesCalculationService;
+            this.rewardAccrualService = rewardAccrualService;
         }
 
         public async Task BuyPackageAsync(PackageModel package, Guid userId)
         {
-            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            var currentUserPackage = await packagesService.GetUserPackageByIdAsync(userId);
             if (currentUserPackage != null && currentUserPackage.Price >= package.Price)
             {
                 throw new Exception("The purchased package must be larger than the current one!");
@@ -41,7 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task BuyPackageByCashAsync(PackageModel package, Guid userId)
         {
-            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            var currentUserPackage = await packagesService.GetUserPackageByIdAsync(userId);
             if (currentUserPackage != null && currentUserPackage.Price >= package.Price)
             {
                 throw new Exception("The purchased package must be larger than the current one!");
@@ -54,14 +54,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 IsClosed = false,
             };
 
-            await _dbContext.CashPurchases.AddAsync(purchaseRequest);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.CashPurchases.AddAsync(purchaseRequest);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task BuyPackageByPackageTypeAsync(PackageType packageType, Guid userId)
         {
-            var purchasedPackage = await _packagesService.GetPackageByTypeAsync(packageType);
-            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            var purchasedPackage = await packagesService.GetPackageByTypeAsync(packageType);
+            var currentUserPackage = await packagesService.GetUserPackageByIdAsync(userId);
 
             if (currentUserPackage != null && currentUserPackage.Price >= purchasedPackage.Price)
             {
@@ -84,10 +84,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PurchaseDate = DateTime.Now
             };
 
-            await _dbContext.UsersPurchases.AddAsync(purchase);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.UsersPurchases.AddAsync(purchase);
+            await dbContext.SaveChangesAsync();
 
-            await _bonusesCalculationService.CalculateBonusesForRefferalsAsync(userId, purchasePrice);
+            await bonusesCalculationService.CalculateBonusesForRefferalsAsync(userId, purchasePrice);
         }
     }
 }

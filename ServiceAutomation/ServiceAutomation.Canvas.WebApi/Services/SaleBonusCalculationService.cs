@@ -10,18 +10,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class SaleBonusCalculationService : ISaleBonusCalculationService
     {
-        private readonly AppDbContext _dbContext;
+        private readonly AppDbContext dbContext;
         private readonly ISalesService salesService;
 
         public SaleBonusCalculationService(AppDbContext dbContext, ISalesService salesService)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
             this.salesService = salesService;
         }
 
         public async Task<CalulatedRewardInfoModel> CalculateStartBonusRewardAsync(decimal sellingPrice, UserPackageModel userPackage, int userSalesCount)
         {
-            var startBonusReward = await _dbContext.StartBonusRewards.AsNoTracking()
+            var startBonusReward = await dbContext.StartBonusRewards.AsNoTracking()
                                                                      .FirstAsync(s => s.PackageId == userPackage.Id);
 
             var countOfDaysAfterPurchase = (DateTime.Today - userPackage.PurchaseDate).TotalDays;
@@ -42,7 +42,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<bool> IsStartBonusActiveAsync(UserPackageModel userPackage, Guid userId)
         {
-            var startBonusReward = await _dbContext.StartBonusRewards.AsNoTracking()
+            var startBonusReward = await dbContext.StartBonusRewards.AsNoTracking()
                                                                      .FirstAsync(s => s.PackageId == userPackage.Id);
 
             var userSalesCount = await salesService.GetUserSalesCountAsync(userId);
@@ -54,7 +54,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<CalulatedRewardInfoModel> CalculateDynamicBonusRewardAsync(decimal sellingPrice, UserPackageModel userPackage, int saleNumber)
         {
-            var dynamicBonusReward = await _dbContext.DynamicBonusRewards.AsNoTracking()
+            var dynamicBonusReward = await dbContext.DynamicBonusRewards.AsNoTracking()
                                                                          .Where(r => r.PackageId == userPackage.Id && r.SalesNumber == saleNumber)
                                                                          .FirstOrDefaultAsync();
             if (dynamicBonusReward == null)

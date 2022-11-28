@@ -10,23 +10,23 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class LevelBonusCalculatorService : ILevelBonusCalculatorService
     {
-        private readonly AppDbContext _dbContext;
+        private readonly AppDbContext dbContext;
 
         public LevelBonusCalculatorService(AppDbContext dbContext)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
         }
 
         public async Task<CalulatedRewardInfoModel> CalculateLevelBonusRewardAsync(Guid currentBasicLevel, Guid currentPackage)
         {
-            var basicLevelReward = await _dbContext.LevelBonusRewards
+            var basicLevelReward = await dbContext.LevelBonusRewards
                                                       .AsNoTracking()
                                                       .Where(r => r.LevelId == currentBasicLevel)
                                                       .FirstOrDefaultAsync();
             if (basicLevelReward == null)
                 return new CalulatedRewardInfoModel();
 
-            var rewardPercent = await _dbContext.LevelBonusRewardPercents
+            var rewardPercent = await dbContext.LevelBonusRewardPercents
                                                 .AsNoTracking()
                                                 .Where(p => p.PackageId == currentPackage)
                                                 .Select(p => p.Percent)

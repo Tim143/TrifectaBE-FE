@@ -10,16 +10,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class AutoBonusCalculatorService : IAutoBonusCalculatorService
     {
-        private readonly AppDbContext _dbContext;
+        private readonly AppDbContext dbContext;
 
         public AutoBonusCalculatorService(AppDbContext dbContext)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
         }
 
         public async Task<CalulatedRewardInfoModel> CalculateAutoBonusRewardAsync(Guid currentBasicLevelId, Guid currentPackageId, decimal currentMonthlyTurnover)
         {
-            var autoBonusReward = await _dbContext.AutoBonusRewards
+            var autoBonusReward = await dbContext.AutoBonusRewards
                                                   .AsNoTracking()
                                                   .Where(r => r.BasicLevelId == currentBasicLevelId && r.PackageId == currentPackageId)
                                                   .FirstOrDefaultAsync();

@@ -66,7 +66,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     startBonusExpTime = startBonusReward.DurationOfDays - startBonusWorkingTime;
                 }
 
-                if(dynamicBonusReward.DurationOfDays != null)
+                if(dynamicBonusReward?.DurationOfDays != null)
                 {
                     if (dynamicBonusWorkingTime < dynamicBonusReward.DurationOfDays)
                     {
@@ -83,10 +83,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             double receivedPayoutPercentage = 0;
 
             decimal awaitin = 0;
-            foreach (var accural in awaitingAccural)
+
+            awaitingAccural.ForEach(accural =>
             {
                 awaitin += accural.AccuralAmount;
-            }
+
+            });
 
             switch (monthlyLevelInfo.CurrentLevel.Level)
             {

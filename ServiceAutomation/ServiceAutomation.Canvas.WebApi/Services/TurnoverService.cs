@@ -9,11 +9,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class TurnoverService : ITurnoverService
     {
-        private readonly AppDbContext _dbContext;
+        private readonly AppDbContext dbContext;
 
         public TurnoverService(AppDbContext dbContext)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var getPartnersPurchases = GetPartnersPurchasesSqlQueryString(userId, startDate);
 
-            var turnover = await _dbContext.PartnerPurchase.FromSqlRaw(getPartnersPurchases)
+            var turnover = await dbContext.PartnerPurchase.FromSqlRaw(getPartnersPurchases)
                                                             .SumAsync(x => x.PurchasePrice);
 
             return turnover ?? 0;
@@ -35,7 +35,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 01);
 
-            var userIds = await _dbContext.Users.AsNoTracking()
+            var userIds = await dbContext.Users.AsNoTracking()
                                                          .Where(u => u.Id == userId)
                                                          .SelectMany(u => u.Group.ChildGroups)
                                                          .Select(g => g.OwnerUser)
@@ -43,7 +43,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                          .Select(u => u.Id)
                                                          .ToArrayAsync();
 
-            var personalTurnover = await _dbContext.UsersPurchases.AsNoTracking()
+            var personalTurnover = await dbContext.UsersPurchases.AsNoTracking()
                                                                   .Where(p => userIds.Contains(p.UserId))
                                                                   .Where(p => p.PurchaseDate >= startDate)
                                                                   .GroupBy(p => p.UserId)
@@ -56,7 +56,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var getPartnersPurchases = GetPartnersPurchasesSqlQueryString(userId);
 
-            var turnover = await _dbContext.PartnerPurchase.FromSqlRaw(getPartnersPurchases)
+            var turnover = await dbContext.PartnerPurchase.FromSqlRaw(getPartnersPurchases)
                                                             .SumAsync(x => x.PurchasePrice);
 
             return turnover ?? 0;

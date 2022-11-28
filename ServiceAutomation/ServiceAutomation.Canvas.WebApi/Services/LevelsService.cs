@@ -15,15 +15,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class LevelsService : ILevelsService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly AppDbContext dbContext;
+        private readonly IMapper mapper;
         private readonly ITurnoverService turnoverService;
         private readonly ITMPService tenantGroupService;
 
         public LevelsService(AppDbContext dbContext, IMapper mapper, ITurnoverService turnoverService, ITMPService tenantGroupService)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            this.dbContext = dbContext;
+            this.mapper = mapper;
             this.turnoverService = turnoverService;
             this.tenantGroupService = tenantGroupService;
         }
@@ -32,14 +32,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var userMonthlyTurnover = await turnoverService.GetMonthlyTurnoverByUserIdAsync(userId);
 
-            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
+            var monthlyLevel = await dbContext.MonthlyLevels.Where(l => l.Level == dbContext.MonthlyLevels
                                                              .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < userMonthlyTurnover)
                                                                           && x.Level <= (Level)basicLevelModel.Level)
                                                              .Max(x => x.Level))
                                                              .SingleOrDefaultAsync();
             var lefelInfoModel = new LevelInfoModel()
             {
-                CurrentLevel = _mapper.Map<LevelModel>(monthlyLevel),
+                CurrentLevel = mapper.Map<LevelModel>(monthlyLevel),
                 CurrentTurnover = userMonthlyTurnover,
             };
 
@@ -48,17 +48,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<LevelModel> GetNextMonthlyLevelAsync(int level)
         {
-            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => ((int)l.Level) == level + 1)
+            var monthlyLevel = await dbContext.MonthlyLevels.Where(l => ((int)l.Level) == level + 1)
                                                              .SingleOrDefaultAsync();
 
-            return _mapper.Map<LevelModel>(monthlyLevel);
+            return mapper.Map<LevelModel>(monthlyLevel);
         }
 
         public async Task<NextBasicLevelRequirementsModel> GetNextBasicLevelRequirementsAsync(Level currentUserBasicLevel)
         {
             var nextBasicLevel = currentUserBasicLevel + 1;
 
-            var nextBasicLevelEntity = await _dbContext.BasicLevels.AsNoTracking()
+            var nextBasicLevelEntity = await dbContext.BasicLevels.AsNoTracking()
                                                                    .Include(b => b.PartnersLevel)
                                                                    .FirstAsync(l => l.Level == nextBasicLevel);
 
@@ -84,7 +84,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private async Task<LevelInfoModel> GetUserBasicLevelAsync(Guid userId, decimal turnover)
         {
             BasicLevelEntity[] basicLevels = await GetBasicLevelsAsync();
-            var user = await _dbContext.Users.Include(x => x.BasicLevel).FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await dbContext.Users.Include(x => x.BasicLevel).FirstOrDefaultAsync(x => x.Id == userId);
             var levelsInfo = await tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(userId);
             var appropriateLevels = basicLevels.Where(l => l.Turnover == null || l.Turnover < turnover).OrderByDescending(l => (int)l.Level);
 
@@ -114,12 +114,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if(user.BasicLevel == null || user.BasicLevel.Level < newLevel.Level)
             {
                 user.BasicLevelId = newLevel.Id;
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
 
             var lefelInfoModel = new LevelInfoModel()
             {
-                CurrentLevel = _mapper.Map<LevelModel>(newLevel),
+                CurrentLevel = mapper.Map<LevelModel>(newLevel),
                 CurrentTurnover = turnover,
             };
 
@@ -130,7 +130,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             if (_basicLevels == null)
             {
-                _basicLevels = await _dbContext.BasicLevels.ToArrayAsync();
+                _basicLevels = await dbContext.BasicLevels.ToArrayAsync();
             }
 
             return _basicLevels;
@@ -145,7 +145,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var monthlyLevel = new MonthlyLevelEntity();
 
-            monthlyLevel = await _dbContext.MonthlyLevels.AsNoTracking().Where(l => l.Level == _dbContext.MonthlyLevels
+            monthlyLevel = await dbContext.MonthlyLevels.AsNoTracking().Where(l => l.Level == dbContext.MonthlyLevels
                                                              .Where(x => (x.Turnover == null || x.Turnover.Value <= userMonthlyTurnover)
                                                                           && x.Level <= (Level)basicLevelModel.Level)
                                                              .Max(x => x.Level))
@@ -167,7 +167,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var lefelInfoModel = new LevelInfoModel()
             {
-                CurrentLevel = _mapper.Map<LevelModel>(monthlyLevel),
+                CurrentLevel = mapper.Map<LevelModel>(monthlyLevel),
                 CurrentTurnover = userMonthlyTurnover,
             };
 
@@ -178,13 +178,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         private async Task<IDictionary<Level, int>> GetLevelsInfoInReferralStructureByUserIdAsync(Guid userId)
         {
-            var groupId = await _dbContext.Users.AsNoTracking()
+            var groupId = await dbContext.Users.AsNoTracking()
                                                .Where(u => u.Id == userId)
                                                .Select(u => u.Group.Id)
                                                .FirstAsync();
 
             var getLevelsInBranchInfosString = GetLevelsInfoSqlQueryString(groupId);
-            var levelsInfo = await _dbContext.UserLevelsInfos
+            var levelsInfo = await dbContext.UserLevelsInfos
                                               .FromSqlRaw(getLevelsInBranchInfosString)
                                               .Include(x => x.BasicLevel)
                                               .ToDictionaryAsync(x => x.BasicLevel.Level, x => x.BranchCount);
@@ -230,7 +230,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<LevelInfoModel> CalculateBasicLevelByTurnoverWithPreviousPurchaseAsync(Guid userId, decimal turnover)
         {
             BasicLevelEntity[] basicLevels = await GetBasicLevelsAsync();
-            var user = await _dbContext.Users.Include(x => x.BasicLevel).FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await dbContext.Users.Include(x => x.BasicLevel).FirstOrDefaultAsync(x => x.Id == userId);
             var levelsInfo = await tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(userId);
             levelsInfo.Remove(levelsInfo.Last().Key);
 
@@ -262,12 +262,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (user.BasicLevel == null || user.BasicLevel.Level < newLevel.Level)
             {
                 user.BasicLevelId = newLevel.Id;
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
 
             var lefelInfoModel = new LevelInfoModel()
             {
-                CurrentLevel = _mapper.Map<LevelModel>(newLevel),
+                CurrentLevel = mapper.Map<LevelModel>(newLevel),
                 CurrentTurnover = turnover,
             };
 
